@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMQ", "proj\ZeroMQ\ZeroMQ.csproj", "{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{831C8D73-792F-443B-822D-A1FC98167B5B}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proj", "proj", "{C0D50781-620E-40C1-8277-07833E827A5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "settings", "settings", "{68FF5AA9-E132-4176-BABC-F7DF7AAAD469}"
+	ProjectSection(SolutionItems) = preProject
+		Indentation.vssettings = Indentation.vssettings
+		nuget.config = nuget.config
+		Settings.FxCop = Settings.FxCop
+		SolutionEvents_Opened.macro = SolutionEvents_Opened.macro
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65} = {C0D50781-620E-40C1-8277-07833E827A5E}
+	EndGlobalSection
+EndGlobal
