@@ -14,25 +14,19 @@
     [StructLayout(LayoutKind.Sequential)]
     internal struct PollItem
     {
-#pragma warning disable 414
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
+        private IntPtr socket;
 
-        private readonly IntPtr socket;
 #if POSIX
         private int fd;
 #else
-        private readonly IntPtr fd;
+        private IntPtr fd;
 #endif
+
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
         private short events;
         private short revents;
 
-#pragma warning restore
-
-        /// <summary>
-        /// Initializes a new instance of the PollItem struct.
-        /// </summary>
-        /// <param name="socket">Target ZMQ socket ptr</param>
-        /// <param name="fd">Non ZMQ socket (Not Supported)</param>
-        /// <param name="events">Desired events</param>
         internal PollItem(IntPtr socket, IntPtr fd, short events)
         {
             this.socket = socket;
@@ -45,17 +39,11 @@
 #endif
         }
 
-        /// <summary>
-        /// Gets returned event flags
-        /// </summary>
         public PollEvent Revents
         {
             get { return (PollEvent)this.revents; }
         }
 
-        /// <summary>
-        /// Reset revents so that poll item can be safely reused
-        /// </summary>
         public void ResetRevents()
         {
             this.revents = 0;
@@ -74,7 +62,7 @@
             foreach (PollEvent evt in evts)
             {
                 this.events &= (short)evt;
-            } 
+            }
         }
     }
 }
