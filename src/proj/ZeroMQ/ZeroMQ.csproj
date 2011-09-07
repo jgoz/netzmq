@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context.cs" />
+    <Compile Include="IContext.cs" />
+    <Compile Include="Interop\ErrorCodes.cs" />
     <Compile Include="Interop\LibZmq.cs" />
     <Compile Include="Interop\PollItem.cs" />
     <Compile Include="Interop\UnmanagedLibrary.cs" />
