@@ -6,28 +6,29 @@
     [Flags]
     internal enum PollEvent
     {
-        PollIn = 0x1,
-        PollOut = 0x2,
-        PollErr = 0x4
+        // ZMQ_POLLIN
+        In = 0x1,
+
+        // ZMQ_POLLOUT
+        Out = 0x2,
+
+        // ZMQ_POLLERR
+        Error = 0x4
     }
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct PollItem
     {
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
-        private IntPtr socket;
-
+        private readonly IntPtr socket;
 #if POSIX
-        private int fd;
+        private readonly int fd;
 #else
-        private IntPtr fd;
+        private readonly IntPtr fd;
 #endif
-
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
         private short events;
         private short revents;
 
-        internal PollItem(IntPtr socket, IntPtr fd, short events)
+        public PollItem(IntPtr socket, IntPtr fd, short events)
         {
             this.socket = socket;
             this.events = events;
@@ -44,12 +45,7 @@
             get { return (PollEvent)this.revents; }
         }
 
-        public void ResetRevents()
-        {
-            this.revents = 0;
-        }
-
-        internal void ActivateEvent(params PollEvent[] evts)
+        public void ActivateEvent(params PollEvent[] evts)
         {
             foreach (PollEvent evt in evts)
             {
@@ -57,12 +53,17 @@
             }
         }
 
-        internal void DeactivateEvent(params PollEvent[] evts)
+        public void DeactivateEvent(params PollEvent[] evts)
         {
             foreach (PollEvent evt in evts)
             {
                 this.events &= (short)evt;
             }
+        }
+
+        public void ResetRevents()
+        {
+            this.revents = 0;
         }
     }
 }
