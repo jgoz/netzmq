@@ -43,7 +43,7 @@
             }
 
             this.threadPoolSize = threadPoolSize;
-            this.context = LibZmq.ZmqInit(threadPoolSize);
+            this.context = LibZmq.Init(threadPoolSize);
 
             if (this.context == IntPtr.Zero)
             {
@@ -95,15 +95,15 @@
 
         private void TerminateContext()
         {
-            while (LibZmq.ZmqTerm(this.context) != 0)
+            while (LibZmq.Term(this.context) != 0)
             {
-                int errno = LibZmq.ZmqErrno();
+                int errno = LibZmq.Errno();
 
                 // If zmq_term fails, valid return codes are EFault or EIntr. If EIntr is set, termination
                 // was interrupted by a signal and may be safely retried.
                 if (errno == (int)SystemError.EFault)
                 {
-                    throw new ZmqLibException(errno, ZmqLibException.GetErrorMessage(errno));
+                    throw new ZmqLibException(errno, LibZmq.StrError(errno));
                 }
             }
         }

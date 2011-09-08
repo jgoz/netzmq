@@ -34,89 +34,170 @@
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr ZmqInitProc(int ioThreads);
-
+        private delegate IntPtr ZmqInitProc(int ioThreads);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqTermProc(IntPtr context);
-
+        private delegate int ZmqTermProc(IntPtr context);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqCloseProc(IntPtr socket);
-
+        private delegate int ZmqCloseProc(IntPtr socket);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqSetSockOptProc(IntPtr socket, int option, IntPtr optval, int optvallen);
-
+        private delegate int ZmqSetSockOptProc(IntPtr socket, int option, IntPtr optval, int optvallen);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqGetSockOptProc(IntPtr socket, int option, IntPtr optval, IntPtr optvallen);
-
+        private delegate int ZmqGetSockOptProc(IntPtr socket, int option, IntPtr optval, IntPtr optvallen);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public delegate int ZmqBindProc(IntPtr socket, string addr);
-
+        private delegate int ZmqBindProc(IntPtr socket, string addr);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public delegate int ZmqConnectProc(IntPtr socket, string addr);
-
+        private delegate int ZmqConnectProc(IntPtr socket, string addr);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqRecvProc(IntPtr socket, IntPtr msg, int flags);
-
+        private delegate int ZmqRecvProc(IntPtr socket, IntPtr msg, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqSendProc(IntPtr socket, IntPtr msg, int flags);
-
+        private delegate int ZmqSendProc(IntPtr socket, IntPtr msg, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr ZmqSocketProc(IntPtr context, int type);
-
+        private delegate IntPtr ZmqSocketProc(IntPtr context, int type);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqMsgCloseProc(IntPtr msg);
-
+        private delegate int ZmqMsgCloseProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr ZmqMsgDataProc(IntPtr msg);
-
+        private delegate IntPtr ZmqMsgDataProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqMsgInitProc(IntPtr msg);
-
+        private delegate int ZmqMsgInitProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqMsgInitSizeProc(IntPtr msg, int size);
-
+        private delegate int ZmqMsgInitSizeProc(IntPtr msg, int size);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqMsgSizeProc(IntPtr msg);
-
+        private delegate int ZmqMsgSizeProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqErrnoProc();
-
+        private delegate int ZmqErrnoProc();
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public delegate IntPtr ZmqStrErrorProc(int errnum);
-
+        private delegate IntPtr ZmqStrErrorProc(int errnum);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqDeviceProc(int device, IntPtr inSocket, IntPtr outSocket);
-
+        private delegate int ZmqDeviceProc(int device, IntPtr inSocket, IntPtr outSocket);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void ZmqVersionProc(IntPtr major, IntPtr minor, IntPtr patch);
-
+        private delegate void ZmqVersionProc(IntPtr major, IntPtr minor, IntPtr patch);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int ZmqPollProc([In, Out] PollItem[] items, int nItems, long timeout);
+        private delegate int ZmqPollProc([In, Out] PollItem[] items, int nItems, long timeout);
 
-        public static ZmqInitProc ZmqInit { get; set; }
-        public static ZmqTermProc ZmqTerm { get; set; }
-        public static ZmqCloseProc ZmqClose { get; set; }
-        public static ZmqSetSockOptProc ZmqSetsockopt { get; set; }
-        public static ZmqGetSockOptProc ZmqGetsockopt { get; set; }
-        public static ZmqBindProc ZmqBind { get; set; }
-        public static ZmqConnectProc ZmqConnect { get; set; }
-        public static ZmqRecvProc ZmqRecv { get; set; }
-        public static ZmqSendProc ZmqSend { get; set; }
-        public static ZmqSocketProc ZmqSocket { get; set; }
-        public static ZmqMsgCloseProc ZmqMsgClose { get; set; }
-        public static ZmqMsgDataProc ZmqMsgData { get; set; }
-        public static ZmqMsgInitProc ZmqMsgInit { get; set; }
-        public static ZmqMsgInitSizeProc ZmqMsgInitSize { get; set; }
-        public static ZmqMsgSizeProc ZmqMsgSize { get; set; }
-        public static ZmqErrnoProc ZmqErrno { get; set; }
-        public static ZmqStrErrorProc ZmqStrerror { get; set; }
-        public static ZmqDeviceProc ZmqDevice { get; set; }
-        public static ZmqVersionProc ZmqVersion { get; set; }
-        public static ZmqPollProc ZmqPoll { get; set; }
+        private static ZmqInitProc ZmqInit { get; set; }
+        private static ZmqTermProc ZmqTerm { get; set; }
+        private static ZmqCloseProc ZmqClose { get; set; }
+        private static ZmqSetSockOptProc ZmqSetsockopt { get; set; }
+        private static ZmqGetSockOptProc ZmqGetsockopt { get; set; }
+        private static ZmqBindProc ZmqBind { get; set; }
+        private static ZmqConnectProc ZmqConnect { get; set; }
+        private static ZmqRecvProc ZmqRecv { get; set; }
+        private static ZmqSendProc ZmqSend { get; set; }
+        private static ZmqSocketProc ZmqSocket { get; set; }
+        private static ZmqMsgCloseProc ZmqMsgClose { get; set; }
+        private static ZmqMsgDataProc ZmqMsgData { get; set; }
+        private static ZmqMsgInitProc ZmqMsgInit { get; set; }
+        private static ZmqMsgInitSizeProc ZmqMsgInitSize { get; set; }
+        private static ZmqMsgSizeProc ZmqMsgSize { get; set; }
+        private static ZmqErrnoProc ZmqErrno { get; set; }
+        private static ZmqStrErrorProc ZmqStrerror { get; set; }
+        private static ZmqDeviceProc ZmqDevice { get; set; }
+        private static ZmqVersionProc ZmqVersion { get; set; }
+        private static ZmqPollProc ZmqPoll { get; set; }
 
         public static bool Is64BitProcess()
         {
             return IntPtr.Size == sizeof(long);
+        }
+
+        public static IntPtr Init(int threadPoolSize)
+        {
+            return ZmqInit(threadPoolSize);
+        }
+
+        public static int Term(IntPtr context)
+        {
+            return ZmqTerm(context);
+        }
+
+        public static int Close(IntPtr socket)
+        {
+            return ZmqClose(socket);
+        }
+
+        public static int SetSockOpt(IntPtr socket, int option, IntPtr optval, int optvallen)
+        {
+            return ZmqSetsockopt(socket, option, optval, optvallen);
+        }
+
+        public static int GetSockOpt(IntPtr socket, int option, IntPtr optval, IntPtr optvallen)
+        {
+            return ZmqGetsockopt(socket, option, optval, optvallen);
+        }
+
+        public static int Bind(IntPtr socket, string addr)
+        {
+            return ZmqBind(socket, addr);
+        }
+
+        public static int Connect(IntPtr socket, string addr)
+        {
+            return ZmqConnect(socket, addr);
+        }
+
+        public static int Recv(IntPtr socket, IntPtr msg, int flags)
+        {
+            return ZmqRecv(socket, msg, flags);
+        }
+
+        public static int Send(IntPtr socket, IntPtr msg, int flags)
+        {
+            return ZmqSend(socket, msg, flags);
+        }
+
+        public static IntPtr Socket(IntPtr context, int type)
+        {
+            return ZmqSocket(context, type);
+        }
+
+        public static int MsgClose(IntPtr msg)
+        {
+            return ZmqMsgClose(msg);
+        }
+
+        public static IntPtr MsgData(IntPtr msg)
+        {
+            return ZmqMsgData(msg);
+        }
+
+        public static int MsgInit(IntPtr msg)
+        {
+            return ZmqMsgInit(msg);
+        }
+
+        public static int MsgInitSize(IntPtr msg, int size)
+        {
+            return ZmqMsgInitSize(msg, size);
+        }
+
+        public static int MsgSize(IntPtr msg)
+        {
+            return ZmqMsgSize(msg);
+        }
+
+        public static int Errno()
+        {
+            return ZmqErrno();
+        }
+
+        public static string StrError(int errnum)
+        {
+            return Marshal.PtrToStringAnsi(ZmqStrerror(errnum));
+        }
+
+        public static int Device(int device, IntPtr inSocket, IntPtr outSocket)
+        {
+            return ZmqDevice(device, inSocket, outSocket);
+        }
+
+        public static void Version(IntPtr major, IntPtr minor, IntPtr patch)
+        {
+            ZmqVersion(major, minor, patch);
+        }
+
+        public static int Poll(PollItem[] items, long timeout)
+        {
+            return ZmqPoll(items, items.Length, timeout);
         }
     }
 }

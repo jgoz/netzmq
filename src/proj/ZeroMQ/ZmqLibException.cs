@@ -1,7 +1,6 @@
 ﻿namespace ZeroMQ
 {
     using System;
-    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
 
     using ZeroMQ.Interop;
@@ -69,14 +68,9 @@
         /// </returns>
         internal static ZmqLibException GetLastError()
         {
-            int errno = LibZmq.ZmqErrno();
+            int errno = LibZmq.Errno();
 
-            return new ZmqLibException(errno, GetErrorMessage(errno));
-        }
-
-        internal static string GetErrorMessage(int errno)
-        {
-            return Marshal.PtrToStringAnsi(LibZmq.ZmqStrerror(errno));
+            return new ZmqLibException(errno, LibZmq.StrError(errno));
         }
     }
 }
