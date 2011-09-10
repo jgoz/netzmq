@@ -5,13 +5,13 @@
     using ZeroMQ.Interop;
 
     /// <summary>
-    /// Represents a ZeroMQ context object.
+    /// Represents a thread-safe ZeroMQ context object.
     /// </summary>
     /// <remarks>
-    /// The <see cref="Context"/> object is a container for all sockets in a single process,
-    /// and acts as the transport for inproc sockets. <see cref="Context"/> is thread safe.
+    /// The <see cref="SocketContext"/> object is a container for all sockets in a single process,
+    /// and acts as the transport for inproc sockets. <see cref="SocketContext"/> is thread safe.
     /// </remarks>
-    public class Context : IContext
+    public class SocketContext : ISocketContext
     {
         private const int DefaultThreadPoolSize = 1;
 
@@ -21,21 +21,21 @@
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Context"/> class. Uses the default thread pool size.
+        /// Initializes a new instance of the <see cref="SocketContext"/> class. Uses the default thread pool size.
         /// </summary>
-        public Context() : this(DefaultThreadPoolSize)
+        public SocketContext() : this(DefaultThreadPoolSize)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// Initializes a new instance of the <see cref="SocketContext"/> class.
         /// </summary>
         /// <param name="threadPoolSize">Number of threads to use in the ZMQ thread pool.</param>
         /// <remarks>
         /// The size of the thread pool should be at least 1. If all sockets in this context use the
         /// inproc transport, then the thread pool size may be 0.
         /// </remarks>
-        public Context(int threadPoolSize)
+        public SocketContext(int threadPoolSize)
         {
             if (threadPoolSize < 0)
             {
@@ -51,7 +51,7 @@
             }
         }
 
-        ~Context()
+        ~SocketContext()
         {
             Dispose(false);
         }
