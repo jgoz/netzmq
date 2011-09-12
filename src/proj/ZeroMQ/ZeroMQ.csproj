@@ -40,13 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
-    <Compile Include="IContext.cs" />
+    <Compile Include="SendResult.cs" />
+    <Compile Include="Socket.cs" />
+    <Compile Include="SocketContext.cs" />
+    <Compile Include="ISocketContext.cs" />
     <Compile Include="Interop\ErrorCodes.cs" />
     <Compile Include="Interop\LibZmq.cs" />
     <Compile Include="Interop\PollItem.cs" />
     <Compile Include="Interop\UnmanagedLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SocketFlags.cs" />
+    <Compile Include="SocketType.cs" />
     <Compile Include="ZmqLibException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
