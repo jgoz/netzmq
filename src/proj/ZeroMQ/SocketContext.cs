@@ -17,7 +17,6 @@
 
         private readonly int threadPoolSize;
 
-        private IntPtr context;
         private bool disposed;
 
         /// <summary>
@@ -43,9 +42,9 @@
             }
 
             this.threadPoolSize = threadPoolSize;
-            this.context = LibZmq.Init(threadPoolSize);
+            this.Handle = LibZmq.Init(threadPoolSize);
 
-            if (this.context == IntPtr.Zero)
+            if (this.Handle == IntPtr.Zero)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -55,6 +54,11 @@
         {
             Dispose(false);
         }
+
+        /// <summary>
+        /// Gets the underlying ZeroMQ context object.
+        /// </summary>
+        public IntPtr Handle { get; private set; }
 
         /// <summary>
         /// Gets the size of the thread pool for this context. Default is 1.
@@ -84,10 +88,10 @@
                 return;
             }
 
-            if (this.context != IntPtr.Zero)
+            if (this.Handle != IntPtr.Zero)
             {
                 this.TerminateContext();
-                this.context = IntPtr.Zero;
+                this.Handle = IntPtr.Zero;
             }
 
             this.disposed = true;
@@ -95,7 +99,7 @@
 
         private void TerminateContext()
         {
-            while (LibZmq.Term(this.context) != 0)
+            while (LibZmq.Term(this.Handle) != 0)
             {
                 int errno = LibZmq.Errno();
 
