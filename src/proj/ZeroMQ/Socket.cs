@@ -11,16 +11,17 @@
     /// <remarks>
     /// The <see cref="Socket"/> class defines the common behavior for derived Socket types. 
     /// </remarks>
-    public abstract class Socket
+    public abstract class Socket : IDisposable
     {
-        private const int VerySmallMessageSize = 32;
-
         private readonly ISocketContext context;
         private readonly IntPtr socket;
         private readonly SocketType socketType;
 
-        private readonly IntPtr sendMsg;
-        private readonly IntPtr receiveMsg;
+        // Empirically derived size for best performance by platform
+        private static int bufferSize = LibZmq.Is64BitProcess() ? 8192 : 2048;
+
+        private IntPtr sendBuffer;
+        private IntPtr receiveBuffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Socket"/> class.
@@ -43,8 +44,44 @@
                 throw ZmqLibException.GetLastError();
             }
 
-            this.sendMsg = Marshal.AllocHGlobal(VerySmallMessageSize);
-            this.receiveMsg = Marshal.AllocHGlobal(VerySmallMessageSize);
+            this.sendBuffer = Marshal.AllocHGlobal(bufferSize);
+            this.receiveBuffer = Marshal.AllocHGlobal(bufferSize);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Socket"/> class.
+        /// </summary>
+        ~Socket()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Releases all resources used by the current instance of the <see cref="Socket"/> class.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="Socket"/>, and optionally disposes of the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+
+            Marshal.FreeHGlobal(this.sendBuffer);
+            Marshal.FreeHGlobal(this.receiveBuffer);
+
+            if (LibZmq.Close(this.socket) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
         }
 
         /// <summary>
@@ -55,12 +92,7 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
-            if (LibZmq.MsgInit(this.receiveMsg) != 0)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-
-            int bytesReceived = LibZmq.RecvMsg(this.socket, this.receiveMsg, (int)socketFlags);
+            int bytesReceived = LibZmq.Recv(this.socket, this.receiveBuffer, (UIntPtr)bufferSize, (int)socketFlags);
 
             if (bytesReceived == -1)
             {
@@ -74,18 +106,10 @@
 
             var result = new ReceivedMessage(bytesReceived);
 
-            IntPtr msgData = LibZmq.MsgData(this.receiveMsg);
-            Marshal.Copy(msgData, result.Data, 0, bytesReceived);
+            // TODO: Handle messages that have been silently truncated due to insufficient buffer capacity
+            this.EnsureBufferCapacity(bytesReceived);
 
-            if (msgData == IntPtr.Zero)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-
-            if (LibZmq.MsgClose(this.receiveMsg) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
+            Marshal.Copy(this.receiveBuffer, result.Data, 0, bytesReceived);
 
             return result;
         }
@@ -99,19 +123,11 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
-            if (LibZmq.MsgInitSize(this.sendMsg, buffer.Length) != 0)
-            {
-                throw ZmqLibException.GetLastError();
-            }
+            this.EnsureBufferCapacity(buffer.Length);
 
-            Marshal.Copy(buffer, 0, LibZmq.MsgData(this.sendMsg), buffer.Length);
+            Marshal.Copy(buffer, 0, LibZmq.MsgData(this.sendBuffer), buffer.Length);
 
-            int result = LibZmq.SendMsg(this.socket, this.sendMsg, (int)socketFlags);
-
-            if (LibZmq.MsgClose(this.sendMsg) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
+            int result = LibZmq.Send(this.socket, this.sendBuffer, (UIntPtr)buffer.Length, (int)socketFlags);
 
             if (result == -1)
             {
@@ -124,6 +140,22 @@
             }
 
             return SendResult.Sent;
+        }
+
+        private void EnsureBufferCapacity(int minLength)
+        {
+            if (bufferSize >= minLength)
+            {
+                return;
+            }
+
+            while (bufferSize < minLength)
+            {
+                bufferSize *= 2;
+            }
+
+            this.sendBuffer = Marshal.ReAllocHGlobal(this.sendBuffer, (IntPtr)bufferSize);
+            this.receiveBuffer = Marshal.ReAllocHGlobal(this.receiveBuffer, (IntPtr)bufferSize);
         }
     }
 }

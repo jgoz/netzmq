@@ -3,6 +3,9 @@
     using System;
     using System.Runtime.InteropServices;
 
+    /// <summary>
+    /// Interop methods targeting libzmq v3.0
+    /// </summary>
     internal static class LibZmq
     {
         private static readonly UnmanagedLibrary ZmqLib;
@@ -18,8 +21,8 @@
             ZmqGetsockopt = ZmqLib.GetUnmanagedProcedure<ZmqGetSockOptProc>("zmq_getsockopt");
             ZmqBind = ZmqLib.GetUnmanagedProcedure<ZmqBindProc>("zmq_bind");
             ZmqConnect = ZmqLib.GetUnmanagedProcedure<ZmqConnectProc>("zmq_connect");
-            ZmqRecvMsg = ZmqLib.GetUnmanagedProcedure<ZmqRecvMsgProc>("zmq_recvmsg");
-            ZmqSendMsg = ZmqLib.GetUnmanagedProcedure<ZmqSendMsgProc>("zmq_sendmsg");
+            ZmqRecv = ZmqLib.GetUnmanagedProcedure<ZmqRecvProc>("zmq_recv");
+            ZmqSend = ZmqLib.GetUnmanagedProcedure<ZmqSendProc>("zmq_send");
             ZmqSocket = ZmqLib.GetUnmanagedProcedure<ZmqSocketProc>("zmq_socket");
             ZmqMsgClose = ZmqLib.GetUnmanagedProcedure<ZmqMsgCloseProc>("zmq_msg_close");
             ZmqMsgData = ZmqLib.GetUnmanagedProcedure<ZmqMsgDataProc>("zmq_msg_data");
@@ -48,9 +51,9 @@
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int ZmqConnectProc(IntPtr socket, string addr);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int ZmqRecvMsgProc(IntPtr socket, IntPtr msg, int flags);
+        private delegate int ZmqRecvProc(IntPtr socket, IntPtr buf, UIntPtr len, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int ZmqSendMsgProc(IntPtr socket, IntPtr msg, int flags);
+        private delegate int ZmqSendProc(IntPtr socket, IntPtr buf, UIntPtr len, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr ZmqSocketProc(IntPtr context, int type);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -60,7 +63,7 @@
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int ZmqMsgInitProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int ZmqMsgInitSizeProc(IntPtr msg, int size);
+        private delegate int ZmqMsgInitSizeProc(IntPtr msg, UIntPtr size);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int ZmqMsgSizeProc(IntPtr msg);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -81,8 +84,8 @@
         private static ZmqGetSockOptProc ZmqGetsockopt { get; set; }
         private static ZmqBindProc ZmqBind { get; set; }
         private static ZmqConnectProc ZmqConnect { get; set; }
-        private static ZmqRecvMsgProc ZmqRecvMsg { get; set; }
-        private static ZmqSendMsgProc ZmqSendMsg { get; set; }
+        private static ZmqRecvProc ZmqRecv { get; set; }
+        private static ZmqSendProc ZmqSend { get; set; }
         private static ZmqSocketProc ZmqSocket { get; set; }
         private static ZmqMsgCloseProc ZmqMsgClose { get; set; }
         private static ZmqMsgDataProc ZmqMsgData { get; set; }
@@ -135,14 +138,14 @@
             return ZmqConnect(socket, addr);
         }
 
-        public static int RecvMsg(IntPtr socket, IntPtr msg, int flags)
+        public static int Recv(IntPtr socket, IntPtr buf, UIntPtr len, int flags)
         {
-            return ZmqRecvMsg(socket, msg, flags);
+            return ZmqRecv(socket, buf, len, flags);
         }
 
-        public static int SendMsg(IntPtr socket, IntPtr msg, int flags)
+        public static int Send(IntPtr socket, IntPtr buf, UIntPtr len, int flags)
         {
-            return ZmqSendMsg(socket, msg, flags);
+            return ZmqSend(socket, buf, len, flags);
         }
 
         public static IntPtr Socket(IntPtr context, int type)
@@ -165,7 +168,7 @@
             return ZmqMsgInit(msg);
         }
 
-        public static int MsgInitSize(IntPtr msg, int size)
+        public static int MsgInitSize(IntPtr msg, UIntPtr size)
         {
             return ZmqMsgInitSize(msg, size);
         }
