@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReceivedMessage.cs" />
+    <Compile Include="ReceiveResult.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="Socket.cs" />
     <Compile Include="SocketContext.cs" />

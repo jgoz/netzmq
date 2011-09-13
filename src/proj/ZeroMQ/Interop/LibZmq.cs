@@ -18,8 +18,8 @@
             ZmqGetsockopt = ZmqLib.GetUnmanagedProcedure<ZmqGetSockOptProc>("zmq_getsockopt");
             ZmqBind = ZmqLib.GetUnmanagedProcedure<ZmqBindProc>("zmq_bind");
             ZmqConnect = ZmqLib.GetUnmanagedProcedure<ZmqConnectProc>("zmq_connect");
-            ZmqRecv = ZmqLib.GetUnmanagedProcedure<ZmqRecvProc>("zmq_recv");
-            ZmqSend = ZmqLib.GetUnmanagedProcedure<ZmqSendProc>("zmq_send");
+            ZmqRecvMsg = ZmqLib.GetUnmanagedProcedure<ZmqRecvMsgProc>("zmq_recvmsg");
+            ZmqSendMsg = ZmqLib.GetUnmanagedProcedure<ZmqSendMsgProc>("zmq_sendmsg");
             ZmqSocket = ZmqLib.GetUnmanagedProcedure<ZmqSocketProc>("zmq_socket");
             ZmqMsgClose = ZmqLib.GetUnmanagedProcedure<ZmqMsgCloseProc>("zmq_msg_close");
             ZmqMsgData = ZmqLib.GetUnmanagedProcedure<ZmqMsgDataProc>("zmq_msg_data");
@@ -48,9 +48,9 @@
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int ZmqConnectProc(IntPtr socket, string addr);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int ZmqRecvProc(IntPtr socket, IntPtr msg, int flags);
+        private delegate int ZmqRecvMsgProc(IntPtr socket, IntPtr msg, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int ZmqSendProc(IntPtr socket, IntPtr msg, int flags);
+        private delegate int ZmqSendMsgProc(IntPtr socket, IntPtr msg, int flags);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr ZmqSocketProc(IntPtr context, int type);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -81,8 +81,8 @@
         private static ZmqGetSockOptProc ZmqGetsockopt { get; set; }
         private static ZmqBindProc ZmqBind { get; set; }
         private static ZmqConnectProc ZmqConnect { get; set; }
-        private static ZmqRecvProc ZmqRecv { get; set; }
-        private static ZmqSendProc ZmqSend { get; set; }
+        private static ZmqRecvMsgProc ZmqRecvMsg { get; set; }
+        private static ZmqSendMsgProc ZmqSendMsg { get; set; }
         private static ZmqSocketProc ZmqSocket { get; set; }
         private static ZmqMsgCloseProc ZmqMsgClose { get; set; }
         private static ZmqMsgDataProc ZmqMsgData { get; set; }
@@ -135,14 +135,14 @@
             return ZmqConnect(socket, addr);
         }
 
-        public static int Recv(IntPtr socket, IntPtr msg, int flags)
+        public static int RecvMsg(IntPtr socket, IntPtr msg, int flags)
         {
-            return ZmqRecv(socket, msg, flags);
+            return ZmqRecvMsg(socket, msg, flags);
         }
 
-        public static int Send(IntPtr socket, IntPtr msg, int flags)
+        public static int SendMsg(IntPtr socket, IntPtr msg, int flags)
         {
-            return ZmqSend(socket, msg, flags);
+            return ZmqSendMsg(socket, msg, flags);
         }
 
         public static IntPtr Socket(IntPtr context, int type)

@@ -19,8 +19,8 @@
         private readonly IntPtr socket;
         private readonly SocketType socketType;
 
-        private readonly IntPtr sendBuffer;
-        private readonly IntPtr receiveBuffer;
+        private readonly IntPtr sendMsg;
+        private readonly IntPtr receiveMsg;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Socket"/> class.
@@ -43,8 +43,51 @@
                 throw ZmqLibException.GetLastError();
             }
 
-            this.sendBuffer = Marshal.AllocHGlobal(VerySmallMessageSize);
-            this.receiveBuffer = Marshal.AllocHGlobal(VerySmallMessageSize);
+            this.sendMsg = Marshal.AllocHGlobal(VerySmallMessageSize);
+            this.receiveMsg = Marshal.AllocHGlobal(VerySmallMessageSize);
+        }
+
+        /// <summary>
+        /// Receive a message from a remote socket.
+        /// </summary>
+        /// <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
+        /// <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        protected ReceivedMessage Receive(SocketFlags socketFlags)
+        {
+            if (LibZmq.MsgInit(this.receiveMsg) != 0)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            int bytesReceived = LibZmq.RecvMsg(this.socket, this.receiveMsg, (int)socketFlags);
+
+            if (bytesReceived == -1)
+            {
+                if (LibZmq.Errno() == (int)SystemError.EAgain)
+                {
+                    return ReceivedMessage.TryAgain();
+                }
+
+                throw ZmqLibException.GetLastError();
+            }
+
+            var result = new ReceivedMessage(bytesReceived);
+
+            IntPtr msgData = LibZmq.MsgData(this.receiveMsg);
+            Marshal.Copy(msgData, result.Data, 0, bytesReceived);
+
+            if (msgData == IntPtr.Zero)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            if (LibZmq.MsgClose(this.receiveMsg) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -52,34 +95,35 @@
         /// </summary>
         /// <param name="buffer">An array of type <see cref="Byte"/> that contains the message to be sent.</param>
         /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
-        /// <returns>A <see cref="SendResult"/> value indicating the send operation's outcome.</returns>
+        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
-            if (LibZmq.MsgInitSize(this.sendBuffer, buffer.Length) != 0)
+            if (LibZmq.MsgInitSize(this.sendMsg, buffer.Length) != 0)
             {
                 throw ZmqLibException.GetLastError();
             }
 
-            Marshal.Copy(buffer, 0, LibZmq.MsgData(this.sendBuffer), buffer.Length);
+            Marshal.Copy(buffer, 0, LibZmq.MsgData(this.sendMsg), buffer.Length);
 
-            int result = LibZmq.Send(this.socket, this.sendBuffer, (int)socketFlags);
+            int result = LibZmq.SendMsg(this.socket, this.sendMsg, (int)socketFlags);
 
-            if (LibZmq.MsgClose(this.sendBuffer) != 0)
+            if (LibZmq.MsgClose(this.sendMsg) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
 
-            if (result == 0)
+            if (result == -1)
             {
-                return SendResult.Sent;
+                if (LibZmq.Errno() == (int)SystemError.EAgain)
+                {
+                    return SendResult.TryAgain;
+                }
+
+                throw ZmqLibException.GetLastError();
             }
 
-            if (LibZmq.Errno() == (int)SystemError.EAgain)
-            {
-                return SendResult.TryAgain;
-            }
-
-            throw ZmqLibException.GetLastError();
+            return SendResult.Sent;
         }
     }
 }
