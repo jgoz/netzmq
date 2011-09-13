@@ -107,6 +107,7 @@
             var result = new ReceivedMessage(bytesReceived);
 
             // TODO: Handle messages that have been silently truncated due to insufficient buffer capacity
+            // TODO: Use ReceivedMessage.TryAgain if truncated?
             this.EnsureBufferCapacity(bytesReceived);
 
             Marshal.Copy(this.receiveBuffer, result.Data, 0, bytesReceived);
