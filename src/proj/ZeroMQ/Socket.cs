@@ -98,16 +98,16 @@
             {
                 if (LibZmq.Errno() == (int)SystemError.EAgain)
                 {
-                    return ReceivedMessage.TryAgain();
+                    return ReceivedMessage.TryAgain;
                 }
 
                 throw ZmqLibException.GetLastError();
             }
 
-            var result = new ReceivedMessage(bytesReceived);
+            var result = new ReceivedMessage(
+                bytesReceived,
+                bytesReceived <= bufferSize ? ReceiveResult.Received : ReceiveResult.Truncated);
 
-            // TODO: Handle messages that have been silently truncated due to insufficient buffer capacity
-            // TODO: Use ReceivedMessage.TryAgain if truncated?
             this.EnsureBufferCapacity(bytesReceived);
 
             Marshal.Copy(this.receiveBuffer, result.Data, 0, bytesReceived);

@@ -7,7 +7,9 @@
     /// </summary>
     public class ReceivedMessage
     {
-        internal ReceivedMessage(int bytesReceived)
+        private static readonly ReceivedMessage TryAgainResult = new ReceivedMessage(0, ReceiveResult.TryAgain);
+
+        internal ReceivedMessage(int bytesReceived, ReceiveResult result)
         {
             if (bytesReceived < 0)
             {
@@ -15,7 +17,7 @@
             }
 
             this.Data = new byte[bytesReceived];
-            this.Result = ReceiveResult.Received;
+            this.Result = result;
         }
 
         /// <summary>
@@ -28,9 +30,9 @@
         /// </summary>
         public ReceiveResult Result { get; private set; }
 
-        internal static ReceivedMessage TryAgain()
+        internal static ReceivedMessage TryAgain
         {
-            return new ReceivedMessage(0) { Result = ReceiveResult.TryAgain };
+            get { return TryAgainResult; }
         }
     }
 }
