@@ -106,6 +106,35 @@
         }
 
         /// <summary>
+        /// Create an endpoint for accepting connections and bind it to the current socket.
+        /// </summary>
+        /// <param name="endpoint">
+        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as
+        /// <c><em>transport</em>://<em>address</em></c>.
+        /// </param>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        protected void Bind(string endpoint)
+        {
+            if (LibZmq.Bind(this.socket, endpoint) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Connect the current socket to the specified endpoint.
+        /// </summary>
+        /// <param name="uri">A <see cref="Uri"/> that represents the remote endpoint.</param>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        protected void Connect(Uri uri)
+        {
+            if (LibZmq.Connect(this.socket, uri.ToZeroMQEndpoint()) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
         /// Receive a message from a remote socket.
         /// </summary>
         /// <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
