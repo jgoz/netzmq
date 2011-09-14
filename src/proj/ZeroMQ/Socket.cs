@@ -17,18 +17,38 @@
         private readonly IntPtr socket;
         private readonly SocketType socketType;
 
-        // Empirically derived size for best performance by platform
-        private static int bufferSize = LibZmq.Is64BitProcess() ? 8192 : 2048;
-
         private IntPtr sendBuffer;
         private IntPtr receiveBuffer;
+        private int bufferSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Socket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
+        /// <remarks>
+        /// This constructer uses an empirically derived buffer size for the best Marshal.Copy performance
+        /// by processor architecture. On x86 systems, this is 2048 bytes. On x64 systems this is 8192 bytes.
+        /// If message sizes are expected to reach or exceed these values, use the <see cref="Socket(ISocketContext, SocketType, int)"/> 
+        /// constructor and specify a larger buffer size. Otherwise, there is a chance that received messages
+        /// could be truncated.
+        /// </remarks>
         protected Socket(ISocketContext context, SocketType socketType)
+            : this(context, socketType, LibZmq.Is64BitProcess() ? 8192 : 2048)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Socket"/> class.
+        /// </summary>
+        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
+        /// <param name="socketType">Socket type for the current socket.</param>
+        /// <param name="bufferSize">The initial size for send and receive buffers. Buffers will expand if necessary.</param>
+        /// <remarks>
+        /// <paramref name="bufferSize"/> should be set to an appropriately large value for the implementing
+        /// application. Otherwise, received messages may be truncated.
+        /// </remarks>
+        protected Socket(ISocketContext context, SocketType socketType, int bufferSize)
         {
             if (context == null)
             {
@@ -44,8 +64,9 @@
                 throw ZmqLibException.GetLastError();
             }
 
-            this.sendBuffer = Marshal.AllocHGlobal(bufferSize);
-            this.receiveBuffer = Marshal.AllocHGlobal(bufferSize);
+            this.bufferSize = bufferSize;
+            this.sendBuffer = Marshal.AllocHGlobal(this.bufferSize);
+            this.receiveBuffer = Marshal.AllocHGlobal(this.bufferSize);
         }
 
         /// <summary>
@@ -92,7 +113,7 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
-            int bytesReceived = LibZmq.Recv(this.socket, this.receiveBuffer, (UIntPtr)bufferSize, (int)socketFlags);
+            int bytesReceived = LibZmq.Recv(this.socket, this.receiveBuffer, (UIntPtr)this.bufferSize, (int)socketFlags);
 
             if (bytesReceived == -1)
             {
@@ -106,7 +127,7 @@
 
             var result = new ReceivedMessage(
                 bytesReceived,
-                bytesReceived <= bufferSize ? ReceiveResult.Received : ReceiveResult.Truncated);
+                bytesReceived <= this.bufferSize ? ReceiveResult.Received : ReceiveResult.Truncated);
 
             this.EnsureBufferCapacity(bytesReceived);
 
@@ -145,18 +166,18 @@
 
         private void EnsureBufferCapacity(int minLength)
         {
-            if (bufferSize >= minLength)
+            if (this.bufferSize >= minLength)
             {
                 return;
             }
 
-            while (bufferSize < minLength)
+            while (this.bufferSize < minLength)
             {
-                bufferSize *= 2;
+                this.bufferSize *= 2;
             }
 
-            this.sendBuffer = Marshal.ReAllocHGlobal(this.sendBuffer, (IntPtr)bufferSize);
-            this.receiveBuffer = Marshal.ReAllocHGlobal(this.receiveBuffer, (IntPtr)bufferSize);
+            this.sendBuffer = Marshal.ReAllocHGlobal(this.sendBuffer, (IntPtr)this.bufferSize);
+            this.receiveBuffer = Marshal.ReAllocHGlobal(this.receiveBuffer, (IntPtr)this.bufferSize);
         }
     }
 }
