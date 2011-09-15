@@ -6,6 +6,7 @@ log
 *.suo
 *.orig
 output
+out
 publish
 publish-*
 package
@@ -14,6 +15,8 @@ _ReSharper.*
 *.ReSharper.user
 *.Cache
 *.cache
+*.opensdf
+*.sdf
 ~$*
 lib/packages
 App_Data
