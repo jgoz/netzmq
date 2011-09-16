@@ -11,12 +11,12 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("ZeroMQProxy")];
+[assembly:AssemblyTitleAttribute("ZeroMQ.Proxy")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("Microsoft")];
-[assembly:AssemblyProductAttribute("ZeroMQProxy")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) Microsoft 2011")];
+[assembly:AssemblyCompanyAttribute("John Gozde")];
+[assembly:AssemblyProductAttribute("ZeroMQ.Proxy")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) John Gozde 2011")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
