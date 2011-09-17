@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ.Interop
+﻿namespace ZeroMQ.Options
 {
     internal enum SystemError
     {

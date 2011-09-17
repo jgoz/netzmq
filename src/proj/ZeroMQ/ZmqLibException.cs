@@ -3,8 +3,6 @@
     using System;
     using System.Runtime.Serialization;
 
-    using ZeroMQ.Interop;
-
     /// <summary>
     /// An exception thrown by the result of a ZeroMQ library call.
     /// </summary>
@@ -43,6 +41,11 @@
             this.ErrorCode = errorCode;
         }
 
+        internal ZmqLibException(Proxy.ZmqException proxyException)
+            : this(proxyException.ErrorCode, proxyException.Message, proxyException)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZmqLibException"/> class.
         /// </summary>
@@ -68,9 +71,9 @@
         /// </returns>
         internal static ZmqLibException GetLastError()
         {
-            int errno = LibZmq.Errno();
+            Proxy.ZmqException lastError = Proxy.ZmqException.GetLastError();
 
-            return new ZmqLibException(errno, LibZmq.StrError(errno));
+            return new ZmqLibException(lastError.ErrorCode, lastError.Message);
         }
     }
 }

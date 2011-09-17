@@ -20,6 +20,17 @@
             this.Result = result;
         }
 
+        internal ReceivedMessage(byte[] data, ReceiveResult result)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException("data");
+            }
+
+            this.Data = data;
+            this.Result = result;
+        }
+
         /// <summary>
         /// Gets the data retrieved from a socket receive operation.
         /// </summary>

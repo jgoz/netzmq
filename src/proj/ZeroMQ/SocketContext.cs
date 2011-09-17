@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Interop;
-
     /// <summary>
     /// Represents a thread-safe ZeroMQ context object.
     /// </summary>
@@ -14,8 +12,6 @@
     public class SocketContext : ISocketContext
     {
         private const int DefaultThreadPoolSize = 1;
-
-        private readonly int threadPoolSize;
 
         private bool disposed;
 
@@ -41,13 +37,16 @@
                 throw new ArgumentOutOfRangeException("threadPoolSize", threadPoolSize, "Thread pool size must be non-negative.");
             }
 
-            this.threadPoolSize = threadPoolSize;
-            this.Handle = LibZmq.Init(threadPoolSize);
-
-            if (this.Handle == IntPtr.Zero)
+            try
             {
-                throw ZmqLibException.GetLastError();
+                this.Context = new Proxy.SocketContext(threadPoolSize);
             }
+            catch (Proxy.ZmqException ex)
+            {
+                throw new ZmqLibException(ex);
+            }
+
+            this.ThreadPoolSize = threadPoolSize;
         }
 
         ~SocketContext()
@@ -56,17 +55,14 @@
         }
 
         /// <summary>
-        /// Gets the underlying ZeroMQ context object.
-        /// </summary>
-        public IntPtr Handle { get; private set; }
-
-        /// <summary>
         /// Gets the size of the thread pool for this context. Default is 1.
         /// </summary>
-        public int ThreadPoolSize
-        {
-            get { return this.threadPoolSize; }
-        }
+        public int ThreadPoolSize { get; private set; }
+
+        /// <summary>
+        /// Gets the underlying socket context handle.
+        /// </summary>
+        public Proxy.SocketContext Context { get; private set; }
 
         /// <summary>
         /// Frees the underlying ZeroMQ context handle.
@@ -88,28 +84,9 @@
                 return;
             }
 
-            if (this.Handle != IntPtr.Zero)
-            {
-                this.TerminateContext();
-                this.Handle = IntPtr.Zero;
-            }
+            this.Context.Dispose();
 
             this.disposed = true;
-        }
-
-        private void TerminateContext()
-        {
-            while (LibZmq.Term(this.Handle) != 0)
-            {
-                int errno = LibZmq.Errno();
-
-                // If zmq_term fails, valid return codes are EFault or EIntr. If EIntr is set, termination
-                // was interrupted by a signal and may be safely retried.
-                if (errno == (int)SystemError.EFault)
-                {
-                    throw new ZmqLibException(errno, LibZmq.StrError(errno));
-                }
-            }
         }
     }
 }
