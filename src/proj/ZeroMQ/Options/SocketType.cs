@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Options
 {
     /// <summary>
     /// Specifies possible socket types for <see cref="Socket"/>.

@@ -1,9 +1,9 @@
 ﻿namespace ZeroMQ
 {
     using System;
-    using System.Runtime.InteropServices;
+    using System.Text;
 
-    using ZeroMQ.Interop;
+    using ZeroMQ.Options;
 
     /// <summary>
     /// Sends and receives messages across various transports, synchronously or asynchronously.
@@ -11,62 +11,32 @@
     /// <remarks>
     /// The <see cref="Socket"/> class defines the common behavior for derived Socket types. 
     /// </remarks>
-    public abstract class Socket : IDisposable
+    public class Socket : IDisposable
     {
-        private readonly ISocketContext context;
-        private readonly IntPtr socket;
-        private readonly SocketType socketType;
+        private readonly Proxy.Socket socket;
 
-        private IntPtr sendBuffer;
-        private IntPtr receiveBuffer;
-        private int bufferSize;
+        private static Encoding defaultEncoding = Encoding.UTF8;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Socket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
-        /// <remarks>
-        /// This constructer uses an empirically derived buffer size for the best Marshal.Copy performance
-        /// by processor architecture. On x86 systems, this is 2048 bytes. On x64 systems this is 8192 bytes.
-        /// If message sizes are expected to reach or exceed these values, use the <see cref="Socket(ISocketContext, SocketType, int)"/> 
-        /// constructor and specify a larger buffer size. Otherwise, there is a chance that received messages
-        /// could be truncated.
-        /// </remarks>
-        protected Socket(ISocketContext context, SocketType socketType)
-            : this(context, socketType, LibZmq.Is64BitProcess() ? 8192 : 2048)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Socket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        /// <param name="socketType">Socket type for the current socket.</param>
-        /// <param name="bufferSize">The initial size for send and receive buffers. Buffers will expand if necessary.</param>
-        /// <remarks>
-        /// <paramref name="bufferSize"/> should be set to an appropriately large value for the implementing
-        /// application. Otherwise, received messages may be truncated.
-        /// </remarks>
-        protected Socket(ISocketContext context, SocketType socketType, int bufferSize)
+        public Socket(ISocketContext context, SocketType socketType)
         {
             if (context == null)
             {
                 throw new ArgumentNullException("context");
             }
 
-            this.context = context;
-            this.socketType = socketType;
-            this.socket = LibZmq.Socket(this.context.Handle, (int)this.socketType);
-
-            if (this.socket == IntPtr.Zero)
+            try
             {
-                throw ZmqLibException.GetLastError();
+                this.socket = new Proxy.Socket(context.Context, (int)socketType);
             }
-
-            this.bufferSize = bufferSize;
-            this.sendBuffer = Marshal.AllocHGlobal(this.bufferSize);
-            this.receiveBuffer = Marshal.AllocHGlobal(this.bufferSize);
+            catch (Proxy.ZmqException ex)
+            {
+                throw new ZmqLibException(ex);
+            }
         }
 
         /// <summary>
@@ -75,6 +45,15 @@
         ~Socket()
         {
             this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Gets or sets the default encoding for all sockets in the current process
+        /// </summary>
+        public static Encoding DefaultEncoding
+        {
+            get { return defaultEncoding; }
+            set { defaultEncoding = value; }
         }
 
         /// <summary>
@@ -94,14 +73,7 @@
         {
             if (disposing)
             {
-            }
-
-            Marshal.FreeHGlobal(this.sendBuffer);
-            Marshal.FreeHGlobal(this.receiveBuffer);
-
-            if (LibZmq.Close(this.socket) == -1)
-            {
-                throw ZmqLibException.GetLastError();
+                this.socket.Dispose();
             }
         }
 
@@ -115,7 +87,7 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected void Bind(string endpoint)
         {
-            if (LibZmq.Bind(this.socket, endpoint) == -1)
+            if (this.socket.Bind(endpoint) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -124,14 +96,127 @@
         /// <summary>
         /// Connect the current socket to the specified endpoint.
         /// </summary>
-        /// <param name="uri">A <see cref="Uri"/> that represents the remote endpoint.</param>
+        /// <param name="endpoint">
+        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as
+        /// <c><em>transport</em>://<em>address</em></c>.
+        /// </param>
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
-        protected void Connect(Uri uri)
+        protected void Connect(string endpoint)
         {
-            if (LibZmq.Connect(this.socket, uri.ToZeroMQEndpoint()) == -1)
+            if (this.socket.Connect(endpoint) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to an integer value.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="int"/> value to set.</param>
+        protected void SetSocketOption(SocketOption option, int value)
+        {
+            if (this.socket.SetSocketOption((int)option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to an unsigned long value.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="ulong"/> value to set.</param>
+        protected void SetSocketOption(SocketOption option, ulong value)
+        {
+            if (this.socket.SetSocketOption((int)option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to a string value.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="string"/> value to set.</param>
+        protected void SetSocketOption(SocketOption option, string value)
+        {
+            this.SetSocketOption(option, defaultEncoding.GetBytes(value));
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to a byte array value.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="byte"/> array value to set.</param>
+        protected void SetSocketOption(SocketOption option, byte[] value)
+        {
+            if (this.socket.SetSocketOption((int)option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as an integer.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
+        /// <returns>The <see cref="int"/> value of the specified option.</returns>
+        protected int GetSocketOptionInt32(SocketOption option)
+        {
+            int value;
+
+            if (this.socket.GetSocketOption((int)option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as an unsigned long.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
+        /// <returns>The <see cref="ulong"/> value of the specified option.</returns>
+        protected ulong GetSocketOptionUInt64(SocketOption option)
+        {
+            ulong value;
+
+            if (this.socket.GetSocketOption((int)option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as a string.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
+        /// <returns>The <see cref="string"/> value of the specified option.</returns>
+        protected string GetSocketOptionString(SocketOption option)
+        {
+            return DefaultEncoding.GetString(this.GetSocketOptionBytes(option));
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as a byte array.
+        /// </summary>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
+        /// <returns>The <see cref="byte"/> array value of the specified option.</returns>
+        protected byte[] GetSocketOptionBytes(SocketOption option)
+        {
+            byte[] value;
+
+            if (this.socket.GetSocketOption((int)option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -142,27 +227,21 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
-            int bytesReceived = LibZmq.Recv(this.socket, this.receiveBuffer, (UIntPtr)this.bufferSize, (int)socketFlags);
+            byte[] buffer;
 
-            if (bytesReceived == -1)
+            int bytesReceived = this.socket.Receive((int)socketFlags, out buffer);
+
+            if (bytesReceived >= 0)
             {
-                if (LibZmq.Errno() == (int)SystemError.EAgain)
-                {
-                    return ReceivedMessage.TryAgain;
-                }
-
-                throw ZmqLibException.GetLastError();
+                return new ReceivedMessage(buffer, ReceiveResult.Received);
             }
 
-            var result = new ReceivedMessage(
-                bytesReceived,
-                bytesReceived <= this.bufferSize ? ReceiveResult.Received : ReceiveResult.Truncated);
+            if (Proxy.ZmqException.GetErrorCode() == (int)SystemError.EAgain)
+            {
+                return ReceivedMessage.TryAgain;
+            }
 
-            this.EnsureBufferCapacity(bytesReceived);
-
-            Marshal.Copy(this.receiveBuffer, result.Data, 0, bytesReceived);
-
-            return result;
+            throw ZmqLibException.GetLastError();
         }
 
         /// <summary>
@@ -174,39 +253,19 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
-            this.EnsureBufferCapacity(buffer.Length);
+            int bytesSent = this.socket.Send((int)socketFlags, buffer);
 
-            Marshal.Copy(buffer, 0, LibZmq.MsgData(this.sendBuffer), buffer.Length);
-
-            int result = LibZmq.Send(this.socket, this.sendBuffer, (UIntPtr)buffer.Length, (int)socketFlags);
-
-            if (result == -1)
+            if (bytesSent >= 0)
             {
-                if (LibZmq.Errno() == (int)SystemError.EAgain)
-                {
-                    return SendResult.TryAgain;
-                }
-
-                throw ZmqLibException.GetLastError();
+                return SendResult.Sent;
             }
 
-            return SendResult.Sent;
-        }
-
-        private void EnsureBufferCapacity(int minLength)
-        {
-            if (this.bufferSize >= minLength)
+            if (Proxy.ZmqException.GetErrorCode() == (int)SystemError.EAgain)
             {
-                return;
+                return SendResult.TryAgain;
             }
 
-            while (this.bufferSize < minLength)
-            {
-                this.bufferSize *= 2;
-            }
-
-            this.sendBuffer = Marshal.ReAllocHGlobal(this.sendBuffer, (IntPtr)this.bufferSize);
-            this.receiveBuffer = Marshal.ReAllocHGlobal(this.receiveBuffer, (IntPtr)this.bufferSize);
+            throw ZmqLibException.GetLastError();
         }
     }
 }

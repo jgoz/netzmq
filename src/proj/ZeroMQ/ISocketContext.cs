@@ -8,9 +8,9 @@
     public interface ISocketContext : IDisposable
     {
         /// <summary>
-        /// Gets the handle to the underlying ZeroMQ context object.
+        /// Gets the underlying socket context handle.
         /// </summary>
-        IntPtr Handle { get; }
+        Proxy.SocketContext Context { get; }
 
         /// <summary>
         /// Gets the size of the thread pool for this <see cref="ISocketContext"/> object.
