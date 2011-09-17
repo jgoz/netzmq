@@ -33,7 +33,7 @@
     <summary>
     Queue a message to be sent by the socket.
     </summary>
-    <param name="buffer">An array of type <see cref="Byte"/> that contains the message to be sent.</param>
+    <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
     <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
     <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
