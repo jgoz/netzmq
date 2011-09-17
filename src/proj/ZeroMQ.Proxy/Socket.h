@@ -32,7 +32,7 @@ namespace Proxy {
             this->!Socket();
         }
 
-        int Bind(String^ endpoint)
+        int __clrcall Bind(String^ endpoint)
         {
             IntPtr p = Marshal::StringToHGlobalAnsi(endpoint);
             char *endpointStr = static_cast<char*>(p.ToPointer());
@@ -44,7 +44,7 @@ namespace Proxy {
             return rc;
         }
 
-        int Connect(String^ endpoint)
+        int __clrcall Connect(String^ endpoint)
         {
             IntPtr p = Marshal::StringToHGlobalAnsi(endpoint);
             char *endpointStr = static_cast<char*>(p.ToPointer());
@@ -56,17 +56,17 @@ namespace Proxy {
             return rc;
         }
 
-        int SetSocketOption(int option, int value)
+        int __clrcall SetSocketOption(int option, int value)
         {
             return zmq_setsockopt(m_socket, option, &value, sizeof(int));
         }
 
-        int SetSocketOption(int option, unsigned long long value)
+        int __clrcall SetSocketOption(int option, unsigned long long value)
         {
             return zmq_setsockopt(m_socket, option, &value, sizeof(unsigned long long));
         }
 
-        int SetSocketOption(int option, array<Byte>^ value)
+        int __clrcall SetSocketOption(int option, array<Byte>^ value)
         {
             if (value->Length == 0) {
                 return zmq_setsockopt(m_socket, option, NULL, 0);
@@ -77,7 +77,7 @@ namespace Proxy {
             return zmq_setsockopt(m_socket, option, valuePtr, value->Length);
         }
 
-        int GetSocketOption(int option, [Out] int% value)
+        int __clrcall GetSocketOption(int option, [Out] int% value)
         {
             int buf;
             size_t length;
@@ -89,7 +89,7 @@ namespace Proxy {
             return rc;
         }
 
-        int GetSocketOption(int option, [Out] unsigned long long% value)
+        int __clrcall GetSocketOption(int option, [Out] unsigned long long% value)
         {
             unsigned long long buf;
             size_t length;
@@ -104,7 +104,7 @@ namespace Proxy {
             return rc;
         }
 
-        int GetSocketOption(int option, [Out] array<Byte>^% value)
+        int __clrcall GetSocketOption(int option, [Out] array<Byte>^% value)
         {
             unsigned char buf[MAX_BIN_OPT_SIZE];
             size_t length;
@@ -121,7 +121,7 @@ namespace Proxy {
             return rc;
         }
 
-        int Receive(int socketFlags, [Out] array<Byte>^% buffer)
+        int __clrcall Receive(int socketFlags, [Out] array<Byte>^% buffer)
         {
             zmq_msg_t msg;
 
@@ -150,7 +150,7 @@ namespace Proxy {
             return bytesReceived;
         }
 
-        int Send(int socketFlags, array<Byte>^ buffer)
+        int __clrcall Send(int socketFlags, array<Byte>^ buffer)
         {
             zmq_msg_t msg;
 

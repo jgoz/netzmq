@@ -26,22 +26,22 @@ namespace Proxy {
     public:
         property int ErrorCode
         {
-            int get() { return m_errorCode; }
+            int __clrcall get() { return m_errorCode; }
         }
 
-        static ZmqException^ GetLastError()
+        static ZmqException^ __clrcall GetLastError()
         {
             int errorCode = zmq_errno();
 
             return gcnew ZmqException(errorCode, zmq_strerror(errorCode));
         }
 
-        static int GetErrorCode()
+        static int __clrcall GetErrorCode()
         {
             return zmq_errno();
         }
 
-        static String^ GetErrorMessage(int errorCode)
+        static String^ __clrcall GetErrorMessage(int errorCode)
         {
             return gcnew String(zmq_strerror(errorCode));
         }
