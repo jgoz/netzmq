@@ -77,14 +77,7 @@
             }
         }
 
-        /// <summary>
-        /// Create an endpoint for accepting connections and bind it to the current socket.
-        /// </summary>
-        /// <param name="endpoint">
-        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as
-        /// <c><em>transport</em>://<em>address</em></c>.
-        /// </param>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         protected void Bind(string endpoint)
         {
             if (this.socket.Bind(endpoint) == -1)
@@ -93,14 +86,7 @@
             }
         }
 
-        /// <summary>
-        /// Connect the current socket to the specified endpoint.
-        /// </summary>
-        /// <param name="endpoint">
-        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as
-        /// <c><em>transport</em>://<em>address</em></c>.
-        /// </param>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         protected void Connect(string endpoint)
         {
             if (this.socket.Connect(endpoint) == -1)
@@ -219,12 +205,7 @@
             return value;
         }
 
-        /// <summary>
-        /// Receive a message from a remote socket.
-        /// </summary>
-        /// <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
-        /// <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
@@ -244,13 +225,7 @@
             throw ZmqLibException.GetLastError();
         }
 
-        /// <summary>
-        /// Queue a message to be sent by the socket.
-        /// </summary>
-        /// <param name="buffer">An array of type <see cref="Byte"/> that contains the message to be sent.</param>
-        /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
-        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.socket.Send((int)socketFlags, buffer);

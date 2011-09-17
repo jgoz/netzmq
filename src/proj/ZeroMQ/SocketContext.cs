@@ -49,6 +49,9 @@
             this.ThreadPoolSize = threadPoolSize;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SocketContext"/> class.
+        /// </summary>
         ~SocketContext()
         {
             Dispose(false);
