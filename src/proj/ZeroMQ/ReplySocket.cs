@@ -3,13 +3,13 @@
     /// <summary>
     /// ZMQ_REP socket. Receive requests from and sends replies to a client.
     /// </summary>
-    public class RepSocket : Socket
+    public class ReplySocket : Socket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RepSocket"/> class.
+        /// Initializes a new instance of the <see cref="ReplySocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public RepSocket(ISocketContext context)
+        public ReplySocket(ISocketContext context)
             : base(context, Proxy.SocketType.Rep)
         {
         }

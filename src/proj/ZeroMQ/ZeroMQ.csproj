@@ -108,10 +108,10 @@
   <ItemGroup>
     <Compile Include="PushSocket.cs" />
     <Compile Include="SocketContext.cs" />
-    <Compile Include="ReqSocket.cs" />
+    <Compile Include="RequestSocket.cs" />
     <Compile Include="ReceivedMessage.cs" />
     <Compile Include="ReceiveResult.cs" />
-    <Compile Include="RepSocket.cs" />
+    <Compile Include="ReplySocket.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="ISocketContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

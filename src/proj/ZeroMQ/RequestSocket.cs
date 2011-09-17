@@ -3,13 +3,13 @@
     /// <summary>
     /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     /// </summary>
-    public class ReqSocket : Socket
+    public class RequestSocket : Socket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReqSocket"/> class.
+        /// Initializes a new instance of the <see cref="RequestSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public ReqSocket(ISocketContext context)
+        public RequestSocket(ISocketContext context)
             : base(context, Proxy.SocketType.Req)
         {
         }
