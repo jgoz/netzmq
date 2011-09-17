@@ -148,6 +148,7 @@
     <ClInclude Include="SocketContext.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Socket.h" />
+    <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="ZmqException.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ErrorCode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />

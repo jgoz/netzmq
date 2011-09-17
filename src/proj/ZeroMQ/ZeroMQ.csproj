@@ -111,7 +111,6 @@
     <Compile Include="RepSocket.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="ISocketContext.cs" />
-    <Compile Include="Options\ErrorCodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketFlags.cs" />
     <Compile Include="Options\SocketOption.cs" />

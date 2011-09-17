@@ -236,7 +236,7 @@
                 return new ReceivedMessage(buffer, ReceiveResult.Received);
             }
 
-            if (Proxy.ZmqException.GetErrorCode() == (int)SystemError.EAgain)
+            if (ZmqLibException.GetErrorCode() == Proxy.ErrorCode.Eagain)
             {
                 return ReceivedMessage.TryAgain;
             }
@@ -260,7 +260,7 @@
                 return SendResult.Sent;
             }
 
-            if (Proxy.ZmqException.GetErrorCode() == (int)SystemError.EAgain)
+            if (ZmqLibException.GetErrorCode() == Proxy.ErrorCode.Eagain)
             {
                 return SendResult.TryAgain;
             }

@@ -61,19 +61,16 @@
         /// </summary>
         public int ErrorCode { get; private set; }
 
-        /// <summary>
-        /// Creates a <see cref="ZmqLibException"/> wrapping the last error code returned by zmq_errno
-        /// and the corresponding error message returned by zmq_strerror.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ZmqLibException"/> containing the last error code and error message returned
-        /// by the ZeroMQ library using zmq_errno and zmq_strerror, respectively.
-        /// </returns>
         internal static ZmqLibException GetLastError()
         {
             Proxy.ZmqException lastError = Proxy.ZmqException.GetLastError();
 
             return new ZmqLibException(lastError.ErrorCode, lastError.Message);
+        }
+
+        internal static Proxy.ErrorCode GetErrorCode()
+        {
+            return (Proxy.ErrorCode)Proxy.ZmqException.GetErrorCode();
         }
     }
 }
