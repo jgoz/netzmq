@@ -1,7 +1,5 @@
 ﻿namespace ZeroMQ
 {
-    using ZeroMQ.Options;
-
     /// <summary>
     /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     /// </summary>
@@ -12,7 +10,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public ReqSocket(ISocketContext context)
-            : base(context, SocketType.Req)
+            : base(context, Proxy.SocketType.Req)
         {
         }
 

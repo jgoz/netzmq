@@ -1,7 +1,5 @@
 ﻿namespace ZeroMQ
 {
-    using ZeroMQ.Options;
-
     /// <summary>
     /// ZMQ_REP socket. Receive requests from and sends replies to a client.
     /// </summary>
@@ -12,7 +10,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public RepSocket(ISocketContext context)
-            : base(context, SocketType.Rep)
+            : base(context, Proxy.SocketType.Rep)
         {
         }
 

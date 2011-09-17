@@ -1,7 +1,5 @@
 ﻿namespace ZeroMQ
 {
-    using ZeroMQ.Options;
-
     /// <summary>
     /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
@@ -12,7 +10,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public PushSocket(ISocketContext context)
-            : base(context, SocketType.Push)
+            : base(context, Proxy.SocketType.Push)
         {
         }
 

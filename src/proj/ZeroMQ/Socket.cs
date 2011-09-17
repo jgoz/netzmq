@@ -3,8 +3,6 @@
     using System;
     using System.Text;
 
-    using ZeroMQ.Options;
-
     /// <summary>
     /// Sends and receives messages across various transports, synchronously or asynchronously.
     /// </summary>
@@ -22,7 +20,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
-        public Socket(ISocketContext context, SocketType socketType)
+        protected Socket(ISocketContext context, Proxy.SocketType socketType)
         {
             if (context == null)
             {
@@ -31,7 +29,7 @@
 
             try
             {
-                this.socket = new Proxy.Socket(context.Context, (int)socketType);
+                this.socket = new Proxy.Socket(context.Context, socketType);
             }
             catch (Proxy.ZmqException ex)
             {

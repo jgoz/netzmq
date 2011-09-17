@@ -2,6 +2,7 @@
 
 #include <zmq.h>
 #include "SocketContext.h"
+#include "SocketType.h"
 #include "SocketOption.h"
 
 // Maximum number of bytes that can be retrieved by zmq_getsockopt
@@ -19,9 +20,9 @@ namespace Proxy {
         void *m_socket;
 
     public:
-        Socket(SocketContext^ context, int socketType)
+        Socket(SocketContext^ context, SocketType socketType)
         {
-            m_socket = zmq_socket(context->Context, socketType);
+            m_socket = zmq_socket(context->Context, (int)socketType);
 
             if (m_socket == NULL) {
                 throw ZmqException::GetLastError();
