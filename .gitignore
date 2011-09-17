@@ -1,6 +1,7 @@
 obj
 bin
 !/bin
+lib
 log
 *.user
 *.suo
