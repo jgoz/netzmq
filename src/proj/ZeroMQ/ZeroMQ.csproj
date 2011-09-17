@@ -118,7 +118,6 @@
     <Compile Include="SocketFlags.cs" />
     <Compile Include="Socket.cs" />
     <Compile Include="PullSocket.cs" />
-    <Compile Include="UriExtensions.cs" />
     <Compile Include="ZmqLibException.cs" />
   </ItemGroup>
   <ItemGroup>
