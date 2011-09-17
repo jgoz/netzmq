@@ -116,7 +116,6 @@
     <Compile Include="ISocketContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketFlags.cs" />
-    <Compile Include="Options\SocketOption.cs" />
     <Compile Include="Socket.cs" />
     <Compile Include="Options\SocketType.cs" />
     <Compile Include="PullSocket.cs" />

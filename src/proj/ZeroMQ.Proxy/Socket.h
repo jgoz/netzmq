@@ -2,6 +2,7 @@
 
 #include <zmq.h>
 #include "SocketContext.h"
+#include "SocketOption.h"
 
 // Maximum number of bytes that can be retrieved by zmq_getsockopt
 // Limited by the ZMQ_IDENTITY option
@@ -56,45 +57,45 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall SetSocketOption(int option, int value)
+        int __clrcall SetSocketOption(SocketOption option, int value)
         {
-            return zmq_setsockopt(m_socket, option, &value, sizeof(int));
+            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(int));
         }
 
-        int __clrcall SetSocketOption(int option, unsigned long long value)
+        int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
         {
-            return zmq_setsockopt(m_socket, option, &value, sizeof(unsigned long long));
+            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long));
         }
 
-        int __clrcall SetSocketOption(int option, array<Byte>^ value)
+        int __clrcall SetSocketOption(SocketOption option, array<Byte>^ value)
         {
             if (value->Length == 0) {
-                return zmq_setsockopt(m_socket, option, NULL, 0);
+                return zmq_setsockopt(m_socket, (int)option, NULL, 0);
             }
 
             pin_ptr<Byte> valuePtr = &value[0];
 
-            return zmq_setsockopt(m_socket, option, valuePtr, value->Length);
+            return zmq_setsockopt(m_socket, (int)option, valuePtr, value->Length);
         }
 
-        int __clrcall GetSocketOption(int option, [Out] int% value)
+        int __clrcall GetSocketOption(SocketOption option, [Out] int% value)
         {
             int buf;
             size_t length;
 
-            int rc = zmq_getsockopt(m_socket, option, &buf, &length);
+            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
 
             value = buf;
 
             return rc;
         }
 
-        int __clrcall GetSocketOption(int option, [Out] unsigned long long% value)
+        int __clrcall GetSocketOption(SocketOption option, [Out] unsigned long long% value)
         {
             unsigned long long buf;
             size_t length;
 
-            int rc = zmq_getsockopt(m_socket, option, &buf, &length);
+            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
 
             if (rc == -1)
                 return -1;
@@ -104,12 +105,12 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall GetSocketOption(int option, [Out] array<Byte>^% value)
+        int __clrcall GetSocketOption(SocketOption option, [Out] array<Byte>^% value)
         {
             unsigned char buf[MAX_BIN_OPT_SIZE];
             size_t length;
 
-            int rc = zmq_getsockopt(m_socket, option, buf, &length);
+            int rc = zmq_getsockopt(m_socket, (int)option, buf, &length);
 
             if (rc == -1)
                 return -1;
