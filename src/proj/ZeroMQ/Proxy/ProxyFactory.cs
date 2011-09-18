@@ -25,7 +25,12 @@
 
             SocketContextProxyType = NativeAssembly.GetTypes().Single(t => typeof(ISocketContextProxy).IsAssignableFrom(t));
             SocketProxyType = NativeAssembly.GetTypes().Single(t => typeof(ISocketProxy).IsAssignableFrom(t));
+
+            Type errorProviderType = NativeAssembly.GetTypes().Single(t => typeof(IErrorProviderProxy).IsAssignableFrom(t));
+            ErrorProvider = (IErrorProviderProxy)Activator.CreateInstance(errorProviderType);
         }
+
+        public static IErrorProviderProxy ErrorProvider { get; private set; }
 
         public static ISocketContextProxy CreateSocketContext(int threadPoolSize)
         {

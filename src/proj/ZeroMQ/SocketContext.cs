@@ -39,8 +39,14 @@
                 throw new ArgumentOutOfRangeException("threadPoolSize", threadPoolSize, "Thread pool size must be non-negative.");
             }
 
-            // TODO: Exception handling
-            this.Proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
+            try
+            {
+                this.Proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
+            }
+            catch (ProxyException ex)
+            {
+                throw new ZmqLibException(ex);
+            }
 
             this.ThreadPoolSize = threadPoolSize;
         }

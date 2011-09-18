@@ -21,11 +21,12 @@ namespace Proxy {
             return gcnew String(zmq_strerror(errorCode));
         }
 
-        static ZmqLibException^ __clrcall GetLastError()
+    internal:
+        static ProxyException^ __clrcall GetLastError()
         {
             int errorCode = zmq_errno();
 
-            return gcnew ZmqLibException(errorCode, gcnew String(zmq_strerror(errorCode)));
+            return gcnew ProxyException(errorCode, gcnew String(zmq_strerror(errorCode)));
         }
     };
 

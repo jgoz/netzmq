@@ -29,8 +29,14 @@
                 throw new ArgumentNullException("context");
             }
 
-            // TODO: Exception handling
-            this.socket = ProxyFactory.CreateSocket(context.Handle, socketType);
+            try
+            {
+                this.socket = ProxyFactory.CreateSocket(context.Handle, socketType);
+            }
+            catch (ProxyException ex)
+            {
+                throw new ZmqLibException(ex);
+            }
         }
 
         /// <summary>

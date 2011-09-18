@@ -65,20 +65,14 @@
 
         internal static ZmqLibException GetLastError()
         {
-            /*
-            Proxy.ZmqException lastError = Proxy.ZmqException.GetLastError();
+            int errorCode = ProxyFactory.ErrorProvider.GetErrorCode();
 
-            return new ZmqLibException(lastError.ErrorCode, lastError.Message);
-             */
-
-            // TODO: Get from proxy
-            return new ZmqLibException(1);
+            return new ZmqLibException(errorCode, ProxyFactory.ErrorProvider.GetErrorMessage(errorCode));
         }
 
-        internal static Proxy.ErrorCode GetErrorCode()
+        internal static ErrorCode GetErrorCode()
         {
-            // return (Proxy.ErrorCode)Proxy.ZmqException.GetErrorCode();
-            return 0; // TODO: get from proxy
+            return (ErrorCode)ProxyFactory.ErrorProvider.GetErrorCode();
         }
     }
 }
