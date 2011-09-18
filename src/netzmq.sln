@@ -26,8 +26,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "perf", "perf", "{11E622AD-C53A-4829-AACF-387B2EB836D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatencyTest", "perf\LatencyTest\LatencyTest.csproj", "{6652CB5B-48E1-4738-93FF-58CC2131DC0F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThroughputTest", "perf\ThroughputTest\ThroughputTest.csproj", "{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +50,7 @@ Global
 		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.ActiveCfg = Release|Any CPU
 		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.Build.0 = Release|Any CPU
 		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.Build.0 = Release|Any CPU
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x64.ActiveCfg = Debug|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x64.Build.0 = Debug|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x86.ActiveCfg = Debug|Win32
