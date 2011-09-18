@@ -87,7 +87,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /c $(SolutionDir)..\lib\libzmq*.dll $(OutputDir)</PostBuildEvent>
+    <PostBuildEvent>mkdir x64
+xcopy /y /c $(SolutionDir)..\out\x64\$(Configuration)\ZeroMQ.Proxy.dll x64\
+xcopy /y /c $(SolutionDir)..\lib\libzmq64.dll x64\
+
+mkdir x86
+xcopy /y /c $(SolutionDir)..\out\Win32\$(Configuration)\ZeroMQ.Proxy.dll x86\
+xcopy /y /c $(SolutionDir)..\lib\libzmq.dll x86\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
