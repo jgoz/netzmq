@@ -2,6 +2,8 @@
 {
     using System;
 
+    using ZeroMQ.Proxy;
+
     /// <summary>
     /// Represents a thread-safe ZeroMQ context object.
     /// </summary>
@@ -37,14 +39,8 @@
                 throw new ArgumentOutOfRangeException("threadPoolSize", threadPoolSize, "Thread pool size must be non-negative.");
             }
 
-            try
-            {
-                this.Context = new Proxy.SocketContext(threadPoolSize);
-            }
-            catch (Proxy.ZmqException ex)
-            {
-                throw new ZmqLibException(ex);
-            }
+            // TODO: Exception handling
+            this.Proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
 
             this.ThreadPoolSize = threadPoolSize;
         }
@@ -65,7 +61,7 @@
         /// <summary>
         /// Gets the underlying socket context handle.
         /// </summary>
-        public Proxy.SocketContext Context { get; private set; }
+        internal ISocketContextProxy Proxy { get; private set; }
 
         /// <summary>
         /// Frees the underlying ZeroMQ context handle.
@@ -87,7 +83,7 @@
                 return;
             }
 
-            this.Context.Dispose();
+            this.Proxy.Dispose();
 
             this.disposed = true;
         }

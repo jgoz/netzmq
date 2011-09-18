@@ -1,5 +1,7 @@
 ﻿namespace ZeroMQ
 {
+    using ZeroMQ.Proxy;
+
     /// <summary>
     /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
@@ -9,8 +11,8 @@
         /// Initializes a new instance of the <see cref="PullSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public PullSocket(ISocketContext context)
-            : base(context, Proxy.SocketType.Pull)
+        public PullSocket(SocketContext context)
+            : base(context.Proxy, SocketType.Pull)
         {
         }
 

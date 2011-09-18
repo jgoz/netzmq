@@ -1,5 +1,7 @@
 ﻿namespace ZeroMQ
 {
+    using ZeroMQ.Proxy;
+
     /// <summary>
     /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     /// </summary>
@@ -9,8 +11,8 @@
         /// Initializes a new instance of the <see cref="RequestSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public RequestSocket(ISocketContext context)
-            : base(context, Proxy.SocketType.Req)
+        public RequestSocket(SocketContext context)
+            : base(context.Proxy, SocketType.Req)
         {
         }
 

@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\out\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>bin\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\out\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>bin\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -99,6 +99,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalUsingDirectories>$(SolutionDir)proj\ZeroMQ\bin\$(Configuration)\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,6 +117,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalUsingDirectories>$(SolutionDir)proj\ZeroMQ\bin\$(Configuration)\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -162,28 +164,24 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="netzmq.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SocketContext.h" />
-    <ClInclude Include="SocketOption.h" />
-    <ClInclude Include="SocketType.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Socket.h" />
-    <ClInclude Include="ErrorCode.h" />
-    <ClInclude Include="ZmqException.h" />
+    <ClInclude Include="ZmqErrorProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketContext.cpp" />
-    <ClCompile Include="SocketOption.cpp" />
-    <ClCompile Include="SocketType.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ErrorCode.cpp" />
+    <ClCompile Include="ZmqErrorProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />
