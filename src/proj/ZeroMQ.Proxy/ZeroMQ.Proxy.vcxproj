@@ -104,7 +104,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprtd.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,8 +121,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libzmq64.lib;Rpcrt4.lib;msvcprtd.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprtd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib\x64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +140,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprt.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,8 +157,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libzmq64.lib;Rpcrt4.lib;msvcprt.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib\x64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

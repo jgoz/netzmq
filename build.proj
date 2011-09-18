@@ -1,0 +1,45 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
+
+  <ItemGroup>
+    <SolutionToBuild Include="src\netzmq.sln"/>
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Clean" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x86" />
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x64" />
+  </Target>
+
+  <Target Name="Package" DependsOnTargets="Build">
+    <PropertyGroup>
+      <OutDir>package</OutDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <ZeroMQSources Include="src\proj\ZeroMQ\**\*.cs" />
+      
+      <Resources Include="out\x64\$(Configuration)\ZeroMQ.Proxy.dll;lib\x64\libzmq.dll">
+        <Platform>x64</Platform>
+      </Resources>
+      <Resources Include="out\Win32\$(Configuration)\ZeroMQ.Proxy.dll;lib\x86\libzmq.dll">
+        <Platform>x86</Platform>
+      </Resources>
+
+      <EmbeddedResources Include="@(Resources)">
+        <LogicalName>%(filename)%(extension).%(Platform)</LogicalName>
+      </EmbeddedResources>
+    </ItemGroup>
+
+    <MakeDir Directories="$(OutDir)" />
+
+    <Csc Sources="@(ZeroMQSources)"
+         DocumentationFile="$(OutDir)\ZeroMQ.xml"
+         OutputAssembly="$(OutDir)\ZeroMQ.dll"
+         Resources="@(EmbeddedResources)"
+         TargetType="library"
+      />
+  </Target>
+
+</Project>
