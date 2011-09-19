@@ -105,6 +105,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprtd.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\lib\x86</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,6 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprtd.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\lib\x64</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,6 +143,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\lib\x86</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,6 +162,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libzmq.lib;Rpcrt4.lib;msvcprt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\lib\x64</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
