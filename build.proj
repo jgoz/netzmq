@@ -16,7 +16,14 @@
   <Target Name="Package" DependsOnTargets="Build">
     <PropertyGroup>
       <OutDir>package</OutDir>
+      
+      <DebugType Condition="'$(Configuration)' == 'Debug'">full</DebugType>
+      <DebugType Condition="'$(Configuration)' != 'Debug'">pdbonly</DebugType>
+      
+      <Optimize Condition="'$(Configuration)' == 'Debug'">false</Optimize>
+      <Optimize Condition="'$(Configuration)' != 'Debug'">true</Optimize>
     </PropertyGroup>
+    
     <ItemGroup>
       <ZeroMQSources Include="src\proj\ZeroMQ\**\*.cs" />
       
@@ -32,6 +39,7 @@
       </EmbeddedResources>
     </ItemGroup>
 
+    <RemoveDir Directories="$(OutDir)" />
     <MakeDir Directories="$(OutDir)" />
 
     <Csc Sources="@(ZeroMQSources)"
@@ -39,6 +47,9 @@
          OutputAssembly="$(OutDir)\netzmq.dll"
          Resources="@(EmbeddedResources)"
          TargetType="library"
+         DebugType="$(DebugType)"
+         PdbFile="$(OutDir)\netzmq.pdb"
+         Optimize="$(Optimize)"
       />
   </Target>
 
