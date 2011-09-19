@@ -1,0 +1,56 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
+
+  <ItemGroup>
+    <SolutionToBuild Include="src\netzmq.sln"/>
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Clean" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x86" />
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x64" />
+  </Target>
+
+  <Target Name="Package" DependsOnTargets="Build">
+    <PropertyGroup>
+      <OutDir>package</OutDir>
+      
+      <DebugType Condition="'$(Configuration)' == 'Debug'">full</DebugType>
+      <DebugType Condition="'$(Configuration)' != 'Debug'">pdbonly</DebugType>
+      
+      <Optimize Condition="'$(Configuration)' == 'Debug'">false</Optimize>
+      <Optimize Condition="'$(Configuration)' != 'Debug'">true</Optimize>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <ZeroMQSources Include="src\proj\ZeroMQ\**\*.cs" />
+      
+      <Resources Include="out\x64\$(Configuration)\ZeroMQ.Proxy.dll;lib\x64\libzmq.dll">
+        <Platform>x64</Platform>
+      </Resources>
+      <Resources Include="out\Win32\$(Configuration)\ZeroMQ.Proxy.dll;lib\x86\libzmq.dll">
+        <Platform>x86</Platform>
+      </Resources>
+
+      <EmbeddedResources Include="@(Resources)">
+        <LogicalName>%(filename)%(extension).%(Platform)</LogicalName>
+      </EmbeddedResources>
+    </ItemGroup>
+
+    <RemoveDir Directories="$(OutDir)" />
+    <MakeDir Directories="$(OutDir)" />
+
+    <Csc Sources="@(ZeroMQSources)"
+         DocumentationFile="$(OutDir)\netzmq.xml"
+         OutputAssembly="$(OutDir)\netzmq.dll"
+         Resources="@(EmbeddedResources)"
+         TargetType="library"
+         DebugType="$(DebugType)"
+         PdbFile="$(OutDir)\netzmq.pdb"
+         Optimize="$(Optimize)"
+      />
+  </Target>
+
+</Project>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <zmq.h>
+#include "netzmq.h"
 #include "SocketContext.h"
-#include "SocketType.h"
-#include "SocketOption.h"
+#include "ZmqErrorProvider.h"
 
 // Maximum number of bytes that can be retrieved by zmq_getsockopt
 // Limited by the ZMQ_IDENTITY option
@@ -15,17 +15,17 @@ using namespace System::Runtime::InteropServices;
 namespace ZeroMQ {
 namespace Proxy {
 
-    public ref class Socket
+    public ref class Socket : public ISocketProxy
     {
         void *m_socket;
 
     public:
-        Socket(SocketContext^ context, SocketType socketType)
+        Socket(IntPtr context, SocketType socketType)
         {
-            m_socket = zmq_socket(context->Context, (int)socketType);
+            m_socket = zmq_socket((void*)context, (int)socketType);
 
             if (m_socket == NULL) {
-                throw ZmqException::GetLastError();
+                throw ZmqErrorProvider::GetLastError();
             }
         }
 
@@ -34,7 +34,7 @@ namespace Proxy {
             this->!Socket();
         }
 
-        int __clrcall Bind(String^ endpoint)
+        virtual int __clrcall Bind(String^ endpoint)
         {
             IntPtr p = Marshal::StringToHGlobalAnsi(endpoint);
             char *endpointStr = static_cast<char*>(p.ToPointer());
@@ -46,7 +46,7 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall Connect(String^ endpoint)
+        virtual int __clrcall Connect(String^ endpoint)
         {
             IntPtr p = Marshal::StringToHGlobalAnsi(endpoint);
             char *endpointStr = static_cast<char*>(p.ToPointer());
@@ -58,17 +58,17 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall SetSocketOption(SocketOption option, int value)
+        virtual int __clrcall SetSocketOption(SocketOption option, int value)
         {
             return zmq_setsockopt(m_socket, (int)option, &value, sizeof(int));
         }
 
-        int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
+        virtual int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
         {
             return zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long));
         }
 
-        int __clrcall SetSocketOption(SocketOption option, array<Byte>^ value)
+        virtual int __clrcall SetSocketOption(SocketOption option, array<Byte>^ value)
         {
             if (value->Length == 0) {
                 return zmq_setsockopt(m_socket, (int)option, NULL, 0);
@@ -79,7 +79,7 @@ namespace Proxy {
             return zmq_setsockopt(m_socket, (int)option, valuePtr, value->Length);
         }
 
-        int __clrcall GetSocketOption(SocketOption option, [Out] int% value)
+        virtual int __clrcall GetSocketOption(SocketOption option, [Out] int% value)
         {
             int buf;
             size_t length;
@@ -91,7 +91,7 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall GetSocketOption(SocketOption option, [Out] unsigned long long% value)
+        virtual int __clrcall GetSocketOption(SocketOption option, [Out] unsigned long long% value)
         {
             unsigned long long buf;
             size_t length;
@@ -106,7 +106,7 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall GetSocketOption(SocketOption option, [Out] array<Byte>^% value)
+        virtual int __clrcall GetSocketOption(SocketOption option, [Out] array<Byte>^% value)
         {
             unsigned char buf[MAX_BIN_OPT_SIZE];
             size_t length;
@@ -123,7 +123,7 @@ namespace Proxy {
             return rc;
         }
 
-        int __clrcall Receive(int socketFlags, [Out] array<Byte>^% buffer)
+        virtual int __clrcall Receive(int socketFlags, [Out] array<Byte>^% buffer)
         {
             zmq_msg_t msg;
 
@@ -152,7 +152,7 @@ namespace Proxy {
             return bytesReceived;
         }
 
-        int __clrcall Send(int socketFlags, array<Byte>^ buffer)
+        virtual int __clrcall Send(int socketFlags, array<Byte>^ buffer)
         {
             zmq_msg_t msg;
 

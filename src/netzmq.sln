@@ -19,33 +19,59 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "settings", "settings", "{68
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZeroMQ.Proxy", "proj\ZeroMQ.Proxy\ZeroMQ.Proxy.vcxproj", "{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65} = {FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "perf", "perf", "{11E622AD-C53A-4829-AACF-387B2EB836D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatencyTest", "perf\LatencyTest\LatencyTest.csproj", "{6652CB5B-48E1-4738-93FF-58CC2131DC0F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThroughputTest", "perf\ThroughputTest\ThroughputTest.csproj", "{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{58CA9E17-74B1-4099-8315-71D12E10E6B5}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.cmd = ..\build.cmd
+		..\build.proj = ..\build.proj
+		..\package.cmd = ..\package.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		PerfTest|x64 = PerfTest|x64
+		PerfTest|x86 = PerfTest|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x64.ActiveCfg = Debug|x64
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x64.Build.0 = Debug|x64
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x86.ActiveCfg = Debug|x86
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x86.Build.0 = Debug|x86
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.ActiveCfg = Release|x64
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.Build.0 = Release|x64
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.ActiveCfg = Release|x86
-		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.Build.0 = Release|x86
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Debug|x86.Build.0 = Debug|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.PerfTest|x64.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.PerfTest|x64.Build.0 = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.PerfTest|x86.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.PerfTest|x86.Build.0 = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x64.Build.0 = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}.Release|x86.Build.0 = Release|Any CPU
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x64.ActiveCfg = Debug|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x64.Build.0 = Debug|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x86.ActiveCfg = Debug|Win32
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Debug|x86.Build.0 = Debug|Win32
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.PerfTest|x64.ActiveCfg = Release|x64
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.PerfTest|x64.Build.0 = Release|x64
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.PerfTest|x86.ActiveCfg = Release|Win32
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.PerfTest|x86.Build.0 = Release|Win32
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Release|x64.ActiveCfg = Release|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Release|x64.Build.0 = Release|x64
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}.Release|x86.ActiveCfg = Release|Win32
@@ -54,18 +80,22 @@ Global
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Debug|x64.Build.0 = Debug|x64
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Debug|x86.ActiveCfg = Debug|x86
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Debug|x86.Build.0 = Debug|x86
+		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.PerfTest|x64.ActiveCfg = Release|x64
+		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.PerfTest|x64.Build.0 = Release|x64
+		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.PerfTest|x86.ActiveCfg = Release|x86
+		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.PerfTest|x86.Build.0 = Release|x86
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Release|x64.ActiveCfg = Release|x64
-		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Release|x64.Build.0 = Release|x64
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Release|x86.ActiveCfg = Release|x86
-		{6652CB5B-48E1-4738-93FF-58CC2131DC0F}.Release|x86.Build.0 = Release|x86
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Debug|x64.ActiveCfg = Debug|x64
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Debug|x64.Build.0 = Debug|x64
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Debug|x86.ActiveCfg = Debug|x86
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Debug|x86.Build.0 = Debug|x86
+		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.PerfTest|x64.ActiveCfg = Release|x64
+		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.PerfTest|x64.Build.0 = Release|x64
+		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.PerfTest|x86.ActiveCfg = Release|x86
+		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.PerfTest|x86.Build.0 = Release|x86
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x64.ActiveCfg = Release|x64
-		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x64.Build.0 = Release|x64
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x86.ActiveCfg = Release|x86
-		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

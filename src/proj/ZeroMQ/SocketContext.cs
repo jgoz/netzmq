@@ -2,6 +2,8 @@
 {
     using System;
 
+    using ZeroMQ.Proxy;
+
     /// <summary>
     /// Represents a thread-safe ZeroMQ context object.
     /// </summary>
@@ -39,9 +41,9 @@
 
             try
             {
-                this.Context = new Proxy.SocketContext(threadPoolSize);
+                this.Proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
             }
-            catch (Proxy.ZmqException ex)
+            catch (ProxyException ex)
             {
                 throw new ZmqLibException(ex);
             }
@@ -65,7 +67,7 @@
         /// <summary>
         /// Gets the underlying socket context handle.
         /// </summary>
-        public Proxy.SocketContext Context { get; private set; }
+        internal ISocketContextProxy Proxy { get; private set; }
 
         /// <summary>
         /// Frees the underlying ZeroMQ context handle.
@@ -87,7 +89,7 @@
                 return;
             }
 
-            this.Context.Dispose();
+            this.Proxy.Dispose();
 
             this.disposed = true;
         }

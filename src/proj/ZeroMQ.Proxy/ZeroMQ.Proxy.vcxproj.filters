@@ -24,19 +24,13 @@
     <ClInclude Include="Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZmqException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SocketContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorCode.h">
+    <ClInclude Include="netzmq.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketOption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SocketType.h">
+    <ClInclude Include="ZmqErrorProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,13 +47,7 @@
     <ClCompile Include="SocketContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorCode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketOption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketType.cpp">
+    <ClCompile Include="ZmqErrorProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

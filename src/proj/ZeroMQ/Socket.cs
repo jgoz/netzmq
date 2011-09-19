@@ -3,6 +3,8 @@
     using System;
     using System.Text;
 
+    using ZeroMQ.Proxy;
+
     /// <summary>
     /// Sends and receives messages across various transports, synchronously or asynchronously.
     /// </summary>
@@ -11,7 +13,7 @@
     /// </remarks>
     public class Socket : IDisposable
     {
-        private readonly Proxy.Socket socket;
+        private readonly ISocketProxy socket;
 
         private static Encoding defaultEncoding = Encoding.UTF8;
 
@@ -20,7 +22,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
-        protected Socket(ISocketContext context, Proxy.SocketType socketType)
+        internal Socket(ISocketContextProxy context, SocketType socketType)
         {
             if (context == null)
             {
@@ -29,9 +31,9 @@
 
             try
             {
-                this.socket = new Proxy.Socket(context.Context, socketType);
+                this.socket = ProxyFactory.CreateSocket(context.Handle, socketType);
             }
-            catch (Proxy.ZmqException ex)
+            catch (ProxyException ex)
             {
                 throw new ZmqLibException(ex);
             }
@@ -61,6 +63,116 @@
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to an integer value.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="int"/> value to set.</param>
+        internal void SetSocketOption(SocketOption option, int value)
+        {
+            if (this.socket.SetSocketOption(option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to an unsigned long value.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="ulong"/> value to set.</param>
+        internal void SetSocketOption(SocketOption option, ulong value)
+        {
+            if (this.socket.SetSocketOption(option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to a string value.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="string"/> value to set.</param>
+        internal void SetSocketOption(SocketOption option, string value)
+        {
+            this.SetSocketOption(option, defaultEncoding.GetBytes(value));
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to a byte array value.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="byte"/> array value to set.</param>
+        internal void SetSocketOption(SocketOption option, byte[] value)
+        {
+            if (this.socket.SetSocketOption(option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as an integer.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <returns>The <see cref="int"/> value of the specified option.</returns>
+        internal int GetSocketOptionInt32(SocketOption option)
+        {
+            int value;
+
+            if (this.socket.GetSocketOption(option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as an unsigned long.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <returns>The <see cref="ulong"/> value of the specified option.</returns>
+        internal ulong GetSocketOptionUInt64(SocketOption option)
+        {
+            ulong value;
+
+            if (this.socket.GetSocketOption(option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as a string.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <returns>The <see cref="string"/> value of the specified option.</returns>
+        internal string GetSocketOptionString(SocketOption option)
+        {
+            return DefaultEncoding.GetString(this.GetSocketOptionBytes(option));
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as a byte array.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <returns>The <see cref="byte"/> array value of the specified option.</returns>
+        internal byte[] GetSocketOptionBytes(SocketOption option)
+        {
+            byte[] value;
+
+            if (this.socket.GetSocketOption(option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -105,7 +217,7 @@
                 return new ReceivedMessage(buffer, ReceiveResult.Received);
             }
 
-            if (ZmqLibException.GetErrorCode() == Proxy.ErrorCode.Eagain)
+            if (ZmqLibException.GetErrorCode() == ErrorCode.Eagain)
             {
                 return ReceivedMessage.TryAgain;
             }
@@ -123,122 +235,12 @@
                 return SendResult.Sent;
             }
 
-            if (ZmqLibException.GetErrorCode() == Proxy.ErrorCode.Eagain)
+            if (ZmqLibException.GetErrorCode() == ErrorCode.Eagain)
             {
                 return SendResult.TryAgain;
             }
 
             throw ZmqLibException.GetLastError();
-        }
-
-        /// <summary>
-        /// Sets an option on the current socket to an integer value.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="int"/> value to set.</param>
-        protected void SetSocketOption(Proxy.SocketOption option, int value)
-        {
-            if (this.socket.SetSocketOption(option, value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-        }
-
-        /// <summary>
-        /// Sets an option on the current socket to an unsigned long value.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="ulong"/> value to set.</param>
-        protected void SetSocketOption(Proxy.SocketOption option, ulong value)
-        {
-            if (this.socket.SetSocketOption(option, value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-        }
-
-        /// <summary>
-        /// Sets an option on the current socket to a string value.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="string"/> value to set.</param>
-        protected void SetSocketOption(Proxy.SocketOption option, string value)
-        {
-            this.SetSocketOption(option, defaultEncoding.GetBytes(value));
-        }
-
-        /// <summary>
-        /// Sets an option on the current socket to a byte array value.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="byte"/> array value to set.</param>
-        protected void SetSocketOption(Proxy.SocketOption option, byte[] value)
-        {
-            if (this.socket.SetSocketOption(option, value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-        }
-
-        /// <summary>
-        /// Gets an option of the current socket as an integer.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
-        /// <returns>The <see cref="int"/> value of the specified option.</returns>
-        protected int GetSocketOptionInt32(Proxy.SocketOption option)
-        {
-            int value;
-
-            if (this.socket.GetSocketOption(option, out value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// Gets an option of the current socket as an unsigned long.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
-        /// <returns>The <see cref="ulong"/> value of the specified option.</returns>
-        protected ulong GetSocketOptionUInt64(Proxy.SocketOption option)
-        {
-            ulong value;
-
-            if (this.socket.GetSocketOption(option, out value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// Gets an option of the current socket as a string.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
-        /// <returns>The <see cref="string"/> value of the specified option.</returns>
-        protected string GetSocketOptionString(Proxy.SocketOption option)
-        {
-            return DefaultEncoding.GetString(this.GetSocketOptionBytes(option));
-        }
-
-        /// <summary>
-        /// Gets an option of the current socket as a byte array.
-        /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
-        /// <returns>The <see cref="byte"/> array value of the specified option.</returns>
-        protected byte[] GetSocketOptionBytes(Proxy.SocketOption option)
-        {
-            byte[] value;
-
-            if (this.socket.GetSocketOption(option, out value) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-
-            return value;
         }
     }
 }

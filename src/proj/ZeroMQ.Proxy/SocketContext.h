@@ -1,12 +1,13 @@
 #pragma once
 
 #include <zmq.h>
-#include "ZmqException.h"
+#include "netzmq.h"
+#include "ZmqErrorProvider.h"
 
 namespace ZeroMQ {
 namespace Proxy {
 
-    public ref class SocketContext
+    public ref class SocketContext : public ISocketContextProxy
     {
         void *m_context;
 
@@ -16,7 +17,7 @@ namespace Proxy {
             m_context = zmq_init(threadPoolSize);
 
             if (m_context == NULL) {
-                throw ZmqException::GetLastError();
+                throw ZmqErrorProvider::GetLastError();
             }
         }
 
@@ -25,10 +26,9 @@ namespace Proxy {
             this->!SocketContext();
         }
 
-    internal:
-        property void* Context
+        virtual property IntPtr Handle
         {
-            void* get() { return m_context; }
+            IntPtr get() { return (IntPtr)m_context; }
         }
 
     protected:
