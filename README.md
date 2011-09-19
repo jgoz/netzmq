@@ -4,7 +4,7 @@ NOTE: These are not the official .NET bindings. Until this project is stable, yo
 
 ## Goals
 * Provide an idiomatic .NET 4.0 API for ZeroMQ (for some definition of *idiomatic*)
-* <del>Support the Microsoft CLR and the Mono CLR</del> &mdash; Mono support has been dropped so C++/CLI can be used for interop
+* Support the Microsoft CLR and the Mono CLR
 * Fully support unit-testing and mocking in client projects
 * Provide a smooth transition to ZMQ 3.0 when it is released
 * Exclusively target the AnyCPU platform for deployments that "just work", even on ASP.NET/IIS
