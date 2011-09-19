@@ -35,8 +35,8 @@
     <MakeDir Directories="$(OutDir)" />
 
     <Csc Sources="@(ZeroMQSources)"
-         DocumentationFile="$(OutDir)\ZeroMQ.xml"
-         OutputAssembly="$(OutDir)\ZeroMQ.dll"
+         DocumentationFile="$(OutDir)\netzmq.xml"
+         OutputAssembly="$(OutDir)\netzmq.dll"
          Resources="@(EmbeddedResources)"
          TargetType="library"
       />
