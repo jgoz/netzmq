@@ -27,7 +27,7 @@
 
         private static Assembly LoadFromLocalBinPath()
         {
-            return ExtractAndLoadFromPath("bin");
+            return Directory.Exists("bin") ? ExtractAndLoadFromPath("bin") : null;
         }
 
         private static Assembly LoadFromExecutingPath()
@@ -45,11 +45,6 @@
 
         private static Assembly ExtractAndLoadFromPath(string dir)
         {
-            if (!Directory.Exists(dir))
-            {
-                return null;
-            }
-
             string proxyPath = Path.GetFullPath(Path.Combine(dir, ProxyAssemblyFileName));
             string nativePath = Path.GetFullPath(Path.Combine(dir, NativeDllName));
             string platformSuffix = "." + CurrentPlatform;
