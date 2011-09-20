@@ -41,6 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PairSocket.cs" />
+    <Compile Include="ExtSubscribeSocket.cs" />
+    <Compile Include="ExtPublishSocket.cs" />
+    <Compile Include="SubscribeSocket.cs" />
+    <Compile Include="PublishSocket.cs" />
+    <Compile Include="ExtRequestSocket.cs" />
+    <Compile Include="ExtReplySocket.cs" />
     <Compile Include="Proxy\ProxyAssemblyLoader.cs" />
     <Compile Include="Proxy\ErrorCode.cs" />
     <Compile Include="Proxy\IErrorProviderProxy.cs" />
