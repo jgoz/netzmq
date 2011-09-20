@@ -11,7 +11,7 @@
     /// <remarks>
     /// The <see cref="Socket"/> class defines the common behavior for derived Socket types. 
     /// </remarks>
-    public class Socket : IDisposable
+    public abstract class Socket : IDisposable
     {
         private readonly ISocketProxy socket;
 

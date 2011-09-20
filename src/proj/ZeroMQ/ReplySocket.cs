@@ -5,7 +5,7 @@
     /// <summary>
     /// ZMQ_REP socket. Receive requests from and sends replies to a client.
     /// </summary>
-    public class ReplySocket : Socket
+    public sealed class ReplySocket : Socket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplySocket"/> class.

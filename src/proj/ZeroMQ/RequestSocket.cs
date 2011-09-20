@@ -5,7 +5,7 @@
     /// <summary>
     /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     /// </summary>
-    public class RequestSocket : Socket
+    public sealed class RequestSocket : Socket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestSocket"/> class.

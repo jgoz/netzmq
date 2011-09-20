@@ -5,7 +5,7 @@
     /// <summary>
     /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
-    public class PullSocket : Socket
+    public sealed class PullSocket : Socket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PullSocket"/> class.
