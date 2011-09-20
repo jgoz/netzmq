@@ -13,14 +13,16 @@ NOTE: These are not the official .NET bindings. Until this project is stable, yo
 
 ```c#
 // Client socket
-using (var requestSocket = new RequestSocket())
+using (var ctx = new SocketContext())
+using (var requestSocket = new RequestSocket(ctx))
 {
     requestSocket.Connect("tcp://127.0.0.1:9001");
     requestSocket.Send("Hello world!");
 }
 
 // Server socket
-using (var replySocket = new ReplySocket())
+using (var ctx = new SocketContext())
+using (var replySocket = new ReplySocket(ctx))
 {
     replySocket.Bind("tcp://127.0.0.1:9001");
     Message msg = replySocket.Receive();
