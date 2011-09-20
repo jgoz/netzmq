@@ -15,6 +15,8 @@
     {
         private const int DefaultThreadPoolSize = 1;
 
+        private readonly ISocketContextProxy proxy;
+
         private bool disposed;
 
         /// <summary>
@@ -41,7 +43,7 @@
 
             try
             {
-                this.Proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
+                this.proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
             }
             catch (ProxyException ex)
             {
@@ -67,7 +69,10 @@
         /// <summary>
         /// Gets the underlying socket context handle.
         /// </summary>
-        internal ISocketContextProxy Proxy { get; private set; }
+        internal IntPtr Handle
+        {
+            get { return this.proxy.Handle; }
+        }
 
         /// <summary>
         /// Frees the underlying ZeroMQ context handle.
@@ -89,7 +94,10 @@
                 return;
             }
 
-            this.Proxy.Dispose();
+            if (disposing)
+            {
+                this.proxy.Dispose();
+            }
 
             this.disposed = true;
         }

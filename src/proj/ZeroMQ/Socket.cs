@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
-        internal Socket(ISocketContextProxy context, SocketType socketType)
+        internal Socket(SocketContext context, SocketType socketType)
         {
             if (context == null)
             {

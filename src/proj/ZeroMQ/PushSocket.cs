@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public PushSocket(SocketContext context)
-            : base(context.Proxy, SocketType.Push)
+            : base(context, SocketType.Push)
         {
         }
 

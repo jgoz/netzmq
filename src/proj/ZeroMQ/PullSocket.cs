@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public PullSocket(SocketContext context)
-            : base(context.Proxy, SocketType.Pull)
+            : base(context, SocketType.Pull)
         {
         }
 

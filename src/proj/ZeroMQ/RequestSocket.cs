@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
         public RequestSocket(SocketContext context)
-            : base(context.Proxy, SocketType.Req)
+            : base(context, SocketType.Req)
         {
         }
 
