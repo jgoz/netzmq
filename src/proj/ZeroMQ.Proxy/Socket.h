@@ -63,6 +63,11 @@ namespace Proxy {
             return zmq_setsockopt(m_socket, (int)option, &value, sizeof(int));
         }
 
+        virtual int __clrcall SetSocketOption(SocketOption option, long long value)
+        {
+            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(long long));
+        }
+
         virtual int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
         {
             return zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long));
@@ -85,6 +90,21 @@ namespace Proxy {
             size_t length;
 
             int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
+
+            value = buf;
+
+            return rc;
+        }
+
+        virtual int __clrcall GetSocketOption(SocketOption option, [Out] long long% value)
+        {
+            long long buf;
+            size_t length;
+
+            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
+
+            if (rc == -1)
+                return -1;
 
             value = buf;
 

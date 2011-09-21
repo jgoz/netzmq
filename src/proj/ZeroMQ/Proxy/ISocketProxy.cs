@@ -8,10 +8,12 @@
         int Connect(string endpoint);
 
         int SetSocketOption(SocketOption option, int value);
+        int SetSocketOption(SocketOption option, long value);
         int SetSocketOption(SocketOption option, ulong value);
         int SetSocketOption(SocketOption option, byte[] value);
 
         int GetSocketOption(SocketOption option, out int value);
+        int GetSocketOption(SocketOption option, out long value);
         int GetSocketOption(SocketOption option, out ulong value);
         int GetSocketOption(SocketOption option, out byte[] value);
 

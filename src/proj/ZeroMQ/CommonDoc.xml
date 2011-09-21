@@ -38,4 +38,30 @@
     <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
+
+  <Members name="Subscribe">
+    <summary>
+    Sets a new message filter for the current socket.
+    </summary>
+    <param name="prefix">Prefix for subscribed messages.</param>
+  </Members>
+
+  <Members name="SubscribeAll">
+    <summary>
+    Subscribe to all incoming messages.
+    </summary>
+  </Members>
+
+  <Members name="Unsubscribe">
+    <summary>
+    Remove an existing filter on the current socket.
+    </summary>
+    <param name="prefix">An existing prefix previously established via <see cref="Subscribe"/>.</param>
+  </Members>
+  
+  <Members name="UnsubscribeAll">
+    <summary>
+    Remove subscription filter for all incoming messages. Other filters may remain.
+    </summary>
+  </Members>
 </ZeroMQ>

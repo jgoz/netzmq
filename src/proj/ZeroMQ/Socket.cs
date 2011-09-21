@@ -57,6 +57,167 @@
         }
 
         /// <summary>
+        /// Gets or sets the I/O thread affinity for newly created connections on this socket.
+        /// </summary>
+        public ulong Affinity
+        {
+            get { return this.GetSocketOptionUInt64(SocketOption.Affinity); }
+            set { this.SetSocketOption(SocketOption.Affinity, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum length of the queue of outstanding peer connections.
+        /// </summary>
+        public int Backlog
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.Backlog); }
+            set { this.SetSocketOption(SocketOption.Backlog, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the identity of the current socket.
+        /// </summary>
+        public byte[] Identity
+        {
+            get { return this.GetSocketOptionBytes(SocketOption.Identity); }
+            set { this.SetSocketOption(SocketOption.Identity, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the identity of the current socket as a string using <see cref="DefaultEncoding"/>.
+        /// </summary>
+        public string IdentityString
+        {
+            get { return this.GetSocketOptionString(SocketOption.Identity); }
+            set { this.SetSocketOption(SocketOption.Identity, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the linger period for socket shutdown (milliseconds). (Default = -1, infinite).
+        /// </summary>
+        public int Linger
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.Linger); }
+            set { this.SetSocketOption(SocketOption.Linger, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum size for inbound messages.
+        /// </summary>
+        public long MaxMessageSize
+        {
+            get { return this.GetSocketOptionInt64(SocketOption.MaxMsgSize); }
+            set { this.SetSocketOption(SocketOption.MaxMsgSize, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the time-to-live field in every multicast packet sent from this socket.
+        /// </summary>
+        public int MulticastHops
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.MulticastHops); }
+            set { this.SetSocketOption(SocketOption.MulticastHops, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum send or receive data rate for multicast transports (kbps).
+        /// </summary>
+        public int MulticastRate
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.Rate); }
+            set { this.SetSocketOption(SocketOption.Rate, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the recovery interval for multicast transports (milliseconds).
+        /// </summary>
+        public int MulticastRecoveryInterval
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.RecoveryIvl); }
+            set { this.SetSocketOption(SocketOption.RecoveryIvl, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the underlying kernel receive buffer size in bytes for the current socket.
+        /// </summary>
+        public int ReceiveBufferSize
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.RcvBuf); }
+            set { this.SetSocketOption(SocketOption.RcvBuf, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the high water mark for inbound messages.
+        /// </summary>
+        public int ReceiveHighWatermark
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.RcvHwm); }
+            set { this.SetSocketOption(SocketOption.RcvHwm, value); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the multi-part message currently being read has more message parts to follow.
+        /// </summary>
+        public bool ReceiveMore
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.RcvMore) == 1; }
+        }
+
+        /// <summary>
+        /// Gets or sets the timeout for receive operations (milliseconds). (Default = -1, infinite).
+        /// </summary>
+        public int ReceiveTimeout
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.RcvTimeo); }
+            set { this.SetSocketOption(SocketOption.RcvTimeo, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the initial reconnection interval (milliseconds).
+        /// </summary>
+        public int ReconnectInterval
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvl); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvl, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum reconnection interval (milliseconds).
+        /// </summary>
+        public int ReconnectIntervalMax
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the underlying kernel transmit buffer size in bytes for the current socket.
+        /// </summary>
+        public int SendBufferSize
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.SndBuf); }
+            set { this.SetSocketOption(SocketOption.SndBuf, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the high water mark for outbound messages.
+        /// </summary>
+        public int SendHighWatermark
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.SndHwm); }
+            set { this.SetSocketOption(SocketOption.SndHwm, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the timeout for send operations (milliseconds). (Default = -1, infinite).
+        /// </summary>
+        public int SendTimeout
+        {
+            get { return this.GetSocketOptionInt32(SocketOption.SndTimeo); }
+            set { this.SetSocketOption(SocketOption.SndTimeo, value); }
+        }
+
+        /// <summary>
         /// Releases all resources used by the current instance of the <see cref="Socket"/> class.
         /// </summary>
         public virtual void Dispose()
@@ -71,6 +232,19 @@
         /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="int"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, int value)
+        {
+            if (this.socket.SetSocketOption(option, value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Sets an option on the current socket to a long value.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="value">The <see cref="long"/> value to set.</param>
+        internal void SetSocketOption(SocketOption option, long value)
         {
             if (this.socket.SetSocketOption(option, value) == -1)
             {
@@ -122,6 +296,23 @@
         internal int GetSocketOptionInt32(SocketOption option)
         {
             int value;
+
+            if (this.socket.GetSocketOption(option, out value) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets an option of the current socket as a long.
+        /// </summary>
+        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <returns>The <see cref="long"/> value of the specified option.</returns>
+        internal long GetSocketOptionInt64(SocketOption option)
+        {
+            long value;
 
             if (this.socket.GetSocketOption(option, out value) == -1)
             {
@@ -203,6 +394,18 @@
             {
                 throw ZmqLibException.GetLastError();
             }
+        }
+
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
+        protected void Subscribe(byte[] prefix)
+        {
+            this.SetSocketOption(SocketOption.Subscribe, prefix);
+        }
+
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
+        protected void Unsubscribe(byte[] prefix)
+        {
+            this.SetSocketOption(SocketOption.Unsubscribe, prefix);
         }
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
