@@ -9,7 +9,7 @@
     /// Sends and receives messages across various transports, synchronously or asynchronously.
     /// </summary>
     /// <remarks>
-    /// The <see cref="ZmqSocket"/> class defines the common behavior for derived ZmqSocket types. 
+    /// The <see cref="ZmqSocket"/> class defines the common behavior for derived socket types. 
     /// </remarks>
     public abstract class ZmqSocket : IDisposable
     {
