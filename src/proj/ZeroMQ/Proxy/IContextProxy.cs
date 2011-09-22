@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal interface ISocketContextProxy : IDisposable
+    internal interface IContextProxy : IDisposable
     {
         IntPtr Handle { get; }
     }

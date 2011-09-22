@@ -32,7 +32,7 @@
 
         private static void ProxyRequestThread()
         {
-            using (var context = new SocketContext())
+            using (var context = new ZmqContext())
             using (var socket = new RequestSocket(context))
             {
                 socket.Connect("tcp://127.0.0.1:9091");
@@ -72,7 +72,7 @@
 
         private static void ProxyReplyThread()
         {
-            using (var context = new SocketContext())
+            using (var context = new ZmqContext())
             using (var socket = new ReplySocket(context))
             {
                 socket.Bind("tcp://*:9091");

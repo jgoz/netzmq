@@ -6,13 +6,13 @@
     /// ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
     /// fair-queuing incoming messages.
     /// </summary>
-    public sealed class ExtRequestSocket : Socket
+    public sealed class ExtRequestSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtRequestSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public ExtRequestSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public ExtRequestSocket(ZmqContext context)
             : base(context, SocketType.Xreq)
         {
         }

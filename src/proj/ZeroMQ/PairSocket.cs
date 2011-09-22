@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
     /// </summary>
-    public sealed class PairSocket : Socket
+    public sealed class PairSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PairSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public PairSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public PairSocket(ZmqContext context)
             : base(context, SocketType.Pair)
         {
         }

@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Stores retrieved message data and the outcome of a <see cref="Socket.Receive"/> operation.
+    /// Stores retrieved message data and the outcome of a <see cref="ZmqSocket.Receive"/> operation.
     /// </summary>
     public class ReceivedMessage
     {

@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     /// </summary>
-    public sealed class RequestSocket : Socket
+    public sealed class RequestSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public RequestSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public RequestSocket(ZmqContext context)
             : base(context, SocketType.Req)
         {
         }

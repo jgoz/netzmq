@@ -9,20 +9,20 @@
     /// Sends and receives messages across various transports, synchronously or asynchronously.
     /// </summary>
     /// <remarks>
-    /// The <see cref="Socket"/> class defines the common behavior for derived Socket types. 
+    /// The <see cref="ZmqSocket"/> class defines the common behavior for derived ZmqSocket types. 
     /// </remarks>
-    public abstract class Socket : IDisposable
+    public abstract class ZmqSocket : IDisposable
     {
         private readonly ISocketProxy socket;
 
         private static Encoding defaultEncoding = Encoding.UTF8;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Socket"/> class.
+        /// Initializes a new instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
-        internal Socket(SocketContext context, SocketType socketType)
+        internal ZmqSocket(ZmqContext context, SocketType socketType)
         {
             if (context == null)
             {
@@ -40,9 +40,9 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="Socket"/> class.
+        /// Finalizes an instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
-        ~Socket()
+        ~ZmqSocket()
         {
             this.Dispose(false);
         }
@@ -218,7 +218,7 @@
         }
 
         /// <summary>
-        /// Releases all resources used by the current instance of the <see cref="Socket"/> class.
+        /// Releases all resources used by the current instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
         public virtual void Dispose()
         {
@@ -367,7 +367,7 @@
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="Socket"/>, and optionally disposes of the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="ZmqSocket"/>, and optionally disposes of the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)

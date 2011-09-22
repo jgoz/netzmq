@@ -6,13 +6,13 @@
     /// ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
     /// outgoing messages can be correctly routed.
     /// </summary>
-    public sealed class ExtReplySocket : Socket
+    public sealed class ExtReplySocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtReplySocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public ExtReplySocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public ExtReplySocket(ZmqContext context)
             : base(context, SocketType.Xrep)
         {
         }

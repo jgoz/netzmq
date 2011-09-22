@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_REP socket. Receive requests from and sends replies to a client.
     /// </summary>
-    public sealed class ReplySocket : Socket
+    public sealed class ReplySocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplySocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public ReplySocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public ReplySocket(ZmqContext context)
             : base(context, SocketType.Rep)
         {
         }

@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
     /// </summary>
-    public sealed class ExtPublishSocket : Socket
+    public sealed class ExtPublishSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtPublishSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public ExtPublishSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public ExtPublishSocket(ZmqContext context)
             : base(context, SocketType.Xpub)
         {
         }

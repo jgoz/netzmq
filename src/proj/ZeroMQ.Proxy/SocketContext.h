@@ -7,7 +7,7 @@
 namespace ZeroMQ {
 namespace Proxy {
 
-    public ref class SocketContext : public ISocketContextProxy
+    public ref class SocketContext : public IContextProxy
     {
         void *m_context;
 

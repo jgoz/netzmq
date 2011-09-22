@@ -6,7 +6,6 @@
 
     internal static class ProxyFactory
     {
-
         private static readonly Assembly ProxyAssembly;
 
         private static readonly Type SocketContextProxyType;
@@ -16,7 +15,7 @@
         {
             ProxyAssembly = ProxyAssemblyLoader.Load();
 
-            SocketContextProxyType = ProxyAssembly.GetTypes().Single(t => typeof(ISocketContextProxy).IsAssignableFrom(t));
+            SocketContextProxyType = ProxyAssembly.GetTypes().Single(t => typeof(IContextProxy).IsAssignableFrom(t));
             SocketProxyType = ProxyAssembly.GetTypes().Single(t => typeof(ISocketProxy).IsAssignableFrom(t));
 
             Type errorProviderType = ProxyAssembly.GetTypes().Single(t => typeof(IErrorProviderProxy).IsAssignableFrom(t));
@@ -25,9 +24,9 @@
 
         public static IErrorProviderProxy ErrorProvider { get; private set; }
 
-        public static ISocketContextProxy CreateSocketContext(int threadPoolSize)
+        public static IContextProxy CreateContext(int threadPoolSize)
         {
-            return (ISocketContextProxy)Activator.CreateInstance(SocketContextProxyType, threadPoolSize);
+            return (IContextProxy)Activator.CreateInstance(SocketContextProxyType, threadPoolSize);
         }
 
         public static ISocketProxy CreateSocket(IntPtr context, SocketType socketType)

@@ -8,33 +8,33 @@
     /// Represents a thread-safe ZeroMQ context object.
     /// </summary>
     /// <remarks>
-    /// The <see cref="SocketContext"/> object is a container for all sockets in a single process,
-    /// and acts as the transport for inproc sockets. <see cref="SocketContext"/> is thread safe.
+    /// The <see cref="ZmqContext"/> object is a container for all sockets in a single process,
+    /// and acts as the transport for inproc sockets. <see cref="ZmqContext"/> is thread safe.
     /// </remarks>
-    public class SocketContext : ISocketContext
+    public class ZmqContext : IZmqContext
     {
         private const int DefaultThreadPoolSize = 1;
 
-        private readonly ISocketContextProxy proxy;
+        private readonly IContextProxy proxy;
 
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketContext"/> class. Uses the default thread pool size.
+        /// Initializes a new instance of the <see cref="ZmqContext"/> class. Uses the default thread pool size.
         /// </summary>
-        public SocketContext() : this(DefaultThreadPoolSize)
+        public ZmqContext() : this(DefaultThreadPoolSize)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketContext"/> class.
+        /// Initializes a new instance of the <see cref="ZmqContext"/> class.
         /// </summary>
         /// <param name="threadPoolSize">Number of threads to use in the ZMQ thread pool.</param>
         /// <remarks>
         /// The size of the thread pool should be at least 1. If all sockets in this context use the
         /// inproc transport, then the thread pool size may be 0.
         /// </remarks>
-        public SocketContext(int threadPoolSize)
+        public ZmqContext(int threadPoolSize)
         {
             if (threadPoolSize < 0)
             {
@@ -43,7 +43,7 @@
 
             try
             {
-                this.proxy = ProxyFactory.CreateSocketContext(threadPoolSize);
+                this.proxy = ProxyFactory.CreateContext(threadPoolSize);
             }
             catch (ProxyException ex)
             {
@@ -54,9 +54,9 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="SocketContext"/> class.
+        /// Finalizes an instance of the <see cref="ZmqContext"/> class.
         /// </summary>
-        ~SocketContext()
+        ~ZmqContext()
         {
             Dispose(false);
         }

@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
-    public sealed class PushSocket : Socket
+    public sealed class PushSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PushSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public PushSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public PushSocket(ZmqContext context)
             : base(context, SocketType.Push)
         {
         }

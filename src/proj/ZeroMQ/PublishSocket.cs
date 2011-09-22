@@ -5,13 +5,13 @@
     /// <summary>
     /// ZMQ_PUB socket. Publish messages to connected peers in a fan-out model.
     /// </summary>
-    public sealed class PublishSocket : Socket
+    public sealed class PublishSocket : ZmqSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PublishSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="ISocketContext"/> to use when initializing the socket.</param>
-        public PublishSocket(SocketContext context)
+        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        public PublishSocket(ZmqContext context)
             : base(context, SocketType.Pub)
         {
         }
