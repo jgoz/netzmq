@@ -22,6 +22,7 @@
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
+        /// <exception cref="ZmqLibException">An error occured while initializing the underlying socket.</exception>
         internal ZmqSocket(ZmqContext context, SocketType socketType)
         {
             if (context == null)

@@ -30,6 +30,7 @@
         /// Initializes a new instance of the <see cref="ZmqContext"/> class.
         /// </summary>
         /// <param name="threadPoolSize">Number of threads to use in the ZMQ thread pool.</param>
+        /// <exception cref="ZmqLibException">An error occured while initializing the underlying context.</exception>
         /// <remarks>
         /// The size of the thread pool should be at least 1. If all sockets in this context use the
         /// inproc transport, then the thread pool size may be 0.
