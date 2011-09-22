@@ -1,20 +1,19 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_XSUB socket. Extends Subscribe socket by allowing outgoing subscription messages to be sent.
-    /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or one of its overloads before
-    /// connecting to a publisher.
+    /// ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
+    /// via <see cref="Subscribe(byte[])"/> or one of its overloads before connecting to a publisher.
     /// </summary>
-    public sealed class ExtSubscribeSocket : ZmqSocket
+    public sealed class SubscribeSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtSubscribeSocket"/> class.
+        /// Initializes a new instance of the <see cref="SubscribeSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtSubscribeSocket(ZmqContext context)
-            : base(context, SocketType.Xsub)
+        public SubscribeSocket(ZmqContext context)
+            : base(context, SocketType.Sub)
         {
         }
 
@@ -64,12 +63,6 @@
         public new ReceivedMessage Receive(SocketFlags socketFlags)
         {
             return base.Receive(socketFlags);
-        }
-
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
-        public new SendResult Send(byte[] buffer, SocketFlags socketFlags)
-        {
-            return base.Send(buffer, socketFlags);
         }
     }
 }

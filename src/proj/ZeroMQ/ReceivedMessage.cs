@@ -2,6 +2,8 @@
 {
     using System;
 
+    using ZeroMQ.Sockets;
+
     /// <summary>
     /// Stores retrieved message data and the outcome of a <see cref="ZmqSocket.Receive"/> operation.
     /// </summary>

@@ -1,19 +1,18 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
-    /// outgoing messages can be correctly routed.
+    /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
-    public sealed class ExtReplySocket : ZmqSocket
+    public sealed class PushSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtReplySocket"/> class.
+        /// Initializes a new instance of the <see cref="PushSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtReplySocket(ZmqContext context)
-            : base(context, SocketType.Xrep)
+        public PushSocket(ZmqContext context)
+            : base(context, SocketType.Push)
         {
         }
 
@@ -23,10 +22,10 @@
             base.Bind(endpoint);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public new ReceivedMessage Receive(SocketFlags socketFlags)
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
+        public new void Connect(string endpoint)
         {
-            return base.Receive(socketFlags);
+            base.Connect(endpoint);
         }
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>

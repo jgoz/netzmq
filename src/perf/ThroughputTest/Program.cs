@@ -5,6 +5,7 @@
     using System.Threading;
 
     using ZeroMQ;
+    using ZeroMQ.Sockets;
 
     internal class Program
     {

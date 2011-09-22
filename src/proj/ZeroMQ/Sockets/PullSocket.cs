@@ -1,19 +1,25 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
+    /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>
-    public sealed class RequestSocket : ZmqSocket
+    public sealed class PullSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RequestSocket"/> class.
+        /// Initializes a new instance of the <see cref="PullSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public RequestSocket(ZmqContext context)
-            : base(context, SocketType.Req)
+        public PullSocket(ZmqContext context)
+            : base(context, SocketType.Pull)
         {
+        }
+
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
+        public new void Bind(string endpoint)
+        {
+            base.Bind(endpoint);
         }
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
@@ -26,12 +32,6 @@
         public new ReceivedMessage Receive(SocketFlags socketFlags)
         {
             return base.Receive(socketFlags);
-        }
-
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
-        public new SendResult Send(byte[] buffer, SocketFlags socketFlags)
-        {
-            return base.Send(buffer, socketFlags);
         }
     }
 }

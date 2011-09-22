@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PairSocket.cs" />
-    <Compile Include="ExtSubscribeSocket.cs" />
-    <Compile Include="ExtPublishSocket.cs" />
-    <Compile Include="SubscribeSocket.cs" />
-    <Compile Include="PublishSocket.cs" />
-    <Compile Include="ExtRequestSocket.cs" />
-    <Compile Include="ExtReplySocket.cs" />
+    <Compile Include="Sockets\PairSocket.cs" />
+    <Compile Include="Sockets\ExtSubscribeSocket.cs" />
+    <Compile Include="Sockets\ExtPublishSocket.cs" />
+    <Compile Include="Sockets\SubscribeSocket.cs" />
+    <Compile Include="Sockets\PublishSocket.cs" />
+    <Compile Include="Sockets\ExtRequestSocket.cs" />
+    <Compile Include="Sockets\ExtReplySocket.cs" />
     <Compile Include="Proxy\ProxyAssemblyLoader.cs" />
     <Compile Include="Proxy\ErrorCode.cs" />
     <Compile Include="Proxy\IErrorProviderProxy.cs" />
@@ -57,23 +57,24 @@
     <Compile Include="Proxy\ISocketProxy.cs" />
     <Compile Include="Proxy\SocketOption.cs" />
     <Compile Include="Proxy\SocketType.cs" />
-    <Compile Include="PushSocket.cs" />
+    <Compile Include="Sockets\PushSocket.cs" />
     <Compile Include="ZmqContext.cs" />
-    <Compile Include="RequestSocket.cs" />
+    <Compile Include="Sockets\RequestSocket.cs" />
     <Compile Include="ReceivedMessage.cs" />
     <Compile Include="ReceiveResult.cs" />
-    <Compile Include="ReplySocket.cs" />
+    <Compile Include="Sockets\ReplySocket.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="IZmqContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketFlags.cs" />
-    <Compile Include="ZmqSocket.cs" />
-    <Compile Include="PullSocket.cs" />
+    <Compile Include="Sockets\ZmqSocket.cs" />
+    <Compile Include="Sockets\PullSocket.cs" />
     <Compile Include="ZmqLibException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CommonDoc.xml" />
+    <Content Include="Sockets\CommonDoc.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -1,18 +1,19 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
+    /// ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
+    /// fair-queuing incoming messages.
     /// </summary>
-    public sealed class PairSocket : ZmqSocket
+    public sealed class ExtRequestSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PairSocket"/> class.
+        /// Initializes a new instance of the <see cref="ExtRequestSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public PairSocket(ZmqContext context)
-            : base(context, SocketType.Pair)
+        public ExtRequestSocket(ZmqContext context)
+            : base(context, SocketType.Xreq)
         {
         }
 

@@ -1,18 +1,18 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
+    /// ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
     /// </summary>
-    public sealed class ExtPublishSocket : ZmqSocket
+    public sealed class PairSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtPublishSocket"/> class.
+        /// Initializes a new instance of the <see cref="PairSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtPublishSocket(ZmqContext context)
-            : base(context, SocketType.Xpub)
+        public PairSocket(ZmqContext context)
+            : base(context, SocketType.Pair)
         {
         }
 
