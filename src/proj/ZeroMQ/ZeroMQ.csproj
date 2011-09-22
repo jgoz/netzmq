@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IReceiveSocket.cs" />
+    <Compile Include="ISendSocket.cs" />
     <Compile Include="Sockets\PairSocket.cs" />
     <Compile Include="Sockets\ExtSubscribeSocket.cs" />
     <Compile Include="Sockets\ExtPublishSocket.cs" />
