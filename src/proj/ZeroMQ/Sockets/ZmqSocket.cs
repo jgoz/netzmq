@@ -379,7 +379,7 @@
             }
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         protected void Bind(string endpoint)
         {
             if (this.socket.Bind(endpoint) == -1)
@@ -388,7 +388,7 @@
             }
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         protected void Connect(string endpoint)
         {
             if (this.socket.Connect(endpoint) == -1)
@@ -397,19 +397,19 @@
             }
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
         protected void Subscribe(byte[] prefix)
         {
             this.SetSocketOption(SocketOption.Subscribe, prefix);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
         protected void Unsubscribe(byte[] prefix)
         {
             this.SetSocketOption(SocketOption.Unsubscribe, prefix);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
@@ -429,7 +429,7 @@
             throw ZmqLibException.GetLastError();
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.socket.Send((int)socketFlags, buffer);

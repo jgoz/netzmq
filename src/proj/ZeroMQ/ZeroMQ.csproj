@@ -72,7 +72,7 @@
     <Compile Include="ZmqLibException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sockets\CommonDoc.xml" />
+    <Content Include="CommonDoc.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

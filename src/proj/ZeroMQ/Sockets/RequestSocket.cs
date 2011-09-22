@@ -16,19 +16,19 @@
         {
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         public new void Connect(string endpoint)
         {
             base.Connect(endpoint);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
         public new ReceivedMessage Receive(SocketFlags socketFlags)
         {
             return base.Receive(socketFlags);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
         public new SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             return base.Send(buffer, socketFlags);

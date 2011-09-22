@@ -16,13 +16,13 @@
         {
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public new void Bind(string endpoint)
         {
             base.Bind(endpoint);
         }
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
         public new SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             return base.Send(buffer, socketFlags);
