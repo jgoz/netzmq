@@ -67,7 +67,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the maximum length of the queue of outstanding peer connections.
+        /// Gets or sets the maximum length of the queue of outstanding peer connections. (Default = 100 connections).
         /// </summary>
         public int Backlog
         {
@@ -94,16 +94,16 @@
         }
 
         /// <summary>
-        /// Gets or sets the linger period for socket shutdown (milliseconds). (Default = -1, infinite).
+        /// Gets or sets the linger period for socket shutdown. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
         /// </summary>
-        public int Linger
+        public TimeSpan Linger
         {
-            get { return this.GetSocketOptionInt32(SocketOption.Linger); }
-            set { this.SetSocketOption(SocketOption.Linger, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.Linger)); }
+            set { this.SetSocketOption(SocketOption.Linger, GetMilliseconds(value)); }
         }
 
         /// <summary>
-        /// Gets or sets the maximum size for inbound messages.
+        /// Gets or sets the maximum size for inbound messages (bytes). (Default = -1, no limit).
         /// </summary>
         public long MaxMessageSize
         {
@@ -112,7 +112,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the time-to-live field in every multicast packet sent from this socket.
+        /// Gets or sets the time-to-live field in every multicast packet sent from this socket (network hops). (Default = 1 hop).
         /// </summary>
         public int MulticastHops
         {
@@ -121,7 +121,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the maximum send or receive data rate for multicast transports (kbps).
+        /// Gets or sets the maximum send or receive data rate for multicast transports (kbps). (Default = 100 kbps).
         /// </summary>
         public int MulticastRate
         {
@@ -130,16 +130,16 @@
         }
 
         /// <summary>
-        /// Gets or sets the recovery interval for multicast transports (milliseconds).
+        /// Gets or sets the recovery interval for multicast transports. (Default = 10 seconds).
         /// </summary>
-        public int MulticastRecoveryInterval
+        public TimeSpan MulticastRecoveryInterval
         {
-            get { return this.GetSocketOptionInt32(SocketOption.RecoveryIvl); }
-            set { this.SetSocketOption(SocketOption.RecoveryIvl, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.RecoveryIvl)); }
+            set { this.SetSocketOption(SocketOption.RecoveryIvl, GetMilliseconds(value)); }
         }
 
         /// <summary>
-        /// Gets or sets the underlying kernel receive buffer size in bytes for the current socket.
+        /// Gets or sets the underlying kernel receive buffer size for the current socket (bytes). (Default = 0, OS default).
         /// </summary>
         public int ReceiveBufferSize
         {
@@ -148,7 +148,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the high water mark for inbound messages.
+        /// Gets or sets the high water mark for inbound messages (number of messages). (Default = 0, no limit).
         /// </summary>
         public int ReceiveHighWatermark
         {
@@ -165,34 +165,34 @@
         }
 
         /// <summary>
-        /// Gets or sets the timeout for receive operations (milliseconds). (Default = -1, infinite).
+        /// Gets or sets the timeout for receive operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
         /// </summary>
-        public int ReceiveTimeout
+        public TimeSpan ReceiveTimeout
         {
-            get { return this.GetSocketOptionInt32(SocketOption.RcvTimeo); }
-            set { this.SetSocketOption(SocketOption.RcvTimeo, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.RcvTimeo)); }
+            set { this.SetSocketOption(SocketOption.RcvTimeo, GetMilliseconds(value)); }
         }
 
         /// <summary>
-        /// Gets or sets the initial reconnection interval (milliseconds).
+        /// Gets or sets the initial reconnection interval. (Default = 100 milliseconds).
         /// </summary>
-        public int ReconnectInterval
+        public TimeSpan ReconnectInterval
         {
-            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvl); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvl, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.ReconnectIvl)); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvl, GetMilliseconds(value)); }
         }
 
         /// <summary>
-        /// Gets or sets the maximum reconnection interval (milliseconds).
+        /// Gets or sets the maximum reconnection interval. (Default = 0, only use <see cref="ReconnectInterval"/>).
         /// </summary>
-        public int ReconnectIntervalMax
+        public TimeSpan ReconnectIntervalMax
         {
-            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax)); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, GetMilliseconds(value)); }
         }
 
         /// <summary>
-        /// Gets or sets the underlying kernel transmit buffer size in bytes for the current socket.
+        /// Gets or sets the underlying kernel transmit buffer size for the current socket (bytes). (Default = 0, OS default).
         /// </summary>
         public int SendBufferSize
         {
@@ -201,7 +201,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the high water mark for outbound messages.
+        /// Gets or sets the high water mark for outbound messages (number of messages). (Default = 0, no limit).
         /// </summary>
         public int SendHighWatermark
         {
@@ -210,12 +210,12 @@
         }
 
         /// <summary>
-        /// Gets or sets the timeout for send operations (milliseconds). (Default = -1, infinite).
+        /// Gets or sets the timeout for send operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
         /// </summary>
-        public int SendTimeout
+        public TimeSpan SendTimeout
         {
-            get { return this.GetSocketOptionInt32(SocketOption.SndTimeo); }
-            set { this.SetSocketOption(SocketOption.SndTimeo, value); }
+            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.SndTimeo)); }
+            set { this.SetSocketOption(SocketOption.SndTimeo, GetMilliseconds(value)); }
         }
 
         /// <summary>
@@ -445,6 +445,16 @@
             }
 
             throw ZmqLibException.GetLastError();
+        }
+
+        private static TimeSpan GetTimeSpan(int milliseconds)
+        {
+            return milliseconds == -1 ? TimeSpan.MaxValue : TimeSpan.FromMilliseconds(milliseconds);
+        }
+
+        private static int GetMilliseconds(TimeSpan timeSpan)
+        {
+            return timeSpan == TimeSpan.MaxValue ? -1 : (int)timeSpan.TotalMilliseconds;
         }
     }
 }
