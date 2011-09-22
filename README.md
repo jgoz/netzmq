@@ -13,7 +13,7 @@ NOTE: These are not the official .NET bindings. Until this project is stable, yo
 
 ```c#
 // Client socket
-using (var ctx = new SocketContext())
+using (var ctx = new ZmqContext())
 using (var requestSocket = new RequestSocket(ctx))
 {
     requestSocket.Connect("tcp://127.0.0.1:9001");
@@ -21,7 +21,7 @@ using (var requestSocket = new RequestSocket(ctx))
 }
 
 // Server socket
-using (var ctx = new SocketContext())
+using (var ctx = new ZmqContext())
 using (var replySocket = new ReplySocket(ctx))
 {
     replySocket.Bind("tcp://127.0.0.1:9001");
