@@ -74,15 +74,6 @@
         }
 
         /// <summary>
-        /// Gets or sets the identity of the current socket as a string using <see cref="ZmqContext.DefaultEncoding"/>.
-        /// </summary>
-        public string IdentityString
-        {
-            get { return this.GetSocketOptionString(SocketOption.Identity); }
-            set { this.SetSocketOption(SocketOption.Identity, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the linger period for socket shutdown. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
         /// </summary>
         public TimeSpan Linger
@@ -286,16 +277,6 @@
         }
 
         /// <summary>
-        /// Sets an option on the current socket to a string value.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="string"/> value to set.</param>
-        internal void SetSocketOption(SocketOption option, string value)
-        {
-            this.SetSocketOption(option, value.ToZmqBuffer());
-        }
-
-        /// <summary>
         /// Sets an option on the current socket to a byte array value.
         /// </summary>
         /// <param name="option">The <see cref="SocketOption"/> to set.</param>
@@ -357,16 +338,6 @@
             }
 
             return value;
-        }
-
-        /// <summary>
-        /// Gets an option of the current socket as a string.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
-        /// <returns>The <see cref="string"/> value of the specified option.</returns>
-        internal string GetSocketOptionString(SocketOption option)
-        {
-            return this.GetSocketOptionBytes(option).ToZmqMessage();
         }
 
         /// <summary>
