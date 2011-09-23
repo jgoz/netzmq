@@ -24,12 +24,6 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
-        public void Subscribe(string prefix)
-        {
-            this.Subscribe(DefaultEncoding.GetBytes(prefix));
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
         public new void Subscribe(byte[] prefix)
         {
             base.Subscribe(prefix);
@@ -39,12 +33,6 @@
         public void UnsubscribeAll()
         {
             this.Unsubscribe(new byte[0]);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
-        public void Unsubscribe(string prefix)
-        {
-            this.Unsubscribe(DefaultEncoding.GetBytes(prefix));
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
