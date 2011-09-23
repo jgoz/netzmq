@@ -386,7 +386,12 @@
             return value;
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive0"]/*'/>
+        /// <summary>
+        /// Receive a message (or message-part) from a remote socket.
+        /// </summary>
+        /// <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
+        /// <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
@@ -426,7 +431,13 @@
             return message;
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send0"]/*'/>
+        /// <summary>
+        /// Queue a single-part message (or the final message-part) to be sent by the socket.
+        /// </summary>
+        /// <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+        /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
+        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.socket.Send((int)socketFlags, buffer);
