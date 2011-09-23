@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_REP socket. Receive requests from and sends replies to a client.
     /// </summary>

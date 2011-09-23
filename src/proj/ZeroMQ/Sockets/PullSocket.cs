@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
     /// </summary>

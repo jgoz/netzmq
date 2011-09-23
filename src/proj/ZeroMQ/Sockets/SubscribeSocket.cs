@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
     /// via <see cref="Subscribe(byte[])"/> or one of its overloads before connecting to a publisher.

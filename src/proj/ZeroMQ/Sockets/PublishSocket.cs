@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_PUB socket. Publish messages to connected peers in a fan-out model.
     /// </summary>

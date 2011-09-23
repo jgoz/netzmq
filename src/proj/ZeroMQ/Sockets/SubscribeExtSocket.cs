@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_XSUB socket. Extends Subscribe socket by allowing outgoing subscription messages to be sent.
     /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or one of its overloads before

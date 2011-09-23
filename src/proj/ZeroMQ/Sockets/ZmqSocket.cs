@@ -261,7 +261,7 @@
         /// <summary>
         /// Sets an option on the current socket to an integer value.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="int"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, int value)
         {
@@ -274,7 +274,7 @@
         /// <summary>
         /// Sets an option on the current socket to a long value.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="long"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, long value)
         {
@@ -287,7 +287,7 @@
         /// <summary>
         /// Sets an option on the current socket to an unsigned long value.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="ulong"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, ulong value)
         {
@@ -300,7 +300,7 @@
         /// <summary>
         /// Sets an option on the current socket to a string value.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="string"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, string value)
         {
@@ -310,7 +310,7 @@
         /// <summary>
         /// Sets an option on the current socket to a byte array value.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to set.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
         /// <param name="value">The <see cref="byte"/> array value to set.</param>
         internal void SetSocketOption(SocketOption option, byte[] value)
         {
@@ -323,7 +323,7 @@
         /// <summary>
         /// Gets an option of the current socket as an integer.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
         /// <returns>The <see cref="int"/> value of the specified option.</returns>
         internal int GetSocketOptionInt32(SocketOption option)
         {
@@ -340,7 +340,7 @@
         /// <summary>
         /// Gets an option of the current socket as a long.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
         /// <returns>The <see cref="long"/> value of the specified option.</returns>
         internal long GetSocketOptionInt64(SocketOption option)
         {
@@ -357,7 +357,7 @@
         /// <summary>
         /// Gets an option of the current socket as an unsigned long.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
         /// <returns>The <see cref="ulong"/> value of the specified option.</returns>
         internal ulong GetSocketOptionUInt64(SocketOption option)
         {
@@ -374,7 +374,7 @@
         /// <summary>
         /// Gets an option of the current socket as a string.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
         /// <returns>The <see cref="string"/> value of the specified option.</returns>
         internal string GetSocketOptionString(SocketOption option)
         {
@@ -384,7 +384,7 @@
         /// <summary>
         /// Gets an option of the current socket as a byte array.
         /// </summary>
-        /// <param name="option">The <see cref="Proxy.SocketOption"/> to get.</param>
+        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
         /// <returns>The <see cref="byte"/> array value of the specified option.</returns>
         internal byte[] GetSocketOptionBytes(SocketOption option)
         {
@@ -398,32 +398,8 @@
             return value;
         }
 
-        /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="ZmqSocket"/>, and optionally disposes of the managed resources.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.socket.Dispose();
-            }
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
-        protected void Subscribe(byte[] prefix)
-        {
-            this.SetSocketOption(SocketOption.Subscribe, prefix);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
-        protected void Unsubscribe(byte[] prefix)
-        {
-            this.SetSocketOption(SocketOption.Unsubscribe, prefix);
-        }
-
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive0"]/*'/>
-        protected ReceivedMessage Receive(SocketFlags socketFlags)
+        internal ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
 
@@ -443,7 +419,7 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
-        protected ReceivedMessage Receive(TimeSpan timeout)
+        internal ReceivedMessage Receive(TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)
             {
@@ -463,7 +439,7 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send0"]/*'/>
-        protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
+        internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.socket.Send((int)socketFlags, buffer);
 
@@ -490,7 +466,7 @@
         /// <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
         /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
-        protected SendResult Send(byte[] buffer, SocketFlags socketFlags, TimeSpan timeout)
+        internal SendResult Send(byte[] buffer, SocketFlags socketFlags, TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)
             {
@@ -509,6 +485,30 @@
             while (timer.Elapsed < timeout && result == SendResult.TryAgain);
 
             return result;
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="ZmqSocket"/>, and optionally disposes of the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.socket.Dispose();
+            }
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
+        protected void Subscribe(byte[] prefix)
+        {
+            this.SetSocketOption(SocketOption.Subscribe, prefix);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
+        protected void Unsubscribe(byte[] prefix)
+        {
+            this.SetSocketOption(SocketOption.Unsubscribe, prefix);
         }
 
         private static TimeSpan GetTimeSpan(int milliseconds)

@@ -58,8 +58,8 @@
     <Compile Include="Proxy\ProxyFactory.cs" />
     <Compile Include="Proxy\IContextProxy.cs" />
     <Compile Include="Proxy\ISocketProxy.cs" />
-    <Compile Include="Proxy\SocketOption.cs" />
-    <Compile Include="Proxy\SocketType.cs" />
+    <Compile Include="SocketOption.cs" />
+    <Compile Include="SocketType.cs" />
     <Compile Include="Sockets\PushSocket.cs" />
     <Compile Include="ZmqContext.cs" />
     <Compile Include="Sockets\RequestSocket.cs" />

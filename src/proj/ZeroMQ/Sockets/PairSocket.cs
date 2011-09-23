@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
     /// </summary>

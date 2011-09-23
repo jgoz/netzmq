@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
     /// fair-queuing incoming messages.

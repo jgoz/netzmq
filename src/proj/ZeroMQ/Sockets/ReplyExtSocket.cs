@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
     /// outgoing messages can be correctly routed.

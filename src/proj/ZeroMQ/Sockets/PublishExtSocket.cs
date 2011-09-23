@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
     /// </summary>
