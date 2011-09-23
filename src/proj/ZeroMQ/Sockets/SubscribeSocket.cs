@@ -4,9 +4,9 @@
 
     /// <summary>
     /// ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
-    /// via <see cref="Subscribe(byte[])"/> or one of its overloads before connecting to a publisher.
+    /// via <see cref="Subscribe(byte[])"/> or <see cref="SubscribeAll"/> before connecting to a publisher.
     /// </summary>
-    public sealed class SubscribeSocket : ZmqSocket, IReceiveSocket
+    public sealed class SubscribeSocket : ZmqSocket, ISubscribeSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscribeSocket"/> class.

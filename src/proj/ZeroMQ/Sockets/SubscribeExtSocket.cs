@@ -4,10 +4,10 @@
 
     /// <summary>
     /// ZMQ_XSUB socket. Extends Subscribe socket by allowing outgoing subscription messages to be sent.
-    /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or one of its overloads before
+    /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or <see cref="SubscribeAll"/> before
     /// connecting to a publisher.
     /// </summary>
-    public sealed class SubscribeExtSocket : ZmqSocket, IDuplexSocket
+    public sealed class SubscribeExtSocket : ZmqSocket, ISubscribeSocket, IDuplexSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscribeExtSocket"/> class.
