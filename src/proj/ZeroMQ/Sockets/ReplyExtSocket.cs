@@ -3,17 +3,17 @@
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
-    /// fair-queuing incoming messages.
+    /// ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
+    /// outgoing messages can be correctly routed.
     /// </summary>
-    public sealed class ExtRequestSocket : ZmqSocket
+    public sealed class ReplyExtSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtRequestSocket"/> class.
+        /// Initializes a new instance of the <see cref="ReplyExtSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtRequestSocket(ZmqContext context)
-            : base(context, SocketType.Xreq)
+        public ReplyExtSocket(ZmqContext context)
+            : base(context, SocketType.Xrep)
         {
         }
 

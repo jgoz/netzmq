@@ -3,17 +3,16 @@
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
-    /// outgoing messages can be correctly routed.
+    /// ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
     /// </summary>
-    public sealed class ExtReplySocket : ZmqSocket
+    public sealed class PublishExtSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtReplySocket"/> class.
+        /// Initializes a new instance of the <see cref="PublishExtSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtReplySocket(ZmqContext context)
-            : base(context, SocketType.Xrep)
+        public PublishExtSocket(ZmqContext context)
+            : base(context, SocketType.Xpub)
         {
         }
 

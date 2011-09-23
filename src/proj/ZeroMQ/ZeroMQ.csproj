@@ -44,12 +44,12 @@
     <Compile Include="IReceiveSocket.cs" />
     <Compile Include="ISendSocket.cs" />
     <Compile Include="Sockets\PairSocket.cs" />
-    <Compile Include="Sockets\ExtSubscribeSocket.cs" />
-    <Compile Include="Sockets\ExtPublishSocket.cs" />
+    <Compile Include="Sockets\SubscribeExtSocket.cs" />
+    <Compile Include="Sockets\PublishExtSocket.cs" />
     <Compile Include="Sockets\SubscribeSocket.cs" />
     <Compile Include="Sockets\PublishSocket.cs" />
-    <Compile Include="Sockets\ExtRequestSocket.cs" />
-    <Compile Include="Sockets\ExtReplySocket.cs" />
+    <Compile Include="Sockets\RequestExtSocket.cs" />
+    <Compile Include="Sockets\ReplyExtSocket.cs" />
     <Compile Include="Proxy\ProxyAssemblyLoader.cs" />
     <Compile Include="Proxy\ErrorCode.cs" />
     <Compile Include="Proxy\IErrorProviderProxy.cs" />

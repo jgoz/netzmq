@@ -7,13 +7,13 @@
     /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or one of its overloads before
     /// connecting to a publisher.
     /// </summary>
-    public sealed class ExtSubscribeSocket : ZmqSocket
+    public sealed class SubscribeExtSocket : ZmqSocket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtSubscribeSocket"/> class.
+        /// Initializes a new instance of the <see cref="SubscribeExtSocket"/> class.
         /// </summary>
         /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
-        public ExtSubscribeSocket(ZmqContext context)
+        public SubscribeExtSocket(ZmqContext context)
             : base(context, SocketType.Xsub)
         {
         }
