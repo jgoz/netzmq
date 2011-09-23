@@ -219,6 +219,36 @@
         }
 
         /// <summary>
+        /// Create an endpoint for accepting connections and bind it to the current socket.
+        /// </summary>
+        /// <param name="endpoint">
+        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
+        /// </param>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        public void Bind(string endpoint)
+        {
+            if (this.socket.Bind(endpoint) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Connect the current socket to the specified endpoint.
+        /// </summary>
+        /// <param name="endpoint">
+        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
+        /// </param>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        public void Connect(string endpoint)
+        {
+            if (this.socket.Connect(endpoint) == -1)
+            {
+                throw ZmqLibException.GetLastError();
+            }
+        }
+
+        /// <summary>
         /// Releases all resources used by the current instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
         public virtual void Dispose()
@@ -376,24 +406,6 @@
             if (disposing)
             {
                 this.socket.Dispose();
-            }
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
-        protected void Bind(string endpoint)
-        {
-            if (this.socket.Bind(endpoint) == -1)
-            {
-                throw ZmqLibException.GetLastError();
-            }
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
-        protected void Connect(string endpoint)
-        {
-            if (this.socket.Connect(endpoint) == -1)
-            {
-                throw ZmqLibException.GetLastError();
             }
         }
 
