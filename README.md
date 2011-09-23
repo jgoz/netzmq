@@ -24,8 +24,8 @@ using (var requestSocket = new RequestSocket(ctx))
 using (var ctx = new ZmqContext())
 using (var replySocket = new ReplySocket(ctx))
 {
-    replySocket.Bind("tcp://127.0.0.1:9001");
-    Message msg = replySocket.Receive();
+    replySocket.Bind("tcp://*:9001");
+    ReceivedMessage msg = replySocket.Receive();
 
     Console.WriteLine("Message received: {0}", msg);
 }
