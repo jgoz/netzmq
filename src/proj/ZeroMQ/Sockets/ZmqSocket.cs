@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics;
-    using System.Text;
 
     using ZeroMQ.Proxy;
 
@@ -15,8 +14,6 @@
     public abstract class ZmqSocket : IDisposable
     {
         private readonly ISocketProxy socket;
-
-        private static Encoding defaultEncoding = Encoding.UTF8;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZmqSocket"/> class.
@@ -50,15 +47,6 @@
         }
 
         /// <summary>
-        /// Gets or sets the default encoding for all sockets in the current process
-        /// </summary>
-        public static Encoding DefaultEncoding
-        {
-            get { return defaultEncoding; }
-            set { defaultEncoding = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the I/O thread affinity for newly created connections on this socket.
         /// </summary>
         public ulong Affinity
@@ -86,7 +74,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the identity of the current socket as a string using <see cref="DefaultEncoding"/>.
+        /// Gets or sets the identity of the current socket as a string using <see cref="ZmqContext.DefaultEncoding"/>.
         /// </summary>
         public string IdentityString
         {
@@ -304,7 +292,7 @@
         /// <param name="value">The <see cref="string"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, string value)
         {
-            this.SetSocketOption(option, defaultEncoding.GetBytes(value));
+            this.SetSocketOption(option, value.ToZmqBuffer());
         }
 
         /// <summary>
@@ -378,7 +366,7 @@
         /// <returns>The <see cref="string"/> value of the specified option.</returns>
         internal string GetSocketOptionString(SocketOption option)
         {
-            return DefaultEncoding.GetString(this.GetSocketOptionBytes(option));
+            return this.GetSocketOptionBytes(option).ToZmqMessage();
         }
 
         /// <summary>

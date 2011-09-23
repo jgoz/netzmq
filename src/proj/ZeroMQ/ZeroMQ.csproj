@@ -45,6 +45,7 @@
     <Compile Include="IReceiveSocket.cs" />
     <Compile Include="ISendSocket.cs" />
     <Compile Include="ISubscribeSocket.cs" />
+    <Compile Include="MessageBufferExtensions.cs" />
     <Compile Include="Sockets\PairSocket.cs" />
     <Compile Include="Sockets\SubscribeExtSocket.cs" />
     <Compile Include="Sockets\PublishExtSocket.cs" />

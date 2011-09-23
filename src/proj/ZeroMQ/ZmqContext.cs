@@ -1,6 +1,7 @@
 ﻿namespace ZeroMQ
 {
     using System;
+    using System.Text;
 
     using ZeroMQ.Proxy;
 
@@ -101,6 +102,17 @@
             }
 
             this.disposed = true;
+        }
+
+        private static Encoding defaultEncoding = Encoding.UTF8;
+
+        /// <summary>
+        /// Gets or sets the default encoding for all sockets in the current process
+        /// </summary>
+        public static Encoding DefaultEncoding
+        {
+            get { return defaultEncoding; }
+            set { defaultEncoding = value; }
         }
     }
 }
