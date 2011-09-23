@@ -48,11 +48,11 @@
 
                     for (int i = 0; i < RoundtripCount; i++)
                     {
-                        SendResult result = socket.Send(msg, SocketFlags.None);
+                        SendResult result = socket.Send(msg);
 
                         Debug.Assert(result == SendResult.Sent, "Message was not indicated as sent.");
 
-                        reply = socket.Receive(SocketFlags.None);
+                        reply = socket.Receive();
 
                         Debug.Assert(reply.Data.Length == messageSize, "Pong message did not have the expected size.");
 
@@ -82,12 +82,12 @@
                 {
                     for (int i = 0; i < RoundtripCount; i++)
                     {
-                        ReceivedMessage message = socket.Receive(SocketFlags.None);
+                        ReceivedMessage message = socket.Receive();
 
                         Debug.Assert(message.Result == ReceiveResult.Received, "Message result was non-successful.");
                         Debug.Assert(message.Data.Length == messageSize, "Message length did not match expected value.");
 
-                        socket.Send(message.Data, SocketFlags.None);
+                        socket.Send(message.Data);
                     }
                 }
             }

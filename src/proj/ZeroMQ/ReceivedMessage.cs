@@ -2,27 +2,14 @@
 {
     using System;
 
-    using ZeroMQ.Sockets;
-
     /// <summary>
-    /// Stores retrieved message data and the outcome of a <see cref="ZmqSocket.Receive"/> operation.
+    /// Stores retrieved message data and the outcome of a Receive operation.
     /// </summary>
     public class ReceivedMessage
     {
-        private static readonly ReceivedMessage TryAgainResult = new ReceivedMessage(0, ReceiveResult.TryAgain);
+        private static readonly ReceivedMessage TryAgainResult = new ReceivedMessage(ReceiveResult.TryAgain);
 
-        internal ReceivedMessage(int bytesReceived, ReceiveResult result)
-        {
-            if (bytesReceived < 0)
-            {
-                throw new ArgumentOutOfRangeException("bytesReceived", bytesReceived, "Expected non-negative value.");
-            }
-
-            this.Data = new byte[bytesReceived];
-            this.Result = result;
-        }
-
-        internal ReceivedMessage(byte[] data, ReceiveResult result)
+        internal ReceivedMessage(byte[] data, ReceiveResult result, bool hasMoreParts)
         {
             if (data == null)
             {
@@ -31,6 +18,12 @@
 
             this.Data = data;
             this.Result = result;
+            this.HasMoreParts = hasMoreParts;
+        }
+
+        private ReceivedMessage(ReceiveResult result)
+            : this(new byte[0], result, false)
+        {
         }
 
         /// <summary>
@@ -42,6 +35,11 @@
         /// Gets the result of a socket receive operation.
         /// </summary>
         public ReceiveResult Result { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether more message parts will follow this message.
+        /// </summary>
+        public bool HasMoreParts { get; private set; }
 
         internal static ReceivedMessage TryAgain
         {

@@ -36,7 +36,7 @@
 
                 foreach (int messageSize in MessageSizes)
                 {
-                    ReceivedMessage message = socket.Receive(SocketFlags.None);
+                    ReceivedMessage message = socket.Receive();
                     Debug.Assert(message.Data.Length == messageSize, "Message length was different from expected size.");
                     Debug.Assert(message.Data[messageSize / 2] == 0x42, "Message did not contain verification data.");
 
@@ -45,7 +45,7 @@
 
                     for (int i = 1; i < MessageCount; i++)
                     {
-                        message = socket.Receive(SocketFlags.None);
+                        message = socket.Receive();
                         Debug.Assert(message.Data.Length == messageSize, "Message length was different from expected size.");
                         Debug.Assert(message.Data[messageSize / 2] == 0x42, "Message did not contain verification data.");
                     }
@@ -79,7 +79,7 @@
 
                     for (int i = 0; i < MessageCount; i++)
                     {
-                        socket.Send(msg, SocketFlags.None);
+                        socket.Send(msg);
                     }
                 }
             }

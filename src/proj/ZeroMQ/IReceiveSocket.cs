@@ -7,10 +7,10 @@
     /// </summary>
     public interface IReceiveSocket
     {
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/node()[name()!="exception"]'/>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/node()[name()!="exception"]'/>
         ReceivedMessage Receive();
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive3"]/node()[name()!="exception"]'/>
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/node()[name()!="exception"]'/>
         ReceivedMessage Receive(TimeSpan timeout);
     }
 }

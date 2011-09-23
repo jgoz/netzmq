@@ -1,6 +1,7 @@
 ﻿namespace ZeroMQ.Sockets
 {
     using System;
+    using System.Diagnostics;
     using System.Text;
 
     using ZeroMQ.Proxy;
@@ -421,7 +422,7 @@
             this.SetSocketOption(SocketOption.Unsubscribe, prefix);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive0"]/*'/>
         protected ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
@@ -430,7 +431,7 @@
 
             if (bytesReceived >= 0)
             {
-                return new ReceivedMessage(buffer, ReceiveResult.Received);
+                return new ReceivedMessage(buffer, ReceiveResult.Received, this.ReceiveMore);
             }
 
             if (ZmqLibException.GetErrorCode() == ErrorCode.Eagain)
@@ -441,7 +442,27 @@
             throw ZmqLibException.GetLastError();
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
+        protected ReceivedMessage Receive(TimeSpan timeout)
+        {
+            if (timeout == TimeSpan.MaxValue)
+            {
+                return this.Receive(SocketFlags.None);
+            }
+
+            ReceivedMessage message;
+            var timer = Stopwatch.StartNew();
+
+            do
+            {
+                message = this.Receive(SocketFlags.DontWait);
+            }
+            while (timer.Elapsed < timeout && message.Result == ReceiveResult.TryAgain);
+
+            return message;
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send0"]/*'/>
         protected SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.socket.Send((int)socketFlags, buffer);
@@ -457,6 +478,37 @@
             }
 
             throw ZmqLibException.GetLastError();
+        }
+
+        /// <summary>
+        /// Queue a single-part message (or the final message-part) to be sent by the socket in non-blocking mode.
+        /// If the specified timeout elapses, <see cref="SendResult.TryAgain"/> is returned, indicating that the
+        /// send operation should be attempted again.
+        /// </summary>
+        /// <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+        /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
+        /// <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        protected SendResult Send(byte[] buffer, SocketFlags socketFlags, TimeSpan timeout)
+        {
+            if (timeout == TimeSpan.MaxValue)
+            {
+                return this.Send(buffer, socketFlags & ~SocketFlags.DontWait);
+            }
+
+            socketFlags |= SocketFlags.DontWait;
+
+            SendResult result;
+            var timer = Stopwatch.StartNew();
+
+            do
+            {
+                result = this.Send(buffer, socketFlags);
+            }
+            while (timer.Elapsed < timeout && result == SendResult.TryAgain);
+
+            return result;
         }
 
         private static TimeSpan GetTimeSpan(int milliseconds)

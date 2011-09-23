@@ -1,33 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ZeroMQ>
-  <Members name="Receive1">
+  <Members name="Receive0">
     <summary>
-    Receive a single-part message (or the final message-part) from a remote socket.
+    Receive a message (or message-part) from a remote socket.
     </summary>
     <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
     <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
   
-  <Members name="Receive2">
+  <Members name="Receive1">
     <summary>
-    Receive a single-part message (or the final message-part) from a remote socket in blocking mode.
+    Receive a message (or message-part) from a remote socket in blocking mode.
     </summary>
     <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
   
-  <Members name="Receive3">
+  <Members name="Receive2">
     <summary>
-    Receive a single-part message (or the final message-part) from a remote socket in non-blocking mode.
+    Receive a message (or message-part) from a remote socket in non-blocking mode.
     If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="ReceivedMessage.Result"/>,
     indicating that the receive operation should be attempted again.
     </summary>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
     <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
   
-  <Members name="Send1">
+  <Members name="Send0">
     <summary>
     Queue a single-part message (or the final message-part) to be sent by the socket.
     </summary>
@@ -37,7 +38,7 @@
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
 
-  <Members name="Send2">
+  <Members name="Send1">
     <summary>
     Queue a single-part message (or the final message-part) to be sent by the socket in blocking mode.
     </summary>
@@ -46,7 +47,7 @@
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
   
-  <Members name="Send3">
+  <Members name="Send2">
     <summary>
     Queue a single-part message (or the final message-part) to be sent by the socket in non-blocking mode.
     If the specified timeout elapses, <see cref="SendResult.TryAgain"/> is returned, indicating that the

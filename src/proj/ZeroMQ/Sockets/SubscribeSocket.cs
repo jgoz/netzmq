@@ -1,12 +1,14 @@
 ﻿namespace ZeroMQ.Sockets
 {
+    using System;
+
     using ZeroMQ.Proxy;
 
     /// <summary>
     /// ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
     /// via <see cref="Subscribe(byte[])"/> or one of its overloads before connecting to a publisher.
     /// </summary>
-    public sealed class SubscribeSocket : ZmqSocket
+    public sealed class SubscribeSocket : ZmqSocket, IReceiveSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscribeSocket"/> class.
@@ -54,9 +56,15 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public new ReceivedMessage Receive(SocketFlags socketFlags)
+        public ReceivedMessage Receive()
         {
-            return base.Receive(socketFlags);
+            return this.Receive(SocketFlags.None);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
+        public new ReceivedMessage Receive(TimeSpan timeout)
+        {
+            return base.Receive(timeout);
         }
     }
 }
