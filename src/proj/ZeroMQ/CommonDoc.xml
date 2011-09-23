@@ -27,24 +27,6 @@
     <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
   </Members>
   
-  <Members name="ReceivePart1">
-    <summary>
-    Receive part of a multi-part message from a remote socket in blocking mode. More message parts will follow.
-    </summary>
-    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
-    <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
-  </Members>
-  
-  <Members name="ReceivePart2">
-    <summary>
-    Receive part of a multi-part message from a remote socket in non-blocking mode. More message parts will follow.
-    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="ReceivedMessage.Result"/>,
-    indicating that the receive operation should be attempted again.
-    </summary>
-    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
-    <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
-  </Members>
-
   <Members name="Send1">
     <summary>
     Queue a single-part message (or the final message-part) to be sent by the socket.

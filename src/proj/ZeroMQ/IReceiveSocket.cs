@@ -12,11 +12,5 @@
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive3"]/node()[name()!="exception"]'/>
         ReceivedMessage Receive(TimeSpan timeout);
-
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ReceivePart1"]/node()[name()!="exception"]'/>
-        ReceivedMessage ReceivePart();
-
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ReceivePart2"]/node()[name()!="exception"]'/>
-        ReceivedMessage ReceivePart(TimeSpan timeout);
     }
 }
