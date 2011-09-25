@@ -41,11 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReceiveReadyEventArgs.cs" />
     <Compile Include="IDuplexSocket.cs" />
     <Compile Include="IReceiveSocket.cs" />
     <Compile Include="ISendSocket.cs" />
     <Compile Include="ISubscribeSocket.cs" />
     <Compile Include="MessageBufferExtensions.cs" />
+    <Compile Include="SendReadyEventArgs.cs" />
     <Compile Include="Sockets\PairSocket.cs" />
     <Compile Include="Sockets\SubscribeExtSocket.cs" />
     <Compile Include="Sockets\PublishExtSocket.cs" />

@@ -86,4 +86,16 @@
     Remove subscription filter for all incoming messages. Other filters may remain.
     </summary>
   </Members>
+
+  <Members name="ReceiveReady">
+    <summary>
+    Occurs when at least one message may be received from the socket without blocking.
+    </summary>
+  </Members>
+
+  <Members name="SendReady">
+    <summary>
+    Occurs when at least one message may be sent via the socket without blocking.
+    </summary>
+  </Members>
 </ZeroMQ>

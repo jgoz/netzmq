@@ -46,6 +46,12 @@
             this.Dispose(false);
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        protected event EventHandler<ReceiveReadyEventArgs> ReceiveReady;
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
+        protected event EventHandler<SendReadyEventArgs> SendReady;
+
         /// <summary>
         /// Gets or sets the I/O thread affinity for newly created connections on this socket.
         /// </summary>
@@ -455,6 +461,26 @@
             while (timer.Elapsed < timeout && result == SendResult.TryAgain);
 
             return result;
+        }
+
+        internal void InvokeReceiveReady(ReceiveReadyEventArgs e)
+        {
+            EventHandler<ReceiveReadyEventArgs> handler = this.ReceiveReady;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        internal void InvokeSendReady(SendReadyEventArgs e)
+        {
+            EventHandler<SendReadyEventArgs> handler = this.SendReady;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
 
         /// <summary>
