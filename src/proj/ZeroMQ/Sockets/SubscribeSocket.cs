@@ -17,6 +17,18 @@
         {
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        public ReceivedMessage Receive()
+        {
+            return this.Receive(SocketFlags.None);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
+        public new ReceivedMessage Receive(TimeSpan timeout)
+        {
+            return base.Receive(timeout);
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeAll"]/*'/>
         public void SubscribeAll()
         {
@@ -39,18 +51,6 @@
         public new void Unsubscribe(byte[] prefix)
         {
             base.Unsubscribe(prefix);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public ReceivedMessage Receive()
-        {
-            return this.Receive(SocketFlags.None);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
-        public new ReceivedMessage Receive(TimeSpan timeout)
-        {
-            return base.Receive(timeout);
         }
     }
 }
