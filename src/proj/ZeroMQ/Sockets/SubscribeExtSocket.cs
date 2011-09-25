@@ -7,7 +7,7 @@
     /// Set a subscription filter via <see cref="Subscribe(byte[])"/> or <see cref="SubscribeAll"/> before
     /// connecting to a publisher.
     /// </summary>
-    public sealed class SubscribeExtSocket : ZmqSocket, ISubscribeSocket, IDuplexSocket
+    public sealed class SubscribeExtSocket : ZmqSocket, IDuplexSocket, ISubscribeSocket
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscribeExtSocket"/> class.
@@ -32,28 +32,16 @@
             remove { base.SendReady -= value; }
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeAll"]/*'/>
-        public void SubscribeAll()
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        public ReceivedMessage Receive()
         {
-            this.Subscribe(new byte[0]);
+            return this.Receive(SocketFlags.None);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
-        public new void Subscribe(byte[] prefix)
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
+        public new ReceivedMessage Receive(TimeSpan timeout)
         {
-            base.Subscribe(prefix);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="UnsubscribeAll"]/*'/>
-        public void UnsubscribeAll()
-        {
-            this.Unsubscribe(new byte[0]);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
-        public new void Unsubscribe(byte[] prefix)
-        {
-            base.Unsubscribe(prefix);
+            return base.Receive(timeout);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
@@ -80,16 +68,28 @@
             return this.Send(buffer, SocketFlags.SendMore | SocketFlags.DontWait, timeout);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public ReceivedMessage Receive()
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeAll"]/*'/>
+        public void SubscribeAll()
         {
-            return this.Receive(SocketFlags.None);
+            this.Subscribe(new byte[0]);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
-        public new ReceivedMessage Receive(TimeSpan timeout)
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
+        public new void Subscribe(byte[] prefix)
         {
-            return base.Receive(timeout);
+            base.Subscribe(prefix);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="UnsubscribeAll"]/*'/>
+        public void UnsubscribeAll()
+        {
+            this.Unsubscribe(new byte[0]);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
+        public new void Unsubscribe(byte[] prefix)
+        {
+            base.Unsubscribe(prefix);
         }
     }
 }

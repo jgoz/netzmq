@@ -30,6 +30,18 @@
             remove { base.SendReady -= value; }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
+        public ReceivedMessage Receive()
+        {
+            return this.Receive(SocketFlags.None);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
+        public new ReceivedMessage Receive(TimeSpan timeout)
+        {
+            return base.Receive(timeout);
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
         public SendResult Send(byte[] buffer)
         {
@@ -52,18 +64,6 @@
         public SendResult SendPart(byte[] buffer, TimeSpan timeout)
         {
             return this.Send(buffer, SocketFlags.SendMore | SocketFlags.DontWait, timeout);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public ReceivedMessage Receive()
-        {
-            return this.Receive(SocketFlags.None);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
-        public new ReceivedMessage Receive(TimeSpan timeout)
-        {
-            return base.Receive(timeout);
         }
     }
 }
