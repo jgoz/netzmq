@@ -18,7 +18,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
         /// <param name="socketType">Socket type for the current socket.</param>
         /// <exception cref="ZmqLibException">An error occured while initializing the underlying socket.</exception>
         internal ZmqSocket(ZmqContext context, SocketType socketType)

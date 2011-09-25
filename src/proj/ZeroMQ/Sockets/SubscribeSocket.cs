@@ -11,7 +11,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscribeSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
         public SubscribeSocket(ZmqContext context)
             : base(context, SocketType.Sub)
         {

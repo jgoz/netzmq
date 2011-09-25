@@ -6,17 +6,19 @@
     using ZeroMQ.Proxy;
 
     /// <summary>
-    /// Represents a thread-safe ZeroMQ context object.
+    /// Represents a ZeroMQ context object.
     /// </summary>
     /// <remarks>
     /// The <see cref="ZmqContext"/> object is a container for all sockets in a single process,
     /// and acts as the transport for inproc sockets. <see cref="ZmqContext"/> is thread safe.
     /// </remarks>
-    public class ZmqContext : IZmqContext
+    public sealed class ZmqContext : IDisposable
     {
         private const int DefaultThreadPoolSize = 1;
 
         private readonly IContextProxy proxy;
+
+        private static Encoding defaultEncoding = Encoding.UTF8;
 
         private bool disposed;
 
@@ -64,6 +66,15 @@
         }
 
         /// <summary>
+        /// Gets or sets the default encoding for all sockets in the current process
+        /// </summary>
+        public static Encoding DefaultEncoding
+        {
+            get { return defaultEncoding; }
+            set { defaultEncoding = value; }
+        }
+
+        /// <summary>
         /// Gets the size of the thread pool for this context. Default is 1.
         /// </summary>
         public int ThreadPoolSize { get; private set; }
@@ -89,7 +100,7 @@
         /// Frees the underlying ZeroMQ context handle.
         /// </summary>
         /// <param name="disposing">True if the object is being disposed or false if it is being finalized.</param>
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -102,17 +113,6 @@
             }
 
             this.disposed = true;
-        }
-
-        private static Encoding defaultEncoding = Encoding.UTF8;
-
-        /// <summary>
-        /// Gets or sets the default encoding for all sockets in the current process
-        /// </summary>
-        public static Encoding DefaultEncoding
-        {
-            get { return defaultEncoding; }
-            set { defaultEncoding = value; }
         }
     }
 }

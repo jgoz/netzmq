@@ -10,7 +10,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PushSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
         public PushSocket(ZmqContext context)
             : base(context, SocketType.Push)
         {

@@ -10,7 +10,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PublishSocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
         public PublishSocket(ZmqContext context)
             : base(context, SocketType.Pub)
         {

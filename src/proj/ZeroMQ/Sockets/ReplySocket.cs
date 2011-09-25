@@ -10,7 +10,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplySocket"/> class.
         /// </summary>
-        /// <param name="context"><see cref="IZmqContext"/> to use when initializing the socket.</param>
+        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
         public ReplySocket(ZmqContext context)
             : base(context, SocketType.Rep)
         {
