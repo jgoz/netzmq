@@ -30,7 +30,7 @@
 
             try
             {
-                this.socket = ProxyFactory.CreateSocket(context.Handle, socketType);
+                this.socket = ProxyFactory.CreateSocket(context.Handle, (int)socketType);
             }
             catch (ProxyException ex)
             {

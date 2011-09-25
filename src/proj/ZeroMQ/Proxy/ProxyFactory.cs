@@ -29,7 +29,7 @@
             return (IContextProxy)Activator.CreateInstance(SocketContextProxyType, threadPoolSize);
         }
 
-        public static ISocketProxy CreateSocket(IntPtr context, SocketType socketType)
+        public static ISocketProxy CreateSocket(IntPtr context, int socketType)
         {
             return (ISocketProxy)Activator.CreateInstance(SocketProxyType, context, socketType);
         }

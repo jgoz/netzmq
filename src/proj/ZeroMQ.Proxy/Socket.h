@@ -20,9 +20,9 @@ namespace Proxy {
         void *m_socket;
 
     public:
-        Socket(IntPtr context, SocketType socketType)
+        Socket(IntPtr context, int socketType)
         {
-            m_socket = zmq_socket((void*)context, (int)socketType);
+            m_socket = zmq_socket((void*)context, socketType);
 
             if (m_socket == NULL) {
                 throw ZmqErrorProvider::GetLastError();
