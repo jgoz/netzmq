@@ -9,6 +9,11 @@
     {
         internal ReceiveReadyEventArgs(IReceiveSocket socket)
         {
+            if (socket == null)
+            {
+                throw new ArgumentNullException("socket");
+            }
+
             this.Socket = socket;
         }
 

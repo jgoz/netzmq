@@ -41,7 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPoller.cs" />
     <Compile Include="MillisecondExtensions.cs" />
+    <Compile Include="PollFlags.cs" />
+    <Compile Include="Polling\ZmqPoller.cs" />
+    <Compile Include="Proxy\IPollerProxy.cs" />
+    <Compile Include="Polling\PollItem.cs" />
+    <Compile Include="Proxy\IPollItem.cs" />
     <Compile Include="ReceiveReadyEventArgs.cs" />
     <Compile Include="IDuplexSocket.cs" />
     <Compile Include="IReceiveSocket.cs" />

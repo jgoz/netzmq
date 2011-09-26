@@ -98,4 +98,23 @@
     Occurs when at least one message may be sent via the socket without blocking.
     </summary>
   </Members>
+  
+  <Members name="Poll1">
+    <summary>
+    Multiplex input/output events over the contained set of sockets in blocking mode, firing
+    <see cref="IReceiveSocket.ReceiveReady" /> or <see cref="ISendSocket.SendReady" /> as appropriate.
+    </summary>
+    <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+  </Members>
+  
+  <Members name="Poll2">
+    <summary>
+    Multiplex input/output events over the contained set of sockets in non-blocking mode, firing
+    <see cref="IReceiveSocket.ReceiveReady" /> or <see cref="ISendSocket.SendReady" /> as appropriate.
+    Returns when one or more events are ready to fire or when the specified timeout elapses, whichever
+    comes first.
+    </summary>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+    <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+  </Members>
 </ZeroMQ>

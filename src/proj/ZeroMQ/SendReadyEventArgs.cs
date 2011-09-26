@@ -9,6 +9,11 @@
     {
         internal SendReadyEventArgs(ISendSocket socket)
         {
+            if (socket == null)
+            {
+                throw new ArgumentNullException("socket");
+            }
+
             this.Socket = socket;
         }
 

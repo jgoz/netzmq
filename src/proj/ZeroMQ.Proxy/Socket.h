@@ -34,6 +34,11 @@ namespace Proxy {
             this->!Socket();
         }
 
+        virtual property IntPtr Handle
+        {
+            IntPtr get() { return (IntPtr)m_socket; }
+        }
+
         virtual int __clrcall Bind(String^ endpoint)
         {
             IntPtr p = Marshal::StringToHGlobalAnsi(endpoint);

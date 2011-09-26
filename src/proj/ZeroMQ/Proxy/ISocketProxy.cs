@@ -4,6 +4,8 @@
 
     internal interface ISocketProxy : IDisposable
     {
+        IntPtr Handle { get; }
+
         int Bind(string endpoint);
         int Connect(string endpoint);
 

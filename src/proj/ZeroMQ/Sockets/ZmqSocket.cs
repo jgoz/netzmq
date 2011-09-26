@@ -204,6 +204,11 @@
             set { this.SetSocketOption(SocketOption.SndTimeo, value.GetMilliseconds()); }
         }
 
+        internal IntPtr Handle
+        {
+            get { return this.socket.Handle; }
+        }
+
         /// <summary>
         /// Create an endpoint for accepting connections and bind it to the current socket.
         /// </summary>
