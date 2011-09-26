@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     internal enum SocketType
     {

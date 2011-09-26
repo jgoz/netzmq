@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Proxy
 {
     internal enum SocketOption
     {
