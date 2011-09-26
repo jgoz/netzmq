@@ -50,8 +50,6 @@
                         Debug.Assert(message.Data[messageSize / 2] == 0x42, "Message did not contain verification data.");
                     }
 
-                    GC.AddMemoryPressure(messageSize * MessageCount);
-
                     watch.Stop();
 
                     long elapsedTime = watch.ElapsedTicks;

@@ -7,6 +7,9 @@
     /// </summary>
     public interface IReceiveSocket
     {
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        event EventHandler<ReceiveReadyEventArgs> ReceiveReady;
+
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/node()[name()!="exception"]'/>
         ReceivedMessage Receive();
 

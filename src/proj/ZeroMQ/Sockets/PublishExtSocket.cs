@@ -16,6 +16,20 @@
         {
         }
 
+        /// <include file='../CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        public new event EventHandler<ReceiveReadyEventArgs> ReceiveReady
+        {
+            add { base.ReceiveReady += value; }
+            remove { base.ReceiveReady -= value; }
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
+        public new event EventHandler<SendReadyEventArgs> SendReady
+        {
+            add { base.SendReady += value; }
+            remove { base.SendReady -= value; }
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
         public ReceivedMessage Receive()
         {

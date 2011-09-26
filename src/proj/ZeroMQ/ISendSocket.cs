@@ -7,6 +7,9 @@
     /// </summary>
     public interface ISendSocket
     {
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
+        event EventHandler<SendReadyEventArgs> SendReady;
+
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/node()[name()!="exception"]'/>
         SendResult Send(byte[] buffer);
 

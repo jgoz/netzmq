@@ -46,6 +46,12 @@
             this.Dispose(false);
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        protected event EventHandler<ReceiveReadyEventArgs> ReceiveReady;
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
+        protected event EventHandler<SendReadyEventArgs> SendReady;
+
         /// <summary>
         /// Gets or sets the I/O thread affinity for newly created connections on this socket.
         /// </summary>
@@ -78,8 +84,8 @@
         /// </summary>
         public TimeSpan Linger
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.Linger)); }
-            set { this.SetSocketOption(SocketOption.Linger, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.Linger).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.Linger, value.GetMilliseconds()); }
         }
 
         /// <summary>
@@ -114,8 +120,8 @@
         /// </summary>
         public TimeSpan MulticastRecoveryInterval
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.RecoveryIvl)); }
-            set { this.SetSocketOption(SocketOption.RecoveryIvl, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.RecoveryIvl).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.RecoveryIvl, value.GetMilliseconds()); }
         }
 
         /// <summary>
@@ -149,8 +155,8 @@
         /// </summary>
         public TimeSpan ReceiveTimeout
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.RcvTimeo)); }
-            set { this.SetSocketOption(SocketOption.RcvTimeo, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.RcvTimeo).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.RcvTimeo, value.GetMilliseconds()); }
         }
 
         /// <summary>
@@ -158,8 +164,8 @@
         /// </summary>
         public TimeSpan ReconnectInterval
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.ReconnectIvl)); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvl, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvl).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvl, value.GetMilliseconds()); }
         }
 
         /// <summary>
@@ -167,8 +173,8 @@
         /// </summary>
         public TimeSpan ReconnectIntervalMax
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax)); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, value.GetMilliseconds()); }
         }
 
         /// <summary>
@@ -194,8 +200,13 @@
         /// </summary>
         public TimeSpan SendTimeout
         {
-            get { return GetTimeSpan(this.GetSocketOptionInt32(SocketOption.SndTimeo)); }
-            set { this.SetSocketOption(SocketOption.SndTimeo, GetMilliseconds(value)); }
+            get { return this.GetSocketOptionInt32(SocketOption.SndTimeo).GetTimeSpan(); }
+            set { this.SetSocketOption(SocketOption.SndTimeo, value.GetMilliseconds()); }
+        }
+
+        internal IntPtr Handle
+        {
+            get { return this.socket.Handle; }
         }
 
         /// <summary>
@@ -457,6 +468,26 @@
             return result;
         }
 
+        internal void InvokeReceiveReady(ReceiveReadyEventArgs e)
+        {
+            EventHandler<ReceiveReadyEventArgs> handler = this.ReceiveReady;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        internal void InvokeSendReady(SendReadyEventArgs e)
+        {
+            EventHandler<SendReadyEventArgs> handler = this.SendReady;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="ZmqSocket"/>, and optionally disposes of the managed resources.
         /// </summary>
@@ -479,16 +510,6 @@
         protected void Unsubscribe(byte[] prefix)
         {
             this.SetSocketOption(SocketOption.Unsubscribe, prefix);
-        }
-
-        private static TimeSpan GetTimeSpan(int milliseconds)
-        {
-            return milliseconds == -1 ? TimeSpan.MaxValue : TimeSpan.FromMilliseconds(milliseconds);
-        }
-
-        private static int GetMilliseconds(TimeSpan timeSpan)
-        {
-            return timeSpan == TimeSpan.MaxValue ? -1 : (int)timeSpan.TotalMilliseconds;
         }
     }
 }
