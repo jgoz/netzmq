@@ -23,15 +23,6 @@
             }
 
             this.proxy = proxy;
-
-            try
-            {
-                this.proxy = proxy;
-            }
-            catch (ProxyException ex)
-            {
-                throw new ZmqLibException(ex);
-            }
         }
 
         /// <summary>
