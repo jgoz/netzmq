@@ -2,22 +2,17 @@
 {
     using System;
 
-    /// <summary>
-    /// ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
-    /// via <see cref="Subscribe(byte[])"/> or <see cref="SubscribeAll"/> before connecting to a publisher.
-    /// </summary>
+    using ZeroMQ.Proxy;
+
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeSocket"]/*'/>
     public sealed class SubscribeSocket : ZmqSocket, ISubscribeSocket
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubscribeSocket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
-        public SubscribeSocket(ZmqContext context)
-            : base(context, SocketType.Sub)
+        internal SubscribeSocket(ISocketProxy proxy)
+            : base(proxy)
         {
         }
 
-        /// <include file='../CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
         public new event EventHandler<ReceiveReadyEventArgs> ReceiveReady
         {
             add { base.ReceiveReady += value; }

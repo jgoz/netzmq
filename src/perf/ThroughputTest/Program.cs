@@ -29,8 +29,8 @@
 
         private static void ProxyPullThread()
         {
-            using (var context = new ZmqContext())
-            using (var socket = new PullSocket(context))
+            using (var context = ZmqContext.Create())
+            using (var socket = context.CreatePullSocket())
             {
                 socket.Bind("tcp://*:9091");
 
@@ -65,8 +65,8 @@
 
         private static void ProxyPushThread()
         {
-            using (var context = new ZmqContext())
-            using (var socket = new PushSocket(context))
+            using (var context = ZmqContext.Create())
+            using (var socket = context.CreatePushSocket())
             {
                 socket.Connect("tcp://127.0.0.1:9091");
 

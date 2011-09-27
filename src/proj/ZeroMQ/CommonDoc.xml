@@ -1,5 +1,136 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ZeroMQ>
+  <Members name="DuplexSocket">
+    <summary>
+    A socket that is capable of both sending and receiving messages to and from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="ReceiveSocket">
+    <summary>
+    A socket that is capable of receiving messages from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SendSocket">
+    <summary>
+    A socket that is capable of sending messages to remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SubscribeExtSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    Extends <see cref="ISubscribeSocket"/> by allowing outgoing subscription messages to be sent
+    </summary>
+  </Members>
+
+  <Members name="SubscribeSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    </summary>
+  </Members>
+
+  <Members name="ZmqPollSet">
+    <summary>
+    Multiplexes input/output events in a level-triggered fashion over a set of sockets.
+    </summary>
+  </Members>
+  
+  <Members name="CreatePairSocket">
+    <summary>
+    Create a ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_PAIR socket.</returns>
+  </Members>
+
+  <Members name="CreatePublishExtSocket">
+    <summary>
+    Create a ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XPUB socket.</returns>
+  </Members>
+
+  <Members name="CreatePublishSocket">
+    <summary>
+    Create a ZMQ_PUB socket. Publish messages to connected peers in a fan-out model.
+    </summary>
+    <returns>An <see cref="ISendSocket"/> instance for a ZMQ_PUB socket.</returns>
+  </Members>
+
+  <Members name="CreatePullSocket">
+    <summary>
+    Create a ZMQ_PULL socket. Used by a pipeline node to receive messages from upstream pipeline nodes
+    </summary>
+    <returns>An <see cref="IReceiveSocket"/> instance for a ZMQ_PULL socket.</returns>
+  </Members>
+
+  <Members name="CreatePushSocket">
+    <summary>
+    Create a ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
+    </summary>
+    <returns>An <see cref="ISendSocket"/> instance for a ZMQ_PUSH socket.</returns>
+  </Members>
+
+  <Members name="CreateReplyExtSocket">
+    <summary>
+    Create a ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
+    outgoing messages can be correctly routed.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XREP socket.</returns>
+  </Members>
+
+  <Members name="CreateReplySocket">
+    <summary>
+    Create a ZMQ_REP socket. Receive requests from and sends replies to a client.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_REP socket.</returns>
+  </Members>
+
+  <Members name="CreateRequestExtSocket">
+    <summary>
+    Create a ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
+    fair-queuing incoming messages.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XREQ socket.</returns>
+  </Members>
+
+  <Members name="CreateRequestSocket">
+    <summary>
+    Create a ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_REQ socket.</returns>
+  </Members>
+  
+  <Members name="CreateSubscribeExtSocket">
+    <summary>
+    Create a ZMQ_XSUB socket. Extends Subscribe socket by allowing outgoing subscription messages to be sent.
+    Set a subscription filter via <see cref="ISubscribeSocket.Subscribe(byte[])"/> or <see cref="ISubscribeSocket.SubscribeAll"/>
+    before connecting to a publisher.
+    </summary>
+    <returns>An <see cref="ISubscribeExtSocket"/> instance for a ZMQ_XSUB socket.</returns>
+  </Members>
+  
+  <Members name="CreateSubscribeSocket">
+    <summary>
+    Create a ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
+    via <see cref="ISubscribeSocket.Subscribe(byte[])"/> or <see cref="ISubscribeSocket.SubscribeAll"/>
+    before connecting to a publisher.
+    </summary>
+    <returns>An <see cref="ISubscribeSocket"/> instance for a ZMQ_SUB socket.</returns>
+  </Members>
+  
+  <Members name="CreatePollSet">
+    <summary>
+    Create a concrete <see cref="IPollSet"/> instance over a set of sockets.
+    </summary>
+    <param name="sockets">
+    The set of <see cref="ISocket"/>s to multiplex. Set <see cref="IReceiveSocket.ReceiveReady"/>
+    and/or <see cref="ISendSocket.SendReady"/> as appropriate on each socket prior to calling Poll.
+    </param>
+    <returns>An <see cref="IPollSet"/> instance for a given socket set.</returns>
+  </Members>
+  
   <Members name="Bind">
     <summary>
     Create an endpoint for accepting connections and bind it to the current socket.

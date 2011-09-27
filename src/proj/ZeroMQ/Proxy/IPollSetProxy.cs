@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal interface IPollerProxy : IDisposable
+    internal interface IPollSetProxy : IDisposable
     {
         int Poll(IPollItem[] items, int timeoutMilliseconds);
     }

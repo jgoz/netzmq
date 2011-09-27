@@ -2,9 +2,7 @@
 {
     using System;
 
-    /// <summary>
-    /// A socket that is capable of sending messages to remote endpoints.
-    /// </summary>
+    /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SendSocket"]/*'/>
     public interface ISendSocket : ISocket
     {
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>

@@ -2,21 +2,17 @@
 {
     using System;
 
-    /// <summary>
-    /// ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
-    /// </summary>
-    public sealed class PullSocket : ZmqSocket, IReceiveSocket
+    using ZeroMQ.Proxy;
+
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveSocket"]/*'/>
+    public sealed class ReceiveSocket : ZmqSocket, IReceiveSocket
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PullSocket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
-        public PullSocket(ZmqContext context)
-            : base(context, SocketType.Pull)
+        internal ReceiveSocket(ISocketProxy proxy)
+            : base(proxy)
         {
         }
 
-        /// <include file='../CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
         public new event EventHandler<ReceiveReadyEventArgs> ReceiveReady
         {
             add { base.ReceiveReady += value; }

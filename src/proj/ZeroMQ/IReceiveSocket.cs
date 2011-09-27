@@ -2,9 +2,7 @@
 {
     using System;
 
-    /// <summary>
-    /// A socket that is capable of receiving messages from remote endpoints.
-    /// </summary>
+    /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveSocket"]/*'/>
     public interface IReceiveSocket : ISocket
     {
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>

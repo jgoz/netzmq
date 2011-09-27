@@ -2,21 +2,17 @@
 {
     using System;
 
-    /// <summary>
-    /// ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
-    /// </summary>
-    public sealed class PairSocket : ZmqSocket, IDuplexSocket
+    using ZeroMQ.Proxy;
+
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="DuplexSocket"]/*'/>
+    public sealed class DuplexSocket : ZmqSocket, IDuplexSocket
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PairSocket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
-        public PairSocket(ZmqContext context)
-            : base(context, SocketType.Pair)
+        internal DuplexSocket(ISocketProxy proxy)
+            : base(proxy)
         {
         }
 
-        /// <include file='../CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveReady"]/*'/>
         public new event EventHandler<ReceiveReadyEventArgs> ReceiveReady
         {
             add { base.ReceiveReady += value; }

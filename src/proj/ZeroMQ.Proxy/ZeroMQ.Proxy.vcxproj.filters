@@ -33,7 +33,7 @@
     <ClInclude Include="ZmqErrorProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Poller.h">
+    <ClInclude Include="PollSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClCompile Include="ZmqErrorProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Poller.cpp">
+    <ClCompile Include="PollSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

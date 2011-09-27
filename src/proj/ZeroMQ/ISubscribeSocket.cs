@@ -1,8 +1,6 @@
 namespace ZeroMQ
 {
-    /// <summary>
-    /// A socket that can subscribe to and receive data distributed by a remote publisher.
-    /// </summary>
+    /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeSocket"]/*'/>
     public interface ISubscribeSocket : IReceiveSocket
     {
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeAll"]/*'/>

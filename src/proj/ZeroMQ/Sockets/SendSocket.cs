@@ -2,17 +2,13 @@
 {
     using System;
 
-    /// <summary>
-    /// ZMQ_PUB socket. Publish messages to connected peers in a fan-out model.
-    /// </summary>
-    public sealed class PublishSocket : ZmqSocket, ISendSocket
+    using ZeroMQ.Proxy;
+
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendSocket"]/*'/>
+    public sealed class SendSocket : ZmqSocket, ISendSocket
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PublishSocket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
-        public PublishSocket(ZmqContext context)
-            : base(context, SocketType.Pub)
+        internal SendSocket(ISocketProxy proxy)
+            : base(proxy)
         {
         }
 

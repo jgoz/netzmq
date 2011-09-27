@@ -13,16 +13,16 @@ NOTE: These are not the official .NET bindings. Until this project is stable, yo
 
 ```c#
 // Client socket
-using (var ctx = new ZmqContext())
-using (var requestSocket = new RequestSocket(ctx))
+using (var ctx = ZmqContext.Create())
+using (var requestSocket = ctx.CreateRequestSocket())
 {
     requestSocket.Connect("tcp://127.0.0.1:9001");
-    requestSocket.Send("Hello world!");
+    requestSocket.Send("Hello world!".ToZmqBuffer());
 }
 
 // Server socket
-using (var ctx = new ZmqContext())
-using (var replySocket = new ReplySocket(ctx))
+using (var ctx = ZmqContext.Create())
+using (var replySocket = ctx.CreateReplySocket())
 {
     replySocket.Bind("tcp://*:9001");
     ReceivedMessage msg = replySocket.Receive();

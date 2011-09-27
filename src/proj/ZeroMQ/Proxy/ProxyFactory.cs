@@ -10,7 +10,7 @@
 
         private static readonly Type SocketContextProxyType;
         private static readonly Type SocketProxyType;
-        private static readonly Type PollerProxyType;
+        private static readonly Type PollSetProxyType;
 
         static ProxyFactory()
         {
@@ -18,7 +18,7 @@
 
             SocketContextProxyType = ProxyAssembly.GetTypes().Single(t => typeof(IContextProxy).IsAssignableFrom(t));
             SocketProxyType = ProxyAssembly.GetTypes().Single(t => typeof(ISocketProxy).IsAssignableFrom(t));
-            PollerProxyType = ProxyAssembly.GetTypes().Single(t => typeof(IPollerProxy).IsAssignableFrom(t));
+            PollSetProxyType = ProxyAssembly.GetTypes().Single(t => typeof(IPollSetProxy).IsAssignableFrom(t));
 
             Type errorProviderType = ProxyAssembly.GetTypes().Single(t => typeof(IErrorProviderProxy).IsAssignableFrom(t));
             ErrorProvider = (IErrorProviderProxy)Activator.CreateInstance(errorProviderType);
@@ -36,9 +36,9 @@
             return (ISocketProxy)Activator.CreateInstance(SocketProxyType, context, socketType);
         }
 
-        public static IPollerProxy CreatePoller(int socketCount)
+        public static IPollSetProxy CreatePollSet(int socketCount)
         {
-            return (IPollerProxy)Activator.CreateInstance(PollerProxyType, socketCount);
+            return (IPollSetProxy)Activator.CreateInstance(PollSetProxyType, socketCount);
         }
     }
 }
