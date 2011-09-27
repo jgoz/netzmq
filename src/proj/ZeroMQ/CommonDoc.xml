@@ -1,5 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ZeroMQ>
+  <Members name="DuplexSocket">
+    <summary>
+    A socket that is capable of both sending and receiving messages to and from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="ReceiveSocket">
+    <summary>
+    A socket that is capable of receiving messages from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SendSocket">
+    <summary>
+    A socket that is capable of sending messages to remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SubscribeExtSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    Extends <see cref="ISubscribeSocket"/> by allowing outgoing subscription messages to be sent
+    </summary>
+  </Members>
+
+  <Members name="SubscribeSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    </summary>
+  </Members>
+
+  <Members name="ZmqPoller">
+    <summary>
+    Multiplexes input/output events in a level-triggered fashion over a set of sockets.
+    </summary>
+  </Members>
+  
   <Members name="CreatePairSocket">
     <summary>
     Create a ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.

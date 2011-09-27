@@ -190,10 +190,6 @@
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Frees the underlying ZeroMQ context handle.
-        /// </summary>
-        /// <param name="disposing">True if the object is being disposed or false if it is being finalized.</param>
         private void Dispose(bool disposing)
         {
             if (this.disposed)

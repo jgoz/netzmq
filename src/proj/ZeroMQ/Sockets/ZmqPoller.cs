@@ -5,14 +5,15 @@
 
     using ZeroMQ.Proxy;
 
-    internal class ZmqPoller : IPoller
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ZmqPoller"]/*'/>
+    public sealed class ZmqPoller : IPoller
     {
         private readonly IPollItem[] pollItems;
         private readonly IPollerProxy proxy;
 
         private bool disposed;
 
-        public ZmqPoller(IPollerProxy proxy, IPollItem[] pollItems)
+        internal ZmqPoller(IPollerProxy proxy, IPollItem[] pollItems)
         {
             if (proxy == null)
             {
@@ -28,17 +29,22 @@
             this.proxy = proxy;
         }
 
+        /// <summary>
+        /// Releases all resources used by the current instance of the <see cref="ZmqPoller"/> class.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Poll1"]/*'/>
         public void Poll()
         {
             this.PollBlocking();
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Poll2"]/*'/>
         public void Poll(TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)
