@@ -4,9 +4,9 @@
 
     using ZeroMQ.Proxy;
 
-    internal class SubscribeSocket : ZmqSocket, ISubscribeSocket
+    internal class ReceiveSocket : ZmqSocket, IReceiveSocket
     {
-        public SubscribeSocket(ISocketProxy proxy)
+        public ReceiveSocket(ISocketProxy proxy)
             : base(proxy)
         {
         }
@@ -25,26 +25,6 @@
         public new ReceivedMessage Receive(TimeSpan timeout)
         {
             return base.Receive(timeout);
-        }
-
-        public void SubscribeAll()
-        {
-            this.Subscribe(new byte[0]);
-        }
-
-        public new void Subscribe(byte[] prefix)
-        {
-            base.Subscribe(prefix);
-        }
-
-        public void UnsubscribeAll()
-        {
-            this.Unsubscribe(new byte[0]);
-        }
-
-        public new void Unsubscribe(byte[] prefix)
-        {
-            base.Unsubscribe(prefix);
         }
     }
 }

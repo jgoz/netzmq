@@ -1,56 +1,44 @@
 ﻿namespace ZeroMQ.Sockets
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
 
     using ZeroMQ.Proxy;
 
-    /// <summary>
-    /// Multiplexes input/output events in a level-triggered fashion over a set of sockets.
-    /// </summary>
-    public sealed class ZmqPoller : IPoller
+    internal class ZmqPoller : IPoller
     {
-        private readonly PollItem[] pollItems;
+        private readonly IPollItem[] pollItems;
         private readonly IPollerProxy proxy;
 
         private bool disposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZmqPoller"/> class.
-        /// </summary>
-        /// <param name="sockets">
-        /// The set of <see cref="ZmqSocket"/>s to multiplex. Set <see cref="IReceiveSocket.ReceiveReady"/>
-        /// and/or <see cref="ISendSocket.SendReady"/> as appropriate on each socket prior to calling Poll.
-        /// </param>
-        public ZmqPoller(IEnumerable<ZmqSocket> sockets)
+        public ZmqPoller(IPollerProxy proxy, IPollItem[] pollItems)
         {
-            if (sockets == null)
+            if (proxy == null)
             {
-                throw new ArgumentNullException("sockets");
+                throw new ArgumentNullException("proxy");
             }
 
-            this.pollItems = sockets.Select(s => new PollItem(s)).ToArray();
-            this.proxy = ProxyFactory.CreatePoller(this.pollItems.Length);
+            if (pollItems == null)
+            {
+                throw new ArgumentNullException("pollItems");
+            }
+
+            this.pollItems = pollItems;
+            this.proxy = proxy;
         }
 
-        /// <summary>
-        /// Frees any unmanaged resources used by the Poller.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Poll1"]/*'/>
         public void Poll()
         {
             this.PollBlocking();
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Poll2"]/*'/>
         public void Poll(TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)

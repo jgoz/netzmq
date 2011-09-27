@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ
+﻿namespace ZeroMQ.Sockets
 {
     /// <summary>
     /// Provides extension methods for conversions between message formats.

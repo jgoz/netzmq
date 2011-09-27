@@ -11,26 +11,22 @@
     /// <remarks>
     /// The <see cref="ZmqSocket"/> class defines the common behavior for derived socket types. 
     /// </remarks>
-    public abstract class ZmqSocket : ISocket
+    internal abstract class ZmqSocket : ISocket
     {
-        private readonly ISocketProxy socket;
+        private readonly ISocketProxy proxy;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZmqSocket"/> class.
-        /// </summary>
-        /// <param name="context"><see cref="ZmqContext"/> to use when initializing the socket.</param>
-        /// <param name="socketType">Socket type for the current socket.</param>
-        /// <exception cref="ZmqLibException">An error occured while initializing the underlying socket.</exception>
-        internal ZmqSocket(ZmqContext context, SocketType socketType)
+        internal ZmqSocket(ISocketProxy proxy)
         {
-            if (context == null)
+            if (proxy == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException("proxy");
             }
+
+            this.proxy = proxy;
 
             try
             {
-                this.socket = ProxyFactory.CreateSocket(context.Handle, (int)socketType);
+                this.proxy = proxy;
             }
             catch (ProxyException ex)
             {
@@ -172,13 +168,13 @@
 
         internal IntPtr Handle
         {
-            get { return this.socket.Handle; }
+            get { return this.proxy.Handle; }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
-            if (this.socket.Bind(endpoint) == -1)
+            if (this.proxy.Bind(endpoint) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -187,7 +183,7 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         public void Connect(string endpoint)
         {
-            if (this.socket.Connect(endpoint) == -1)
+            if (this.proxy.Connect(endpoint) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -209,7 +205,7 @@
         /// <param name="value">The <see cref="int"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, int value)
         {
-            if (this.socket.SetSocketOption(option, value) == -1)
+            if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -222,7 +218,7 @@
         /// <param name="value">The <see cref="long"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, long value)
         {
-            if (this.socket.SetSocketOption(option, value) == -1)
+            if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -235,7 +231,7 @@
         /// <param name="value">The <see cref="ulong"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, ulong value)
         {
-            if (this.socket.SetSocketOption(option, value) == -1)
+            if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -248,7 +244,7 @@
         /// <param name="value">The <see cref="byte"/> array value to set.</param>
         internal void SetSocketOption(SocketOption option, byte[] value)
         {
-            if (this.socket.SetSocketOption(option, value) == -1)
+            if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -263,7 +259,7 @@
         {
             int value;
 
-            if (this.socket.GetSocketOption(option, out value) == -1)
+            if (this.proxy.GetSocketOption(option, out value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -280,7 +276,7 @@
         {
             long value;
 
-            if (this.socket.GetSocketOption(option, out value) == -1)
+            if (this.proxy.GetSocketOption(option, out value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -297,7 +293,7 @@
         {
             ulong value;
 
-            if (this.socket.GetSocketOption(option, out value) == -1)
+            if (this.proxy.GetSocketOption(option, out value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -314,7 +310,7 @@
         {
             byte[] value;
 
-            if (this.socket.GetSocketOption(option, out value) == -1)
+            if (this.proxy.GetSocketOption(option, out value) == -1)
             {
                 throw ZmqLibException.GetLastError();
             }
@@ -332,7 +328,7 @@
         {
             byte[] buffer;
 
-            int bytesReceived = this.socket.Receive((int)socketFlags, out buffer);
+            int bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
 
             if (bytesReceived >= 0)
             {
@@ -376,7 +372,7 @@
         /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
-            int bytesSent = this.socket.Send((int)socketFlags, buffer);
+            int bytesSent = this.proxy.Send((int)socketFlags, buffer);
 
             if (bytesSent >= 0)
             {
@@ -450,7 +446,7 @@
         {
             if (disposing)
             {
-                this.socket.Dispose();
+                this.proxy.Dispose();
             }
         }
 

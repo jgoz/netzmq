@@ -43,26 +43,24 @@
   <ItemGroup>
     <Compile Include="IPoller.cs" />
     <Compile Include="ISocket.cs" />
-    <Compile Include="MillisecondExtensions.cs" />
-    <Compile Include="PollFlags.cs" />
+    <Compile Include="ISubscribeExtSocket.cs" />
+    <Compile Include="IZmqContext.cs" />
+    <Compile Include="Sockets\MillisecondExtensions.cs" />
+    <Compile Include="Proxy\PollFlags.cs" />
     <Compile Include="Sockets\ZmqPoller.cs" />
     <Compile Include="Proxy\IPollerProxy.cs" />
     <Compile Include="Sockets\PollItem.cs" />
-    <Compile Include="IPollItem.cs" />
+    <Compile Include="Proxy\IPollItem.cs" />
     <Compile Include="ReceiveReadyEventArgs.cs" />
     <Compile Include="IDuplexSocket.cs" />
     <Compile Include="IReceiveSocket.cs" />
     <Compile Include="ISendSocket.cs" />
     <Compile Include="ISubscribeSocket.cs" />
-    <Compile Include="MessageBufferExtensions.cs" />
+    <Compile Include="Sockets\MessageBufferExtensions.cs" />
     <Compile Include="SendReadyEventArgs.cs" />
-    <Compile Include="Sockets\PairSocket.cs" />
     <Compile Include="Sockets\SubscribeExtSocket.cs" />
-    <Compile Include="Sockets\PublishExtSocket.cs" />
     <Compile Include="Sockets\SubscribeSocket.cs" />
-    <Compile Include="Sockets\PublishSocket.cs" />
-    <Compile Include="Sockets\RequestExtSocket.cs" />
-    <Compile Include="Sockets\ReplyExtSocket.cs" />
+    <Compile Include="Sockets\DuplexSocket.cs" />
     <Compile Include="Proxy\ProxyAssemblyLoader.cs" />
     <Compile Include="Proxy\ErrorCode.cs" />
     <Compile Include="Proxy\IErrorProviderProxy.cs" />
@@ -72,18 +70,16 @@
     <Compile Include="Proxy\ISocketProxy.cs" />
     <Compile Include="Proxy\SocketOption.cs" />
     <Compile Include="Sockets\SocketType.cs" />
-    <Compile Include="Sockets\PushSocket.cs" />
-    <Compile Include="ZmqContext.cs" />
-    <Compile Include="Sockets\RequestSocket.cs" />
+    <Compile Include="Sockets\SendSocket.cs" />
+    <Compile Include="Sockets\ZmqContext.cs" />
     <Compile Include="ReceivedMessage.cs" />
     <Compile Include="ReceiveResult.cs" />
-    <Compile Include="Sockets\ReplySocket.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sockets\SocketFlags.cs" />
     <Compile Include="Sockets\ZmqSocket.cs" />
-    <Compile Include="Sockets\PullSocket.cs" />
-    <Compile Include="ZmqLibException.cs" />
+    <Compile Include="Sockets\ReceiveSocket.cs" />
+    <Compile Include="Sockets\ZmqLibException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CommonDoc.xml" />

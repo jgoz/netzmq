@@ -2,6 +2,8 @@
 {
     using System;
 
+    using ZeroMQ.Proxy;
+
     internal class PollItem : IPollItem
     {
         private readonly ZmqSocket socket;
