@@ -1,9 +1,6 @@
-﻿namespace ZeroMQ.Polling
+﻿namespace ZeroMQ.Sockets
 {
     using System;
-
-    using ZeroMQ.Proxy;
-    using ZeroMQ.Sockets;
 
     internal class PollItem : IPollItem
     {

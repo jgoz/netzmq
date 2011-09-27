@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ.Proxy
+﻿namespace ZeroMQ
 {
     using System;
 

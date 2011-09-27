@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ.Polling
+﻿namespace ZeroMQ.Sockets
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
     using System.Linq;
 
     using ZeroMQ.Proxy;
-    using ZeroMQ.Sockets;
 
     /// <summary>
     /// Multiplexes input/output events in a level-triggered fashion over a set of sockets.
