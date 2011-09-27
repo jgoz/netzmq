@@ -5,15 +5,15 @@
 
     using ZeroMQ.Proxy;
 
-    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ZmqPoller"]/*'/>
-    public sealed class ZmqPoller : IPoller
+    /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ZmqPollSet"]/*'/>
+    public sealed class ZmqPollSet : IPollSet
     {
         private readonly IPollItem[] pollItems;
-        private readonly IPollerProxy proxy;
+        private readonly IPollSetProxy proxy;
 
         private bool disposed;
 
-        internal ZmqPoller(IPollerProxy proxy, IPollItem[] pollItems)
+        internal ZmqPollSet(IPollSetProxy proxy, IPollItem[] pollItems)
         {
             if (proxy == null)
             {
@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Releases all resources used by the current instance of the <see cref="ZmqPoller"/> class.
+        /// Releases all resources used by the current instance of the <see cref="ZmqPollSet"/> class.
         /// </summary>
         public void Dispose()
         {

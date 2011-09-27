@@ -156,8 +156,8 @@
             return this.TryCreateSocket(p => new SubscribeSocket(p), SocketType.Sub);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePoller"]/*'/>
-        public IPoller CreatePoller(IEnumerable<ISocket> sockets)
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePollSet"]/*'/>
+        public IPollSet CreatePollSet(IEnumerable<ISocket> sockets)
         {
             if (sockets == null)
             {
@@ -173,7 +173,7 @@
             {
                 IPollItem[] pollItems = sockets.Select(s => new PollItem((ZmqSocket)s)).ToArray();
 
-                return new ZmqPoller(ProxyFactory.CreatePoller(pollItems.Length), pollItems);
+                return new ZmqPollSet(ProxyFactory.CreatePollSet(pollItems.Length), pollItems);
             }
             catch (ProxyException ex)
             {

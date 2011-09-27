@@ -31,7 +31,7 @@
     </summary>
   </Members>
 
-  <Members name="ZmqPoller">
+  <Members name="ZmqPollSet">
     <summary>
     Multiplexes input/output events in a level-triggered fashion over a set of sockets.
     </summary>
@@ -120,15 +120,15 @@
     <returns>An <see cref="ISubscribeSocket"/> instance for a ZMQ_SUB socket.</returns>
   </Members>
   
-  <Members name="CreatePoller">
+  <Members name="CreatePollSet">
     <summary>
-    Create a concrete <see cref="IPoller"/> instance over a set of sockets.
+    Create a concrete <see cref="IPollSet"/> instance over a set of sockets.
     </summary>
     <param name="sockets">
     The set of <see cref="ISocket"/>s to multiplex. Set <see cref="IReceiveSocket.ReceiveReady"/>
     and/or <see cref="ISendSocket.SendReady"/> as appropriate on each socket prior to calling Poll.
     </param>
-    <returns>An <see cref="IPoller"/> instance for a given socket set.</returns>
+    <returns>An <see cref="IPollSet"/> instance for a given socket set.</returns>
   </Members>
   
   <Members name="Bind">

@@ -171,7 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="netzmq.h" />
-    <ClInclude Include="Poller.h" />
+    <ClInclude Include="PollSet.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SocketContext.h" />
     <ClInclude Include="Stdafx.h" />
@@ -180,7 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Poller.cpp" />
+    <ClCompile Include="PollSet.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketContext.cpp" />
     <ClCompile Include="Stdafx.cpp">

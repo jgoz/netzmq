@@ -2,8 +2,8 @@
 {
     using System;
 
-    /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ZmqPoller"]/*'/>
-    public interface IPoller : IDisposable
+    /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="ZmqPollSet"]/*'/>
+    public interface IPollSet : IDisposable
     {
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Poll1"]/node()[name()!="exception"]'/>
         void Poll();

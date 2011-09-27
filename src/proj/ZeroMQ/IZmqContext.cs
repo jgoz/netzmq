@@ -41,7 +41,7 @@ namespace ZeroMQ
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeSocket"]/*'/>
         ISubscribeSocket CreateSubscribeSocket();
 
-        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePoller"]/*'/>
-        IPoller CreatePoller(IEnumerable<ISocket> sockets);
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePollSet"]/*'/>
+        IPollSet CreatePollSet(IEnumerable<ISocket> sockets);
     }
 }

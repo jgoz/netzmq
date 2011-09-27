@@ -6,24 +6,24 @@
 namespace ZeroMQ {
 namespace Proxy {
 
-    private ref class Poller : public IPollerProxy
+    private ref class PollSet : public IPollSetProxy
     {
     private:
         int m_itemCount;
         zmq_pollitem_t *m_items;
 
     public:
-        Poller(int itemCount)
+        PollSet(int itemCount)
             : m_itemCount(itemCount)
         {
             m_items = new zmq_pollitem_t[itemCount];
         }
 
-        ~Poller()
+        ~PollSet()
         {
             delete m_items;
 
-            this->!Poller();
+            this->!PollSet();
         }
 
         virtual int Poll(array<IPollItem^>^ items, int timeoutMilliseconds)
@@ -48,7 +48,7 @@ namespace Proxy {
         }
 
     private:
-        !Poller()
+        !PollSet()
         {
         }
     };
