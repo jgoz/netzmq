@@ -64,7 +64,7 @@
             // error, so try polling again for the remaining amount of time in the timeout.
             if (ZmqLibException.GetErrorCode() != ErrorCode.Eintr)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 

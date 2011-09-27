@@ -167,7 +167,7 @@
         {
             if (this.proxy.Bind(endpoint) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -176,7 +176,7 @@
         {
             if (this.proxy.Connect(endpoint) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -198,7 +198,7 @@
         {
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -211,7 +211,7 @@
         {
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -224,7 +224,7 @@
         {
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -237,7 +237,7 @@
         {
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
         }
 
@@ -252,7 +252,7 @@
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
 
             return value;
@@ -269,7 +269,7 @@
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
 
             return value;
@@ -286,7 +286,7 @@
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
 
             return value;
@@ -303,18 +303,12 @@
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
             {
-                throw ZmqLibException.GetLastError();
+                throw ZmqSocketException.GetLastError();
             }
 
             return value;
         }
 
-        /// <summary>
-        /// Receive a message (or message-part) from a remote socket.
-        /// </summary>
-        /// <param name="socketFlags">A bitwise combination of <see cref="SocketFlags"/> values.</param>
-        /// <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal ReceivedMessage Receive(SocketFlags socketFlags)
         {
             byte[] buffer;
@@ -331,10 +325,9 @@
                 return ReceivedMessage.TryAgain;
             }
 
-            throw ZmqLibException.GetLastError();
+            throw ZmqSocketException.GetLastError();
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
         internal ReceivedMessage Receive(TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)
@@ -354,13 +347,6 @@
             return message;
         }
 
-        /// <summary>
-        /// Queue a single-part message (or the final message-part) to be sent by the socket.
-        /// </summary>
-        /// <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
-        /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
-        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
             int bytesSent = this.proxy.Send((int)socketFlags, buffer);
@@ -375,19 +361,9 @@
                 return SendResult.TryAgain;
             }
 
-            throw ZmqLibException.GetLastError();
+            throw ZmqSocketException.GetLastError();
         }
 
-        /// <summary>
-        /// Queue a single-part message (or the final message-part) to be sent by the socket in non-blocking mode.
-        /// If the specified timeout elapses, <see cref="SendResult.TryAgain"/> is returned, indicating that the
-        /// send operation should be attempted again.
-        /// </summary>
-        /// <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
-        /// <param name="socketFlags">A bitwise combination of the <see cref="SocketFlags"/> values.</param>
-        /// <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
-        /// <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags, TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)

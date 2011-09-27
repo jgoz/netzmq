@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMQ", "proj\ZeroMQ\ZeroMQ.csproj", "{FF00B72A-C4C8-4DF5-BB3A-3FE1EF335B65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{831C8D73-792F-443B-822D-A1FC98167B5B}"
-	ProjectSection(SolutionItems) = preProject
-		..\README.md = ..\README.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proj", "proj", "{C0D50781-620E-40C1-8277-07833E827A5E}"
 EndProject
