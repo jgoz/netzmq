@@ -11,7 +11,7 @@
     /// <remarks>
     /// The <see cref="ZmqSocket"/> class defines the common behavior for derived socket types. 
     /// </remarks>
-    public abstract class ZmqSocket : IDisposable
+    public abstract class ZmqSocket : ISocket
     {
         private readonly ISocketProxy socket;
 
@@ -52,152 +52,118 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
         protected event EventHandler<SendReadyEventArgs> SendReady;
 
-        /// <summary>
-        /// Gets or sets the I/O thread affinity for newly created connections on this socket.
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Affinity"]/*'/>
         public ulong Affinity
         {
             get { return this.GetSocketOptionUInt64(SocketOption.Affinity); }
             set { this.SetSocketOption(SocketOption.Affinity, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the maximum length of the queue of outstanding peer connections. (Default = 100 connections).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Backlog"]/*'/>
         public int Backlog
         {
             get { return this.GetSocketOptionInt32(SocketOption.Backlog); }
             set { this.SetSocketOption(SocketOption.Backlog, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the identity of the current socket.
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Identity"]/*'/>
         public byte[] Identity
         {
             get { return this.GetSocketOptionBytes(SocketOption.Identity); }
             set { this.SetSocketOption(SocketOption.Identity, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the linger period for socket shutdown. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Linger"]/*'/>
         public TimeSpan Linger
         {
             get { return this.GetSocketOptionInt32(SocketOption.Linger).GetTimeSpan(); }
             set { this.SetSocketOption(SocketOption.Linger, value.GetMilliseconds()); }
         }
 
-        /// <summary>
-        /// Gets or sets the maximum size for inbound messages (bytes). (Default = -1, no limit).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MaxMessageSize"]/*'/>
         public long MaxMessageSize
         {
             get { return this.GetSocketOptionInt64(SocketOption.MaxMsgSize); }
             set { this.SetSocketOption(SocketOption.MaxMsgSize, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the time-to-live field in every multicast packet sent from this socket (network hops). (Default = 1 hop).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MulticastHops"]/*'/>
         public int MulticastHops
         {
             get { return this.GetSocketOptionInt32(SocketOption.MulticastHops); }
             set { this.SetSocketOption(SocketOption.MulticastHops, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the maximum send or receive data rate for multicast transports (kbps). (Default = 100 kbps).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MulticastRate"]/*'/>
         public int MulticastRate
         {
             get { return this.GetSocketOptionInt32(SocketOption.Rate); }
             set { this.SetSocketOption(SocketOption.Rate, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the recovery interval for multicast transports. (Default = 10 seconds).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MulticastRecoveryInterval"]/*'/>
         public TimeSpan MulticastRecoveryInterval
         {
             get { return this.GetSocketOptionInt32(SocketOption.RecoveryIvl).GetTimeSpan(); }
             set { this.SetSocketOption(SocketOption.RecoveryIvl, value.GetMilliseconds()); }
         }
 
-        /// <summary>
-        /// Gets or sets the underlying kernel receive buffer size for the current socket (bytes). (Default = 0, OS default).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveBufferSize"]/*'/>
         public int ReceiveBufferSize
         {
             get { return this.GetSocketOptionInt32(SocketOption.RcvBuf); }
             set { this.SetSocketOption(SocketOption.RcvBuf, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the high water mark for inbound messages (number of messages). (Default = 0, no limit).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveHighWatermark"]/*'/>
         public int ReceiveHighWatermark
         {
             get { return this.GetSocketOptionInt32(SocketOption.RcvHwm); }
             set { this.SetSocketOption(SocketOption.RcvHwm, value); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the multi-part message currently being read has more message parts to follow.
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveMore"]/*'/>
         public bool ReceiveMore
         {
             get { return this.GetSocketOptionInt32(SocketOption.RcvMore) == 1; }
         }
 
-        /// <summary>
-        /// Gets or sets the timeout for receive operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveTimeout"]/*'/>
         public TimeSpan ReceiveTimeout
         {
             get { return this.GetSocketOptionInt32(SocketOption.RcvTimeo).GetTimeSpan(); }
             set { this.SetSocketOption(SocketOption.RcvTimeo, value.GetMilliseconds()); }
         }
 
-        /// <summary>
-        /// Gets or sets the initial reconnection interval. (Default = 100 milliseconds).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReconnectInterval"]/*'/>
         public TimeSpan ReconnectInterval
         {
             get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvl).GetTimeSpan(); }
             set { this.SetSocketOption(SocketOption.ReconnectIvl, value.GetMilliseconds()); }
         }
 
-        /// <summary>
-        /// Gets or sets the maximum reconnection interval. (Default = 0, only use <see cref="ReconnectInterval"/>).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReconnectIntervalMax"]/*'/>
         public TimeSpan ReconnectIntervalMax
         {
             get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax).GetTimeSpan(); }
             set { this.SetSocketOption(SocketOption.ReconnectIvlMax, value.GetMilliseconds()); }
         }
 
-        /// <summary>
-        /// Gets or sets the underlying kernel transmit buffer size for the current socket (bytes). (Default = 0, OS default).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendBufferSize"]/*'/>
         public int SendBufferSize
         {
             get { return this.GetSocketOptionInt32(SocketOption.SndBuf); }
             set { this.SetSocketOption(SocketOption.SndBuf, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the high water mark for outbound messages (number of messages). (Default = 0, no limit).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendHighWatermark"]/*'/>
         public int SendHighWatermark
         {
             get { return this.GetSocketOptionInt32(SocketOption.SndHwm); }
             set { this.SetSocketOption(SocketOption.SndHwm, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the timeout for send operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
-        /// </summary>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendTimeout"]/*'/>
         public TimeSpan SendTimeout
         {
             get { return this.GetSocketOptionInt32(SocketOption.SndTimeo).GetTimeSpan(); }
@@ -209,13 +175,7 @@
             get { return this.socket.Handle; }
         }
 
-        /// <summary>
-        /// Create an endpoint for accepting connections and bind it to the current socket.
-        /// </summary>
-        /// <param name="endpoint">
-        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
-        /// </param>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
             if (this.socket.Bind(endpoint) == -1)
@@ -224,13 +184,7 @@
             }
         }
 
-        /// <summary>
-        /// Connect the current socket to the specified endpoint.
-        /// </summary>
-        /// <param name="endpoint">
-        /// A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
-        /// </param>
-        /// <exception cref="ZmqLibException">An error occured during the execution of a native procedure.</exception>
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         public void Connect(string endpoint)
         {
             if (this.socket.Connect(endpoint) == -1)

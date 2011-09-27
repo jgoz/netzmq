@@ -5,7 +5,7 @@
     /// <summary>
     /// A socket that is capable of sending messages to remote endpoints.
     /// </summary>
-    public interface ISendSocket
+    public interface ISendSocket : ISocket
     {
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SendReady"]/*'/>
         event EventHandler<SendReadyEventArgs> SendReady;

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPoller.cs" />
+    <Compile Include="ISocket.cs" />
     <Compile Include="MillisecondExtensions.cs" />
     <Compile Include="Proxy\PollFlags.cs" />
     <Compile Include="Polling\ZmqPoller.cs" />
