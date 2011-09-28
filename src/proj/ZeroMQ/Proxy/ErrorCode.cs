@@ -37,5 +37,24 @@
         Enolck = 39,
         Enosys = 40,
         Enotempty = 41,
+
+        ZmqHausNumero = 156384712,
+
+        // Some of the standard POSIX errnos are not defined on Windows
+        Enotsup = ZmqHausNumero + 1,
+        Eprotonosupport = ZmqHausNumero + 2,
+        Enobufs = ZmqHausNumero + 3,
+        Enetdown = ZmqHausNumero + 4,
+        Eaddrinuse = ZmqHausNumero + 5,
+        Eaddrnotavail = ZmqHausNumero + 6,
+        Econnrefused = ZmqHausNumero + 7,
+        Einprogress = ZmqHausNumero + 8,
+        Enotsock = ZmqHausNumero + 9,
+
+        // Native 0MQ error codes
+        Efsm = ZmqHausNumero + 51,
+        Enocompatproto = ZmqHausNumero + 52,
+        Eterm = ZmqHausNumero + 53,
+        Emthread = ZmqHausNumero + 54,
     }
 }
