@@ -13,6 +13,11 @@
         /// <summary>
         /// Non-blocking mode was requested and no messages are available at the moment.
         /// </summary>
-        TryAgain
+        TryAgain,
+
+        /// <summary>
+        /// The receive operation was interrupted, likely by terminating the containing context.
+        /// </summary>
+        Interrupted
     }
 }

@@ -74,5 +74,15 @@
         {
             return (ErrorCode)ProxyFactory.ErrorProvider.GetErrorCode();
         }
+
+        internal static bool TryAgain()
+        {
+            return GetErrorCode() == Proxy.ErrorCode.Eagain;
+        }
+
+        internal static bool ContextWasTerminated()
+        {
+            return GetErrorCode() == Proxy.ErrorCode.Eterm;
+        }
     }
 }

@@ -13,6 +13,11 @@
         /// <summary>
         /// Non-blocking mode was requested and the message cannot be sent at the moment.
         /// </summary>
-        TryAgain
+        TryAgain,
+
+        /// <summary>
+        /// The send operation was interrupted, likely by terminating the containing context.
+        /// </summary>
+        Interrupted
     }
 }

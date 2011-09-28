@@ -7,7 +7,8 @@
     /// </summary>
     public class ReceivedMessage
     {
-        private static readonly ReceivedMessage TryAgainResult = new ReceivedMessage(ReceiveResult.TryAgain);
+        internal static readonly ReceivedMessage TryAgain = new ReceivedMessage(ReceiveResult.TryAgain);
+        internal static readonly ReceivedMessage Interrupted = new ReceivedMessage(ReceiveResult.Interrupted);
 
         internal ReceivedMessage(byte[] data, ReceiveResult result, bool hasMoreParts)
         {
@@ -40,10 +41,5 @@
         /// Gets a value indicating whether more message parts will follow this message.
         /// </summary>
         public bool HasMoreParts { get; private set; }
-
-        internal static ReceivedMessage TryAgain
-        {
-            get { return TryAgainResult; }
-        }
     }
 }
