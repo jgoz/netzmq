@@ -173,7 +173,7 @@
     <ClInclude Include="netzmq.h" />
     <ClInclude Include="PollSet.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SocketContext.h" />
+    <ClInclude Include="Context.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="ZmqErrorProvider.h" />
@@ -182,7 +182,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="PollSet.cpp" />
     <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="SocketContext.cpp" />
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

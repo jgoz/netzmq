@@ -2,7 +2,7 @@
 
 #include <zmq.h>
 #include "netzmq.h"
-#include "SocketContext.h"
+#include "Context.h"
 #include "ZmqErrorProvider.h"
 
 // Maximum number of bytes that can be retrieved by zmq_getsockopt

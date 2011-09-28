@@ -7,12 +7,12 @@
 namespace ZeroMQ {
 namespace Proxy {
 
-    public ref class SocketContext : public IContextProxy
+    public ref class Context : public IContextProxy
     {
         void *m_context;
 
     public:
-        SocketContext(int threadPoolSize)
+        Context(int threadPoolSize)
         {
             m_context = zmq_init(threadPoolSize);
 
@@ -21,9 +21,9 @@ namespace Proxy {
             }
         }
 
-        ~SocketContext()
+        ~Context()
         {
-            this->!SocketContext();
+            this->!Context();
         }
 
         virtual property IntPtr Handle
@@ -54,7 +54,7 @@ namespace Proxy {
         }
 
     protected:
-        !SocketContext()
+        !Context()
         {
             this->Terminate();
         }
