@@ -2,8 +2,10 @@
 {
     using System;
 
-    internal interface IContextProxy : IDisposable
+    internal interface IContextProxy
     {
         IntPtr Handle { get; }
+
+        void Terminate();
     }
 }

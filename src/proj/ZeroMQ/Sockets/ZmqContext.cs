@@ -181,6 +181,14 @@
             }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Terminate"]/*'/>
+        public void Terminate()
+        {
+            this.EnsureNotDisposed();
+
+            this.proxy.Terminate();
+        }
+
         /// <summary>
         /// Frees the underlying ZeroMQ context handle.
         /// </summary>
@@ -194,7 +202,7 @@
         {
             if (disposing && !this.disposed)
             {
-                this.proxy.Dispose();
+                this.Terminate();
             }
 
             this.disposed = true;
@@ -202,10 +210,7 @@
 
         private TSocket TryCreateSocket<TSocket>(Func<ISocketProxy, TSocket> constructor, SocketType socketType)
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException("ZmqContext", "The current ZmqContext has already been terminated and cannot be reused.");
-            }
+            this.EnsureNotDisposed();
 
             try
             {
@@ -214,6 +219,14 @@
             catch (ProxyException ex)
             {
                 throw new ZmqLibException(ex);
+            }
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ZmqContext", "The current ZmqContext has already been terminated and cannot be reused.");
             }
         }
     }
