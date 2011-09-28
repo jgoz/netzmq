@@ -98,6 +98,8 @@
 
         private int Poll(int timeoutMilliseconds)
         {
+            this.EnsureNotDisposed();
+
             int readyCount = this.proxy.Poll(this.pollItems, timeoutMilliseconds);
 
             if (readyCount > 0)
@@ -113,17 +115,20 @@
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
+            if (disposing && !this.disposed)
             {
                 this.proxy.Dispose();
             }
 
             this.disposed = true;
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ZmqPollSet", "The current ZmqPollSet has already been disposed and cannot be reused.");
+            }
         }
     }
 }

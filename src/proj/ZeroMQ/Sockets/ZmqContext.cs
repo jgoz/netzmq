@@ -192,12 +192,7 @@
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
+            if (disposing && !this.disposed)
             {
                 this.proxy.Dispose();
             }
@@ -207,6 +202,11 @@
 
         private TSocket TryCreateSocket<TSocket>(Func<ISocketProxy, TSocket> constructor, SocketType socketType)
         {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ZmqContext", "The current ZmqContext has already been terminated and cannot be reused.");
+            }
+
             try
             {
                 return constructor(ProxyFactory.CreateSocket(this.proxy.Handle, (int)socketType));

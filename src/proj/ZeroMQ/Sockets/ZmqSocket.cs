@@ -15,6 +15,8 @@
     {
         private readonly ISocketProxy proxy;
 
+        private bool disposed;
+
         internal ZmqSocket(ISocketProxy proxy)
         {
             if (proxy == null)
@@ -165,6 +167,13 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
+            if (endpoint == null)
+            {
+                throw new ArgumentNullException("endpoint");
+            }
+
+            this.EnsureNotDisposed();
+
             if (this.proxy.Bind(endpoint) == -1)
             {
                 throw ZmqSocketException.GetLastError();
@@ -174,6 +183,13 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         public void Connect(string endpoint)
         {
+            if (endpoint == null)
+            {
+                throw new ArgumentNullException("endpoint");
+            }
+
+            this.EnsureNotDisposed();
+
             if (this.proxy.Connect(endpoint) == -1)
             {
                 throw ZmqSocketException.GetLastError();
@@ -189,65 +205,55 @@
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Sets an option on the current socket to an integer value.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="int"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, int value)
         {
+            this.EnsureNotDisposed();
+
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqSocketException.GetLastError();
             }
         }
 
-        /// <summary>
-        /// Sets an option on the current socket to a long value.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="long"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, long value)
         {
+            this.EnsureNotDisposed();
+
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqSocketException.GetLastError();
             }
         }
 
-        /// <summary>
-        /// Sets an option on the current socket to an unsigned long value.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="ulong"/> value to set.</param>
         internal void SetSocketOption(SocketOption option, ulong value)
         {
+            this.EnsureNotDisposed();
+
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqSocketException.GetLastError();
             }
         }
 
-        /// <summary>
-        /// Sets an option on the current socket to a byte array value.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to set.</param>
-        /// <param name="value">The <see cref="byte"/> array value to set.</param>
         internal void SetSocketOption(SocketOption option, byte[] value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            this.EnsureNotDisposed();
+
             if (this.proxy.SetSocketOption(option, value) == -1)
             {
                 throw ZmqSocketException.GetLastError();
             }
         }
 
-        /// <summary>
-        /// Gets an option of the current socket as an integer.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
-        /// <returns>The <see cref="int"/> value of the specified option.</returns>
         internal int GetSocketOptionInt32(SocketOption option)
         {
+            this.EnsureNotDisposed();
+
             int value;
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
@@ -258,13 +264,10 @@
             return value;
         }
 
-        /// <summary>
-        /// Gets an option of the current socket as a long.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
-        /// <returns>The <see cref="long"/> value of the specified option.</returns>
         internal long GetSocketOptionInt64(SocketOption option)
         {
+            this.EnsureNotDisposed();
+
             long value;
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
@@ -275,13 +278,10 @@
             return value;
         }
 
-        /// <summary>
-        /// Gets an option of the current socket as an unsigned long.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
-        /// <returns>The <see cref="ulong"/> value of the specified option.</returns>
         internal ulong GetSocketOptionUInt64(SocketOption option)
         {
+            this.EnsureNotDisposed();
+
             ulong value;
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
@@ -292,13 +292,10 @@
             return value;
         }
 
-        /// <summary>
-        /// Gets an option of the current socket as a byte array.
-        /// </summary>
-        /// <param name="option">The <see cref="SocketOption"/> to get.</param>
-        /// <returns>The <see cref="byte"/> array value of the specified option.</returns>
         internal byte[] GetSocketOptionBytes(SocketOption option)
         {
+            this.EnsureNotDisposed();
+
             byte[] value;
 
             if (this.proxy.GetSocketOption(option, out value) == -1)
@@ -311,6 +308,8 @@
 
         internal ReceivedMessage Receive(SocketFlags socketFlags)
         {
+            this.EnsureNotDisposed();
+
             byte[] buffer;
 
             int bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
@@ -349,6 +348,13 @@
 
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
+            if (buffer == null)
+            {
+                throw new ArgumentNullException("buffer");
+            }
+
+            this.EnsureNotDisposed();
+
             int bytesSent = this.proxy.Send((int)socketFlags, buffer);
 
             if (bytesSent >= 0)
@@ -411,10 +417,12 @@
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && !this.disposed)
             {
                 this.proxy.Dispose();
             }
+
+            this.disposed = true;
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
@@ -427,6 +435,14 @@
         protected void Unsubscribe(byte[] prefix)
         {
             this.SetSocketOption(SocketOption.Unsubscribe, prefix);
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ZmqSocket", "The current ZmqSocket has already been disposed and cannot be reused.");
+            }
         }
     }
 }
