@@ -63,6 +63,18 @@ namespace Proxy {
             return rc;
         }
 
+        virtual int __clrcall Close()
+        {
+            if (m_socket == NULL)
+                return 0;
+
+            int rc = zmq_close(m_socket);
+
+            m_socket = NULL;
+
+            return rc;
+        }
+
         virtual int __clrcall SetSocketOption(SocketOption option, int value)
         {
             return zmq_setsockopt(m_socket, (int)option, &value, sizeof(int));
@@ -200,10 +212,7 @@ namespace Proxy {
     protected:
         !Socket()
         {
-            if (m_socket == NULL)
-                return;
-
-            zmq_close(m_socket);
+            this->Close();
         }
     };
 }

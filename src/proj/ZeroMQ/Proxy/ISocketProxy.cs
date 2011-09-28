@@ -2,12 +2,14 @@
 {
     using System;
 
-    internal interface ISocketProxy : IDisposable
+    internal interface ISocketProxy
     {
         IntPtr Handle { get; }
 
         int Bind(string endpoint);
         int Connect(string endpoint);
+
+        int Close();
 
         int SetSocketOption(SocketOption option, int value);
         int SetSocketOption(SocketOption option, long value);

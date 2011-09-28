@@ -196,6 +196,20 @@
             }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Close"]/*'/>
+        public void Close()
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (this.proxy.Close() == -1)
+            {
+                throw ZmqSocketException.GetLastError();
+            }
+        }
+
         /// <summary>
         /// Releases all resources used by the current instance of the <see cref="ZmqSocket"/> class.
         /// </summary>
@@ -419,7 +433,7 @@
         {
             if (disposing && !this.disposed)
             {
-                this.proxy.Dispose();
+                this.Close();
             }
 
             this.disposed = true;

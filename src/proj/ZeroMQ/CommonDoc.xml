@@ -284,6 +284,20 @@
     </exception>
   </Members>
   
+  <Members name="Close">
+    <summary>
+    Destroy the current socket.
+    </summary>
+    <remarks>
+    Any outstanding messages physically received from the network but not yet received by the application
+    with Receive shall be discarded. The behaviour for discarding messages sent by the application with Send
+    but not yet physically transferred to the network depends on the value of the <see cref="Linger"/> socket option.
+    </remarks>
+    <exception cref="ZmqSocketException">
+      The underlying socket object is not valid.
+    </exception>
+  </Members>
+  
   <Members name="Receive1">
     <summary>
     Receive a message (or message-part) from a remote socket in blocking mode.

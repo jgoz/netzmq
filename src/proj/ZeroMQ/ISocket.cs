@@ -63,5 +63,8 @@
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/node()[name()!="exception"]'/>
         void Connect(string endpoint);
+
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Close"]/node()[name()!="exception"]'/>
+        void Close();
     }
 }
