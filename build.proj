@@ -30,7 +30,7 @@
       <Resources Include="out\x64\$(Configuration)\ZeroMQ.Proxy.dll;lib\x64\libzmq.dll">
         <Platform>x64</Platform>
       </Resources>
-      <Resources Include="out\Win32\$(Configuration)\ZeroMQ.Proxy.dll;lib\x86\libzmq.dll">
+      <Resources Include="out\x86\$(Configuration)\ZeroMQ.Proxy.dll;lib\x86\libzmq.dll">
         <Platform>x86</Platform>
       </Resources>
 
