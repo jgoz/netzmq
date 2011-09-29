@@ -29,6 +29,16 @@
             this.proxy = proxy;
         }
 
+        private static bool WasInterrupted
+        {
+            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eintr; }
+        }
+
+        private static bool WasTerminated
+        {
+            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eterm; }
+        }
+
         /// <summary>
         /// Releases all resources used by the current instance of the <see cref="ZmqPollSet"/> class.
         /// </summary>
@@ -57,12 +67,15 @@
             }
         }
 
-        private static void CheckErrorCode()
+        private static void ContinueIfInterrupted()
         {
             // An error value of EINTR indicates that the operation was interrupted
             // by delivery of a signal before any events were available. This is a recoverable
             // error, so try polling again for the remaining amount of time in the timeout.
-            if (ZmqLibException.GetErrorCode() != ErrorCode.Eintr)
+            //
+            // ETERM indicates that the context was terminated during the operation execution.
+            // While it is not recoverable, it should not result in an exception being thrown.
+            if (!WasInterrupted && !WasTerminated)
             {
                 throw ZmqSocketException.GetLastError();
             }
@@ -72,7 +85,7 @@
         {
             while (this.Poll(-1) == -1)
             {
-                CheckErrorCode();
+                ContinueIfInterrupted();
             }
         }
 
@@ -85,12 +98,12 @@
             {
                 int result = this.Poll(remainingTimeout);
 
-                if (result >= 0)
+                if (result >= 0 || WasTerminated)
                 {
                     break;
                 }
 
-                CheckErrorCode();
+                ContinueIfInterrupted();
                 remainingTimeout -= (int)elapsed.ElapsedMilliseconds;
             }
             while (remainingTimeout >= 0);
