@@ -164,6 +164,21 @@
             get { return this.proxy.Handle; }
         }
 
+        private static bool ShouldTryAgain
+        {
+            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eagain; }
+        }
+
+        private static bool ContextWasTerminated
+        {
+            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eterm; }
+        }
+
+        private static bool ThreadWasInterrupted
+        {
+            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eintr; }
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
@@ -174,10 +189,7 @@
 
             this.EnsureNotDisposed();
 
-            if (this.proxy.Bind(endpoint) == -1 && !ZmqLibException.ContextWasTerminated())
-            {
-                throw ZmqSocketException.GetLastError();
-            }
+            HandleProxyResult(this.proxy.Bind(endpoint));
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
@@ -295,20 +307,25 @@
             this.EnsureNotDisposed();
 
             byte[] buffer;
+            int bytesReceived;
 
-            int bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
+            do
+            {
+                bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
+            }
+            while (bytesReceived == -1 && ThreadWasInterrupted);
 
             if (bytesReceived >= 0)
             {
                 return new ReceivedMessage(buffer, ReceiveResult.Received, this.ReceiveMore);
             }
 
-            if (ZmqLibException.TryAgain())
+            if (ShouldTryAgain)
             {
                 return ReceivedMessage.TryAgain;
             }
 
-            if (ZmqLibException.ContextWasTerminated())
+            if (ContextWasTerminated)
             {
                 return ReceivedMessage.Interrupted;
             }
@@ -351,12 +368,12 @@
                 return SendResult.Sent;
             }
 
-            if (ZmqLibException.TryAgain())
+            if (ShouldTryAgain)
             {
                 return SendResult.TryAgain;
             }
 
-            if (ZmqLibException.ContextWasTerminated())
+            if (ContextWasTerminated)
             {
                 return SendResult.Interrupted;
             }
@@ -435,7 +452,7 @@
         {
             // Context termination (ETERM) is an allowable error state, occurring when the
             // ZmqContext was terminated during a socket method.
-            if (result == -1 && !ZmqLibException.ContextWasTerminated())
+            if (result == -1 && !ContextWasTerminated)
             {
                 throw ZmqSocketException.GetLastError();
             }
