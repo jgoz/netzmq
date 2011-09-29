@@ -3,6 +3,11 @@
 #include <zmq.h>
 #include "netzmq.h"
 
+#ifndef TEMP_FAILURE_RETRY
+#define TEMP_FAILURE_RETRY(_result_, expression) \
+    do { _result_ = (int) (expression); } while (_result_ == -1 && zmq_errno() == EINTR);
+#endif
+
 using namespace System;
 
 namespace ZeroMQ {

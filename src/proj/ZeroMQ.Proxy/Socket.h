@@ -25,6 +25,7 @@ namespace Proxy {
             m_socket = zmq_socket((void*)context, socketType);
 
             if (m_socket == NULL) {
+                // TODO: Handle ETERM gracefully?
                 throw ErrorProvider::GetLastError();
             }
         }
@@ -77,28 +78,38 @@ namespace Proxy {
 
         virtual int __clrcall SetSocketOption(SocketOption option, int value)
         {
-            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(int));
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(int)));
+            return rc;
         }
 
         virtual int __clrcall SetSocketOption(SocketOption option, long long value)
         {
-            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(long long));
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(long long)));
+            return rc;
         }
 
         virtual int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
         {
-            return zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long));
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long)));
+            return rc;
         }
 
         virtual int __clrcall SetSocketOption(SocketOption option, array<Byte>^ value)
         {
+            int rc;
+
             if (value->Length == 0) {
-                return zmq_setsockopt(m_socket, (int)option, NULL, 0);
+                TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, NULL, 0));
+                return rc;
             }
 
             pin_ptr<Byte> valuePtr = &value[0];
 
-            return zmq_setsockopt(m_socket, (int)option, valuePtr, value->Length);
+            TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, valuePtr, value->Length));
+            return rc;
         }
 
         virtual int __clrcall GetSocketOption(SocketOption option, [Out] int% value)
@@ -106,7 +117,8 @@ namespace Proxy {
             int buf;
             size_t length = sizeof(buf);
 
-            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_getsockopt(m_socket, (int)option, &buf, &length));
 
             value = buf;
 
@@ -118,7 +130,8 @@ namespace Proxy {
             long long buf;
             size_t length = sizeof(buf);
 
-            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_getsockopt(m_socket, (int)option, &buf, &length));
 
             if (rc == -1)
                 return -1;
@@ -133,7 +146,8 @@ namespace Proxy {
             unsigned long long buf;
             size_t length = sizeof(buf);
 
-            int rc = zmq_getsockopt(m_socket, (int)option, &buf, &length);
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_getsockopt(m_socket, (int)option, &buf, &length));
 
             if (rc == -1)
                 return -1;
@@ -148,7 +162,8 @@ namespace Proxy {
             unsigned char buf[MAX_BIN_OPT_SIZE];
             size_t length = sizeof(buf);
 
-            int rc = zmq_getsockopt(m_socket, (int)option, buf, &length);
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_getsockopt(m_socket, (int)option, buf, &length));
 
             if (rc == -1)
                 return -1;
@@ -167,7 +182,8 @@ namespace Proxy {
             if (zmq_msg_init(&msg) == -1)
                 return -1;
 
-            int bytesReceived = zmq_recvmsg(m_socket, &msg, socketFlags);
+            int bytesReceived;
+            TEMP_FAILURE_RETRY(bytesReceived, zmq_recvmsg(m_socket, &msg, socketFlags));
 
             if (bytesReceived == -1)
                 return -1;
@@ -206,7 +222,10 @@ namespace Proxy {
                 Marshal::Copy(buffer, 0, (IntPtr)zmq_msg_data(&msg), messageLength);
             }
 
-            return zmq_sendmsg(m_socket, &msg, socketFlags);
+            int rc;
+            TEMP_FAILURE_RETRY(rc, zmq_sendmsg(m_socket, &msg, socketFlags));
+
+            return rc;
         }
 
     protected:
