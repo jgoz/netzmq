@@ -8,7 +8,7 @@ using namespace System;
 namespace ZeroMQ {
 namespace Proxy {
 
-    public ref class ZmqErrorProvider : public IErrorProviderProxy
+    public ref class ErrorProvider : public IErrorProviderProxy
     {
     public:
         virtual int GetErrorCode()

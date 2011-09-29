@@ -2,7 +2,7 @@
 
 #include <zmq.h>
 #include "netzmq.h"
-#include "ZmqErrorProvider.h"
+#include "ErrorProvider.h"
 
 namespace ZeroMQ {
 namespace Proxy {
@@ -17,7 +17,7 @@ namespace Proxy {
             m_context = zmq_init(threadPoolSize);
 
             if (m_context == NULL) {
-                throw ZmqErrorProvider::GetLastError();
+                throw ErrorProvider::GetLastError();
             }
         }
 

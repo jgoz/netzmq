@@ -3,7 +3,7 @@
 #include <zmq.h>
 #include "netzmq.h"
 #include "Context.h"
-#include "ZmqErrorProvider.h"
+#include "ErrorProvider.h"
 
 // Maximum number of bytes that can be retrieved by zmq_getsockopt
 // Limited by the ZMQ_IDENTITY option
@@ -25,7 +25,7 @@ namespace Proxy {
             m_socket = zmq_socket((void*)context, socketType);
 
             if (m_socket == NULL) {
-                throw ZmqErrorProvider::GetLastError();
+                throw ErrorProvider::GetLastError();
             }
         }
 

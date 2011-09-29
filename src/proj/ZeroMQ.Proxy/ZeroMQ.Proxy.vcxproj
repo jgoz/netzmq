@@ -176,7 +176,7 @@
     <ClInclude Include="Context.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Socket.h" />
-    <ClInclude Include="ZmqErrorProvider.h" />
+    <ClInclude Include="ErrorProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -189,7 +189,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ZmqErrorProvider.cpp" />
+    <ClCompile Include="ErrorProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />
