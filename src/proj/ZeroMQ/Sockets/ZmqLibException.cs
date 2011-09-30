@@ -62,17 +62,5 @@
         /// Gets the error code returned by the ZeroMQ library call.
         /// </summary>
         public int ErrorCode { get; private set; }
-
-        internal static ZmqLibException GetLastError()
-        {
-            int errorCode = ProxyFactory.ErrorProvider.GetErrorCode();
-
-            return new ZmqLibException(errorCode, ProxyFactory.ErrorProvider.GetErrorMessage(errorCode));
-        }
-
-        internal static ErrorCode GetErrorCode()
-        {
-            return (ErrorCode)ProxyFactory.ErrorProvider.GetErrorCode();
-        }
     }
 }

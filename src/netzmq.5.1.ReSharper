@@ -5,9 +5,12 @@
     <Sharing>SOLUTION</Sharing>
     <CSharp>
       <FormatSettings>
-        <ALIGN_MULTILINE_ARGUMENT>False</ALIGN_MULTILINE_ARGUMENT>
+        <ALIGN_MULTILINE_EXPRESSION>False</ALIGN_MULTILINE_EXPRESSION>
+        <ANONYMOUS_METHOD_DECLARATION_BRACES>NEXT_LINE</ANONYMOUS_METHOD_DECLARATION_BRACES>
+        <ARRANGE_MODIFIER_IN_EXISTING_CODE>False</ARRANGE_MODIFIER_IN_EXISTING_CODE>
         <BLANK_LINES_AROUND_SINGLE_LINE_INVOCABLE>1</BLANK_LINES_AROUND_SINGLE_LINE_INVOCABLE>
         <BLANK_LINES_BETWEEN_USING_GROUPS>1</BLANK_LINES_BETWEEN_USING_GROUPS>
+        <EXPLICIT_PRIVATE_MODIFIER>False</EXPLICIT_PRIVATE_MODIFIER>
         <FORCE_ATTRIBUTE_STYLE>SEPARATE</FORCE_ATTRIBUTE_STYLE>
         <FORCE_FIXED_BRACES_STYLE>ALWAYS_ADD</FORCE_FIXED_BRACES_STYLE>
         <FORCE_FOR_BRACES_STYLE>ALWAYS_ADD</FORCE_FOR_BRACES_STYLE>
@@ -78,6 +81,24 @@
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+        <UserRule Inspect="True" Prefix="" Suffix="" Style="AaBb" StaticnessKind="Static, Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="">
+          <ElementKinds>
+            <Kind Name="Machine.Specifications_Behavior" />
+            <Kind Name="Machine.Specifications_Context" />
+            <Kind Name="Machine.Specifications_ContextBase" />
+            <Kind Name="Machine.Specifications_Specification" />
+            <Kind Name="Machine.Specifications_SupportingField" />
+            <Kind Name="Machine.Specifications_Constant" />
+          </ElementKinds>
+          <ExtraRule Prefix="" Suffix="" Style="aa_bb" />
+        </UserRule>
+        <UserRule Inspect="True" Prefix="" Suffix="" Style="aaBb" StaticnessKind="Static, Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="">
+          <ElementKinds>
+            <Kind Name="Machine.Specifications_Field" />
+            <Kind Name="Machine.Specifications_Local" />
+          </ElementKinds>
+          <ExtraRule Prefix="" Suffix="" Style="AaBb" />
+        </UserRule>
         <Abbreviation Text="MQ" />
       </Naming2>
       <CustomMemberReorderingPatterns><![CDATA[<?xml version="1.0" encoding="utf-8"?>

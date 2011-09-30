@@ -18,19 +18,28 @@
     {
         private const int DefaultThreadPoolSize = 1;
 
+        private readonly IProxyFactory proxyFactory;
         private readonly IContextProxy proxy;
+
+        private static readonly Lazy<IProxyFactory> Factory = new Lazy<IProxyFactory>(ProxyFactory.Create);
 
         private static Encoding defaultEncoding = Encoding.UTF8;
 
         private bool disposed;
 
-        internal ZmqContext(IContextProxy proxy)
+        internal ZmqContext(IProxyFactory proxyFactory, IContextProxy proxy)
         {
+            if (proxyFactory == null)
+            {
+                throw new ArgumentNullException("proxyFactory");
+            }
+
             if (proxy == null)
             {
                 throw new ArgumentNullException("proxy");
             }
 
+            this.proxyFactory = proxyFactory;
             this.proxy = proxy;
         }
 
@@ -49,14 +58,6 @@
         {
             get { return defaultEncoding; }
             set { defaultEncoding = value; }
-        }
-
-        /// <summary>
-        /// Gets the underlying socket context handle.
-        /// </summary>
-        internal IntPtr Handle
-        {
-            get { return this.proxy.Handle; }
         }
 
         /// <summary>
@@ -82,7 +83,7 @@
 
             try
             {
-                return new ZmqContext(ProxyFactory.CreateContext(threadPoolSize));
+                return new ZmqContext(Factory.Value, Factory.Value.CreateContext(threadPoolSize));
             }
             catch (ProxyException ex)
             {
@@ -93,67 +94,67 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePairSocket"]/*'/>
         public IDuplexSocket CreatePairSocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Pair);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Pair);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePublishExtSocket"]/*'/>
         public IDuplexSocket CreatePublishExtSocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Xpub);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Xpub);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePublishSocket"]/*'/>
         public ISendSocket CreatePublishSocket()
         {
-            return this.TryCreateSocket(p => new SendSocket(p), SocketType.Pub);
+            return this.TryCreateSocket((p, e) => new SendSocket(p, e), SocketType.Pub);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePullSocket"]/*'/>
         public IReceiveSocket CreatePullSocket()
         {
-            return this.TryCreateSocket(p => new ReceiveSocket(p), SocketType.Pull);
+            return this.TryCreateSocket((p, e) => new ReceiveSocket(p, e), SocketType.Pull);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePushSocket"]/*'/>
         public ISendSocket CreatePushSocket()
         {
-            return this.TryCreateSocket(p => new SendSocket(p), SocketType.Push);
+            return this.TryCreateSocket((p, e) => new SendSocket(p, e), SocketType.Push);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateReplyExtSocket"]/*'/>
         public IDuplexSocket CreateReplyExtSocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Xrep);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Xrep);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateReplySocket"]/*'/>
         public IDuplexSocket CreateReplySocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Rep);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Rep);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateRequestExtSocket"]/*'/>
         public IDuplexSocket CreateRequestExtSocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Xreq);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Xreq);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateRequestSocket"]/*'/>
         public IDuplexSocket CreateRequestSocket()
         {
-            return this.TryCreateSocket(p => new DuplexSocket(p), SocketType.Req);
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Req);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeExtSocket"]/*'/>
         public ISubscribeExtSocket CreateSubscribeExtSocket()
         {
-            return this.TryCreateSocket(p => new SubscribeExtSocket(p), SocketType.Xsub);
+            return this.TryCreateSocket((p, e) => new SubscribeExtSocket(p, e), SocketType.Xsub);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeSocket"]/*'/>
         public ISubscribeSocket CreateSubscribeSocket()
         {
-            return this.TryCreateSocket(p => new SubscribeSocket(p), SocketType.Sub);
+            return this.TryCreateSocket((p, e) => new SubscribeSocket(p, e), SocketType.Sub);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePollSet"]/*'/>
@@ -173,7 +174,7 @@
             {
                 IPollItem[] pollItems = sockets.Select(s => new PollItem((ZmqSocket)s)).ToArray();
 
-                return new ZmqPollSet(ProxyFactory.CreatePollSet(pollItems.Length), pollItems);
+                return new ZmqPollSet(this.proxyFactory.CreatePollSet(pollItems.Length), pollItems, this.proxyFactory.ErrorProvider);
             }
             catch (ProxyException ex)
             {
@@ -208,13 +209,13 @@
             this.disposed = true;
         }
 
-        private TSocket TryCreateSocket<TSocket>(Func<ISocketProxy, TSocket> constructor, SocketType socketType)
+        private TSocket TryCreateSocket<TSocket>(Func<ISocketProxy, IErrorProviderProxy, TSocket> constructor, SocketType socketType)
         {
             this.EnsureNotDisposed();
 
             try
             {
-                return constructor(ProxyFactory.CreateSocket(this.proxy.Handle, (int)socketType));
+                return constructor(this.proxyFactory.CreateSocket(this.proxy.CreateSocket((int)socketType)), this.proxyFactory.ErrorProvider);
             }
             catch (ProxyException ex)
             {

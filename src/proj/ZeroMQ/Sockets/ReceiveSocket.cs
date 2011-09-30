@@ -7,8 +7,8 @@
     /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveSocket"]/*'/>
     public sealed class ReceiveSocket : ZmqSocket, IReceiveSocket
     {
-        internal ReceiveSocket(ISocketProxy proxy)
-            : base(proxy)
+        internal ReceiveSocket(ISocketProxy proxy, IErrorProviderProxy errorProviderProxy)
+            : base(proxy, errorProviderProxy)
         {
         }
 

@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="errorCode">The error code returned by the ZeroMQ library call.</param>
         /// <param name="message">The message that describes the error</param>
-        /// <param name="inner">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+        /// <param name="inner">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
         public ZmqSocketException(int errorCode, string message, Exception inner)
             : base(errorCode, message, inner)
         {
@@ -54,13 +54,6 @@
         protected ZmqSocketException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-        }
-
-        internal static new ZmqSocketException GetLastError()
-        {
-            ZmqLibException lastError = ZmqLibException.GetLastError();
-
-            return new ZmqSocketException(lastError.ErrorCode, lastError.Message);
         }
     }
 }

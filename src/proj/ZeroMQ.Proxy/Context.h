@@ -26,9 +26,16 @@ namespace Proxy {
             this->!Context();
         }
 
-        virtual property IntPtr Handle
+        virtual IntPtr CreateSocket(int socketType)
         {
-            IntPtr get() { return (IntPtr)m_context; }
+            void *socket = zmq_socket(m_context, socketType);
+
+            if (socket == NULL) {
+                // TODO: Handle ETERM gracefully?
+                throw ErrorProvider::GetLastError();
+            }
+
+            return (IntPtr)socket;
         }
 
         virtual void Terminate()

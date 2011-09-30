@@ -20,14 +20,9 @@ namespace Proxy {
         void *m_socket;
 
     public:
-        Socket(IntPtr context, int socketType)
+        Socket(IntPtr socket)
+            : m_socket((void*)socket)
         {
-            m_socket = zmq_socket((void*)context, socketType);
-
-            if (m_socket == NULL) {
-                // TODO: Handle ETERM gracefully?
-                throw ErrorProvider::GetLastError();
-            }
         }
 
         ~Socket()
@@ -76,28 +71,28 @@ namespace Proxy {
             return rc;
         }
 
-        virtual int __clrcall SetSocketOption(SocketOption option, int value)
+        virtual int __clrcall SetSocketOption(int option, int value)
         {
             int rc;
             TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(int)));
             return rc;
         }
 
-        virtual int __clrcall SetSocketOption(SocketOption option, long long value)
+        virtual int __clrcall SetSocketOption(int option, long long value)
         {
             int rc;
             TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(long long)));
             return rc;
         }
 
-        virtual int __clrcall SetSocketOption(SocketOption option, unsigned long long value)
+        virtual int __clrcall SetSocketOption(int option, unsigned long long value)
         {
             int rc;
             TEMP_FAILURE_RETRY(rc, zmq_setsockopt(m_socket, (int)option, &value, sizeof(unsigned long long)));
             return rc;
         }
 
-        virtual int __clrcall SetSocketOption(SocketOption option, array<Byte>^ value)
+        virtual int __clrcall SetSocketOption(int option, array<Byte>^ value)
         {
             int rc;
 
@@ -112,7 +107,7 @@ namespace Proxy {
             return rc;
         }
 
-        virtual int __clrcall GetSocketOption(SocketOption option, [Out] int% value)
+        virtual int __clrcall GetSocketOption(int option, [Out] int% value)
         {
             int buf;
             size_t length = sizeof(buf);
@@ -125,7 +120,7 @@ namespace Proxy {
             return rc;
         }
 
-        virtual int __clrcall GetSocketOption(SocketOption option, [Out] long long% value)
+        virtual int __clrcall GetSocketOption(int option, [Out] long long% value)
         {
             long long buf;
             size_t length = sizeof(buf);
@@ -141,7 +136,7 @@ namespace Proxy {
             return rc;
         }
 
-        virtual int __clrcall GetSocketOption(SocketOption option, [Out] unsigned long long% value)
+        virtual int __clrcall GetSocketOption(int option, [Out] unsigned long long% value)
         {
             unsigned long long buf;
             size_t length = sizeof(buf);
@@ -157,7 +152,7 @@ namespace Proxy {
             return rc;
         }
 
-        virtual int __clrcall GetSocketOption(SocketOption option, [Out] array<Byte>^% value)
+        virtual int __clrcall GetSocketOption(int option, [Out] array<Byte>^% value)
         {
             unsigned char buf[MAX_BIN_OPT_SIZE];
             size_t length = sizeof(buf);

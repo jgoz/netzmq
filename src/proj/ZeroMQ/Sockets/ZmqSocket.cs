@@ -14,17 +14,24 @@
     public abstract class ZmqSocket : ISocket
     {
         private readonly ISocketProxy proxy;
+        private readonly ZmqErrorProvider errorProvider;
 
         private bool disposed;
 
-        internal ZmqSocket(ISocketProxy proxy)
+        internal ZmqSocket(ISocketProxy socketProxy, IErrorProviderProxy errorProviderProxy)
         {
-            if (proxy == null)
+            if (socketProxy == null)
             {
-                throw new ArgumentNullException("proxy");
+                throw new ArgumentNullException("socketProxy");
             }
 
-            this.proxy = proxy;
+            if (errorProviderProxy == null)
+            {
+                throw new ArgumentNullException("errorProviderProxy");
+            }
+
+            this.proxy = socketProxy;
+            this.errorProvider = new ZmqErrorProvider(errorProviderProxy);
         }
 
         /// <summary>
@@ -164,19 +171,19 @@
             get { return this.proxy.Handle; }
         }
 
-        private static bool ShouldTryAgain
+        private bool ShouldTryAgain
         {
-            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eagain; }
+            get { return this.errorProvider.ShouldTryAgain; }
         }
 
-        private static bool ContextWasTerminated
+        private bool ContextWasTerminated
         {
-            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eterm; }
+            get { return this.errorProvider.ContextWasTerminated; }
         }
 
-        private static bool ThreadWasInterrupted
+        private bool ThreadWasInterrupted
         {
-            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eintr; }
+            get { return this.errorProvider.ThreadWasInterrupted; }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
@@ -189,7 +196,7 @@
 
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.Bind(endpoint));
+            this.HandleProxyResult(this.proxy.Bind(endpoint));
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
@@ -202,7 +209,7 @@
 
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.Connect(endpoint));
+            this.HandleProxyResult(this.proxy.Connect(endpoint));
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Close"]/*'/>
@@ -213,7 +220,7 @@
                 return;
             }
 
-            HandleProxyResult(this.proxy.Close());
+            this.HandleProxyResult(this.proxy.Close());
         }
 
         /// <summary>
@@ -229,21 +236,21 @@
         {
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.SetSocketOption(option, value));
+            this.HandleProxyResult(this.proxy.SetSocketOption((int)option, value));
         }
 
         internal void SetSocketOption(SocketOption option, long value)
         {
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.SetSocketOption(option, value));
+            this.HandleProxyResult(this.proxy.SetSocketOption((int)option, value));
         }
 
         internal void SetSocketOption(SocketOption option, ulong value)
         {
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.SetSocketOption(option, value));
+            this.HandleProxyResult(this.proxy.SetSocketOption((int)option, value));
         }
 
         internal void SetSocketOption(SocketOption option, byte[] value)
@@ -255,7 +262,7 @@
 
             this.EnsureNotDisposed();
 
-            HandleProxyResult(this.proxy.SetSocketOption(option, value));
+            this.HandleProxyResult(this.proxy.SetSocketOption((int)option, value));
         }
 
         internal int GetSocketOptionInt32(SocketOption option)
@@ -264,7 +271,7 @@
 
             int value;
 
-            HandleProxyResult(this.proxy.GetSocketOption(option, out value));
+            this.HandleProxyResult(this.proxy.GetSocketOption((int)option, out value));
 
             return value;
         }
@@ -275,7 +282,7 @@
 
             long value;
 
-            HandleProxyResult(this.proxy.GetSocketOption(option, out value));
+            this.HandleProxyResult(this.proxy.GetSocketOption((int)option, out value));
 
             return value;
         }
@@ -286,7 +293,7 @@
 
             ulong value;
 
-            HandleProxyResult(this.proxy.GetSocketOption(option, out value));
+            this.HandleProxyResult(this.proxy.GetSocketOption((int)option, out value));
 
             return value;
         }
@@ -297,7 +304,7 @@
 
             byte[] value;
 
-            HandleProxyResult(this.proxy.GetSocketOption(option, out value));
+            this.HandleProxyResult(this.proxy.GetSocketOption((int)option, out value));
 
             return value;
         }
@@ -313,24 +320,24 @@
             {
                 bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
             }
-            while (bytesReceived == -1 && ThreadWasInterrupted);
+            while (bytesReceived == -1 && this.ThreadWasInterrupted);
 
             if (bytesReceived >= 0)
             {
                 return new ReceivedMessage(buffer, ReceiveResult.Received, this.ReceiveMore);
             }
 
-            if (ShouldTryAgain)
+            if (this.ShouldTryAgain)
             {
                 return ReceivedMessage.TryAgain;
             }
 
-            if (ContextWasTerminated)
+            if (this.ContextWasTerminated)
             {
                 return ReceivedMessage.Interrupted;
             }
 
-            throw ZmqSocketException.GetLastError();
+            throw this.errorProvider.GetLastSocketError();
         }
 
         internal ReceivedMessage Receive(TimeSpan timeout)
@@ -368,17 +375,17 @@
                 return SendResult.Sent;
             }
 
-            if (ShouldTryAgain)
+            if (this.ShouldTryAgain)
             {
                 return SendResult.TryAgain;
             }
 
-            if (ContextWasTerminated)
+            if (this.ContextWasTerminated)
             {
                 return SendResult.Interrupted;
             }
 
-            throw ZmqSocketException.GetLastError();
+            throw this.errorProvider.GetLastSocketError();
         }
 
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags, TimeSpan timeout)
@@ -448,13 +455,13 @@
             this.SetSocketOption(SocketOption.Unsubscribe, prefix);
         }
 
-        private static void HandleProxyResult(int result)
+        private void HandleProxyResult(int result)
         {
             // Context termination (ETERM) is an allowable error state, occurring when the
             // ZmqContext was terminated during a socket method.
-            if (result == -1 && !ContextWasTerminated)
+            if (result == -1 && !this.ContextWasTerminated)
             {
-                throw ZmqSocketException.GetLastError();
+                throw this.errorProvider.GetLastSocketError();
             }
         }
 

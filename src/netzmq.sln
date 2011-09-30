@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{58CA9E17
 		..\package.cmd = ..\package.cmd
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0003E322-FCED-4B22-9EC2-06B20024CD4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMQ.UnitTests", "tests\ZeroMQ.UnitTests\ZeroMQ.UnitTests.csproj", "{3926C770-1098-484E-857D-6E5FE9247161}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -96,6 +100,13 @@ Global
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.PerfTest|x86.Build.0 = Release|x86
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x64.ActiveCfg = Release|x64
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5}.Release|x86.ActiveCfg = Release|x86
+		{3926C770-1098-484E-857D-6E5FE9247161}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.Debug|x64.Build.0 = Debug|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.PerfTest|x64.ActiveCfg = Release|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.PerfTest|x86.ActiveCfg = Release|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.Release|x64.ActiveCfg = Release|Any CPU
+		{3926C770-1098-484E-857D-6E5FE9247161}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,5 +116,6 @@ Global
 		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {C0D50781-620E-40C1-8277-07833E827A5E}
 		{6652CB5B-48E1-4738-93FF-58CC2131DC0F} = {11E622AD-C53A-4829-AACF-387B2EB836D7}
 		{99F53E58-CF54-4A79-9ACA-BAEE94DD82D5} = {11E622AD-C53A-4829-AACF-387B2EB836D7}
+		{3926C770-1098-484E-857D-6E5FE9247161} = {0003E322-FCED-4B22-9EC2-06B20024CD4C}
 	EndGlobalSection
 EndGlobal

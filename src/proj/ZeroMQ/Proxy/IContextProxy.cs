@@ -4,7 +4,7 @@
 
     internal interface IContextProxy
     {
-        IntPtr Handle { get; }
+        IntPtr CreateSocket(int socketType);
 
         void Terminate();
     }
