@@ -165,6 +165,11 @@
                 throw new ArgumentNullException("sockets");
             }
 
+            if (!sockets.Any())
+            {
+                throw new ArgumentException("At least one socket is needed for a poll set", "sockets");
+            }
+
             if (!sockets.All(s => typeof(ZmqSocket).IsAssignableFrom(s.GetType())))
             {
                 throw new ArgumentException("All sockets used for polling must inherit from ZmqSocket.", "sockets");

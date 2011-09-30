@@ -47,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ZmqContextSpecs\CreateSocketTests.cs" />
+    <Compile Include="ZmqContextSpecs\CreatePollSet.cs" />
+    <Compile Include="ZmqContextSpecs\CreateSocket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZmqContextSpecs\SpecContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
