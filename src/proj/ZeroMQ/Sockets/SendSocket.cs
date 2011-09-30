@@ -7,8 +7,8 @@
     /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendSocket"]/*'/>
     public sealed class SendSocket : ZmqSocket, ISendSocket
     {
-        internal SendSocket(ISocketProxy proxy)
-            : base(proxy)
+        internal SendSocket(ISocketProxy proxy, IErrorProviderProxy errorProviderProxy)
+            : base(proxy, errorProviderProxy)
         {
         }
 

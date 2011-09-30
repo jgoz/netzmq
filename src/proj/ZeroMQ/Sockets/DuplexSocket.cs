@@ -7,8 +7,8 @@
     /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="DuplexSocket"]/*'/>
     public sealed class DuplexSocket : ZmqSocket, IDuplexSocket
     {
-        internal DuplexSocket(ISocketProxy proxy)
-            : base(proxy)
+        internal DuplexSocket(ISocketProxy proxy, IErrorProviderProxy errorProviderProxy)
+            : base(proxy, errorProviderProxy)
         {
         }
 

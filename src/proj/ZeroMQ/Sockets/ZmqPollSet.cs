@@ -10,10 +10,11 @@
     {
         private readonly IPollItem[] pollItems;
         private readonly IPollSetProxy proxy;
+        private readonly ZmqErrorProvider errorProvider;
 
         private bool disposed;
 
-        internal ZmqPollSet(IPollSetProxy proxy, IPollItem[] pollItems)
+        internal ZmqPollSet(IPollSetProxy proxy, IPollItem[] pollItems, IErrorProviderProxy errorProviderProxy)
         {
             if (proxy == null)
             {
@@ -25,18 +26,9 @@
                 throw new ArgumentNullException("pollItems");
             }
 
-            this.pollItems = pollItems;
             this.proxy = proxy;
-        }
-
-        private static bool WasInterrupted
-        {
-            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eintr; }
-        }
-
-        private static bool WasTerminated
-        {
-            get { return ZmqLibException.GetErrorCode() == ErrorCode.Eterm; }
+            this.pollItems = pollItems;
+            this.errorProvider = new ZmqErrorProvider(errorProviderProxy);
         }
 
         /// <summary>
@@ -67,25 +59,11 @@
             }
         }
 
-        private static void ContinueIfInterrupted()
-        {
-            // An error value of EINTR indicates that the operation was interrupted
-            // by delivery of a signal before any events were available. This is a recoverable
-            // error, so try polling again for the remaining amount of time in the timeout.
-            //
-            // ETERM indicates that the context was terminated during the operation execution.
-            // While it is not recoverable, it should not result in an exception being thrown.
-            if (!WasInterrupted && !WasTerminated)
-            {
-                throw ZmqSocketException.GetLastError();
-            }
-        }
-
         private void PollBlocking()
         {
             while (this.Poll(-1) == -1)
             {
-                ContinueIfInterrupted();
+                this.ContinueIfInterrupted();
             }
         }
 
@@ -98,12 +76,12 @@
             {
                 int result = this.Poll(remainingTimeout);
 
-                if (result >= 0 || WasTerminated)
+                if (result >= 0 || this.errorProvider.ContextWasTerminated)
                 {
                     break;
                 }
 
-                ContinueIfInterrupted();
+                this.ContinueIfInterrupted();
                 remainingTimeout -= (int)elapsed.ElapsedMilliseconds;
             }
             while (remainingTimeout >= 0);
@@ -124,6 +102,20 @@
             }
 
             return readyCount;
+        }
+
+        private void ContinueIfInterrupted()
+        {
+            // An error value of EINTR indicates that the operation was interrupted
+            // by delivery of a signal before any events were available. This is a recoverable
+            // error, so try polling again for the remaining amount of time in the timeout.
+            //
+            // ETERM indicates that the context was terminated during the operation execution.
+            // While it is not recoverable, it should not result in an exception being thrown.
+            if (!this.errorProvider.ThreadWasInterrupted && !this.errorProvider.ContextWasTerminated)
+            {
+                throw this.errorProvider.GetLastSocketError();
+            }
         }
 
         private void Dispose(bool disposing)

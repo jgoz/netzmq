@@ -7,8 +7,8 @@
     /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeExtSocket"]/*'/>
     public sealed class SubscribeExtSocket : ZmqSocket, ISubscribeExtSocket
     {
-        internal SubscribeExtSocket(ISocketProxy proxy)
-            : base(proxy)
+        internal SubscribeExtSocket(ISocketProxy proxy, IErrorProviderProxy errorProviderProxy)
+            : base(proxy, errorProviderProxy)
         {
         }
 
