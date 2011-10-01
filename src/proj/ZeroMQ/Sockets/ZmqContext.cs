@@ -160,6 +160,8 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePollSet"]/*'/>
         public IPollSet CreatePollSet(IEnumerable<ISocket> sockets)
         {
+            this.EnsureNotDisposed();
+
             if (sockets == null)
             {
                 throw new ArgumentNullException("sockets");
