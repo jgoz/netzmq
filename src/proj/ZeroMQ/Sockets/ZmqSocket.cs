@@ -17,6 +17,7 @@
         private readonly ZmqErrorProvider errorProvider;
 
         private bool disposed;
+        private bool closed;
 
         internal ZmqSocket(ISocketProxy socketProxy, IErrorProviderProxy errorProviderProxy)
         {
@@ -225,12 +226,14 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Close"]/*'/>
         public void Close()
         {
-            if (this.disposed)
+            if (this.disposed || this.closed)
             {
                 return;
             }
 
             this.HandleProxyResult(this.proxy.Close());
+
+            this.closed = true;
         }
 
         /// <summary>
