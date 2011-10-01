@@ -55,6 +55,7 @@
     <Compile Include="ZmqSocketSpecs\BindSpecs.cs" />
     <Compile Include="ZmqSocketSpecs\ConnectSpecs.cs" />
     <Compile Include="ZmqSocketSpecs\CloseSpecs.cs" />
+    <Compile Include="ZmqSocketSpecs\Dispose.cs" />
     <Compile Include="ZmqSocketSpecs\SpecContext.cs" />
   </ItemGroup>
   <ItemGroup>
