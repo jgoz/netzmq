@@ -189,12 +189,17 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
+            this.EnsureNotDisposed();
+
             if (endpoint == null)
             {
                 throw new ArgumentNullException("endpoint");
             }
 
-            this.EnsureNotDisposed();
+            if (endpoint == string.Empty)
+            {
+                throw new ArgumentException("Unable to Bind to an empty endpoint.", "endpoint");
+            }
 
             this.HandleProxyResult(this.proxy.Bind(endpoint));
         }
@@ -202,12 +207,17 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Connect"]/*'/>
         public void Connect(string endpoint)
         {
+            this.EnsureNotDisposed();
+
             if (endpoint == null)
             {
                 throw new ArgumentNullException("endpoint");
             }
 
-            this.EnsureNotDisposed();
+            if (endpoint == string.Empty)
+            {
+                throw new ArgumentException("Unable to Connect to an empty endpoint.", "endpoint");
+            }
 
             this.HandleProxyResult(this.proxy.Connect(endpoint));
         }
@@ -255,12 +265,12 @@
 
         internal void SetSocketOption(SocketOption option, byte[] value)
         {
+            this.EnsureNotDisposed();
+
             if (value == null)
             {
                 throw new ArgumentNullException("value");
             }
-
-            this.EnsureNotDisposed();
 
             this.HandleProxyResult(this.proxy.SetSocketOption((int)option, value));
         }
@@ -361,12 +371,12 @@
 
         internal SendResult Send(byte[] buffer, SocketFlags socketFlags)
         {
+            this.EnsureNotDisposed();
+
             if (buffer == null)
             {
                 throw new ArgumentNullException("buffer");
             }
-
-            this.EnsureNotDisposed();
 
             int bytesSent = this.proxy.Send((int)socketFlags, buffer);
 
