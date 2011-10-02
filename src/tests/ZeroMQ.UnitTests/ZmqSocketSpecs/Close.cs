@@ -12,11 +12,8 @@
     using It = Machine.Specifications.It;
 
     [Subject("ZMQ Socket")]
-    class when_closing_an_open_socket : using_mock_socket_proxy<ZmqSocket>
+    class when_closing_an_open_socket : using_base_socket_class
     {
-        Establish context = () =>
-            socket = new ConcreteSocket();
-
         Because of = () =>
             socket.Close();
 
@@ -25,12 +22,9 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_closing_a_closed_socket : using_mock_socket_proxy<ZmqSocket>
+    class when_closing_a_closed_socket : using_base_socket_class
     {
         static Exception exception;
-
-        Establish context = () =>
-            socket = new ConcreteSocket();
 
         Because of = () =>
             exception = Catch.Exception(() =>
@@ -47,12 +41,9 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_closing_a_disposed_socket : using_mock_socket_proxy<ZmqSocket>
+    class when_closing_a_disposed_socket : using_base_socket_class
     {
         static Exception exception;
-
-        Establish context = () =>
-            socket = new ConcreteSocket();
 
         Because of = () =>
             exception = Catch.Exception(() =>
@@ -69,14 +60,12 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_closing_is_interrupted_by_context_termination : using_mock_socket_proxy<ZmqSocket>
+    class when_closing_is_interrupted_by_context_termination : using_base_socket_class
     {
         static Exception exception;
 
         Establish context = () =>
         {
-            socket = new ConcreteSocket();
-
             socketProxy.Setup(mock => mock.Close()).Returns(-1);
             errorProviderProxy.Setup(mock => mock.GetErrorCode()).Returns((int)ErrorCode.Eterm);
         };
@@ -89,14 +78,12 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_closing_and_the_proxy_returns_an_error : using_mock_socket_proxy<ZmqSocket>
+    class when_closing_and_the_proxy_returns_an_error : using_base_socket_class
     {
         static Exception exception;
 
         Establish context = () =>
         {
-            socket = new ConcreteSocket();
-
             socketProxy.Setup(mock => mock.Close()).Returns(-1);
             errorProviderProxy.Setup(mock => mock.GetErrorCode()).Returns((int)ErrorCode.Enotsock);
         };

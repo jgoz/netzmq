@@ -6,16 +6,11 @@
 
     using Moq;
 
-    using ZeroMQ.Sockets;
-
     using It = Machine.Specifications.It;
 
     [Subject("ZMQ Socket")]
-    class when_disposing_a_zmq_socket : using_mock_socket_proxy<ZmqSocket>
+    class when_disposing_a_zmq_socket : using_base_socket_class
     {
-        Establish context = () =>
-            socket = new ConcreteSocket();
-
         Because of = () =>
             socket.Dispose();
 
@@ -24,12 +19,9 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_disposing_a_zmq_socket_multiple_times : using_mock_socket_proxy<ZmqSocket>
+    class when_disposing_a_zmq_socket_multiple_times : using_base_socket_class
     {
         static Exception exception;
-
-        Establish context = () =>
-            socket = new ConcreteSocket();
 
         Because of = () =>
             exception = Catch.Exception(() =>

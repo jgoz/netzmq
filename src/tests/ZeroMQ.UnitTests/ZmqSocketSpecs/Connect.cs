@@ -8,11 +8,8 @@
     using ZeroMQ.Sockets;
 
     [Subject("ZMQ Socket")]
-    class when_connecting_a_socket_to_a_valid_endpoint : using_mock_socket_proxy<ZmqSocket>
+    class when_connecting_a_socket_to_a_valid_endpoint : using_base_socket_class
     {
-        Establish context = () =>
-            socket = new ConcreteSocket();
-
         Because of = () =>
             socket.Connect("tcp://*:9090");
 
@@ -21,12 +18,9 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_connecting_a_socket_to_a_null_endpoint : using_mock_socket_proxy<ZmqSocket>
+    class when_connecting_a_socket_to_a_null_endpoint : using_base_socket_class
     {
         static Exception exception;
-
-        Establish context = () =>
-            socket = new ConcreteSocket();
 
         Because of = () =>
             exception = Catch.Exception(() => socket.Connect(null));
@@ -36,12 +30,9 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_connecting_a_socket_to_an_empty_endpoint : using_mock_socket_proxy<ZmqSocket>
+    class when_connecting_a_socket_to_an_empty_endpoint : using_base_socket_class
     {
         static Exception exception;
-
-        Establish context = () =>
-            socket = new ConcreteSocket();
 
         Because of = () =>
             exception = Catch.Exception(() => socket.Connect(null));
@@ -51,14 +42,12 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_connecting_is_interrupted_by_context_termination : using_mock_socket_proxy<ZmqSocket>
+    class when_connecting_is_interrupted_by_context_termination : using_base_socket_class
     {
         static Exception exception;
 
         Establish context = () =>
         {
-            socket = new ConcreteSocket();
-
             socketProxy.Setup(mock => mock.Connect(Moq.It.IsAny<string>())).Returns(-1);
             errorProviderProxy.Setup(mock => mock.GetErrorCode()).Returns((int)ErrorCode.Eterm);
         };
@@ -71,14 +60,12 @@
     }
 
     [Subject("ZMQ Socket")]
-    class when_connecting_and_the_proxy_returns_an_error : using_mock_socket_proxy<ZmqSocket>
+    class when_connecting_and_the_proxy_returns_an_error : using_base_socket_class
     {
         static Exception exception;
 
         Establish context = () =>
         {
-            socket = new ConcreteSocket();
-
             socketProxy.Setup(mock => mock.Connect(Moq.It.IsAny<string>())).Returns(-1);
             errorProviderProxy.Setup(mock => mock.GetErrorCode()).Returns((int)ErrorCode.Emthread);
         };
