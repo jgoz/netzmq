@@ -52,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZmqContextSpecs\Dispose.cs" />
     <Compile Include="ZmqContextSpecs\SpecContext.cs" />
-    <Compile Include="ZmqSocketSpecs\BindSpecs.cs" />
-    <Compile Include="ZmqSocketSpecs\ConnectSpecs.cs" />
-    <Compile Include="ZmqSocketSpecs\CloseSpecs.cs" />
+    <Compile Include="ZmqSocketSpecs\Bind.cs" />
+    <Compile Include="ZmqSocketSpecs\Connect.cs" />
+    <Compile Include="ZmqSocketSpecs\Close.cs" />
     <Compile Include="ZmqSocketSpecs\Dispose.cs" />
     <Compile Include="ZmqSocketSpecs\SpecContext.cs" />
   </ItemGroup>
