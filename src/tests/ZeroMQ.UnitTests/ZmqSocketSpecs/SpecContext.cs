@@ -32,5 +32,15 @@
             socketProxy = new Mock<ISocketProxy>();
             errorProviderProxy = new Mock<IErrorProviderProxy>();
         };
+
+        protected static int IncludesSocketFlag(SocketFlags flag)
+        {
+            return Moq.It.Is<int>(i => ((SocketFlags)i).HasFlag(flag));
+        }
+
+        protected static int ExcludesSocketFlag(SocketFlags flag)
+        {
+            return Moq.It.Is<int>(i => !((SocketFlags)i).HasFlag(flag));
+        }
     }
 }
