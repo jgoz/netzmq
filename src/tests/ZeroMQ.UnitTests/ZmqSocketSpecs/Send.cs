@@ -246,15 +246,6 @@
             exception.ShouldBeNull();
     }
 
-    [Behaviors]
-    class FailsWithSocketException
-    {
-        protected static Exception exception;
-
-        It should_fail_with_socket_exception = () =>
-            exception.ShouldBeOfType<ZmqSocketException>();
-    }
-
     abstract class using_send_socket_with_context_termination : using_send_socket
     {
         protected static Exception exception;

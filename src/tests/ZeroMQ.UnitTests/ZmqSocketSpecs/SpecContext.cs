@@ -1,11 +1,24 @@
 ﻿namespace ZeroMQ.UnitTests.ZmqSocketSpecs
 {
+    using System;
+
     using Machine.Specifications;
 
     using Moq;
 
     using ZeroMQ.Proxy;
     using ZeroMQ.Sockets;
+
+    using It = Machine.Specifications.It;
+
+    [Behaviors]
+    class FailsWithSocketException
+    {
+        protected static Exception exception;
+
+        It should_fail_with_socket_exception = () =>
+            exception.ShouldBeOfType<ZmqSocketException>();
+    }
 
     abstract class using_base_socket_class : using_mock_socket_proxy<ZmqSocket>
     {

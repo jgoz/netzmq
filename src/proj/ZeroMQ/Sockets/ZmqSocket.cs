@@ -182,11 +182,6 @@
             get { return this.errorProvider.ContextWasTerminated; }
         }
 
-        private bool ThreadWasInterrupted
-        {
-            get { return this.errorProvider.ThreadWasInterrupted; }
-        }
-
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/*'/>
         public void Bind(string endpoint)
         {
@@ -327,13 +322,7 @@
             this.EnsureNotDisposed();
 
             byte[] buffer;
-            int bytesReceived;
-
-            do
-            {
-                bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
-            }
-            while (bytesReceived == -1 && this.ThreadWasInterrupted);
+            int bytesReceived = this.proxy.Receive((int)socketFlags, out buffer);
 
             if (bytesReceived >= 0)
             {
