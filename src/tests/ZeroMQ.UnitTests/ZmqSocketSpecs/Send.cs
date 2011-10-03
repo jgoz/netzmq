@@ -11,7 +11,7 @@
 
     using It = Machine.Specifications.It;
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking single")]
     class when_sending_a_message_to_a_remote_socket : using_send_socket
     {
         Establish context = () =>
@@ -33,7 +33,7 @@
             socketProxy.Verify(mock => mock.Send(ExcludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking single")]
     class when_sending_a_message_is_interrupted_by_context_termination : using_send_socket_with_context_termination
     {
         Because of = () =>
@@ -42,7 +42,7 @@
         Behaves_like<InterruptedSendResult> interrupted;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking single")]
     class when_sending_a_message_and_the_proxy_returns_an_error : using_send_socket_with_socket_error
     {
         Because of = () =>
@@ -51,7 +51,7 @@
         Behaves_like<FailsWithSocketException> fails_with_exception;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking single")]
     class when_sending_a_message_to_a_remote_socket_with_timeout : using_send_socket
     {
         Establish context = () =>
@@ -79,7 +79,7 @@
             socketProxy.Verify(mock => mock.Send(ExcludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking single")]
     class when_sending_a_message_to_a_remote_socket_with_expiring_timeout : using_send_socket
     {
         Establish context = () =>
@@ -104,7 +104,7 @@
             socketProxy.Verify(mock => mock.Send(ExcludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking single")]
     class when_sending_a_message_with_timeout_is_interrupted_by_context_termination : using_send_socket_with_context_termination
     {
         Because of = () =>
@@ -113,7 +113,7 @@
         Behaves_like<InterruptedSendResult> interrupted;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking single")]
     class when_sending_a_message_with_timeout_and_the_proxy_returns_an_error : using_send_socket_with_socket_error
     {
         Because of = () =>
@@ -122,7 +122,7 @@
         Behaves_like<FailsWithSocketException> fails_with_exception;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking partial")]
     class when_sending_a_partial_message_to_a_remote_socket : using_send_socket
     {
         Establish context = () =>
@@ -144,7 +144,7 @@
             socketProxy.Verify(mock => mock.Send(IncludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking partial")]
     class when_sending_a_partial_message_is_interrupted_by_context_termination : using_send_socket_with_context_termination
     {
         Because of = () =>
@@ -153,7 +153,7 @@
         Behaves_like<InterruptedSendResult> interrupted;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "blocking partial")]
     class when_sending_a_partial_message_and_the_proxy_returns_an_error : using_send_socket_with_socket_error
     {
         Because of = () =>
@@ -162,7 +162,7 @@
         Behaves_like<FailsWithSocketException> fails_with_exception;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking partial")]
     class when_sending_a_partial_message_to_a_remote_socket_with_timeout : using_send_socket
     {
         Establish context = () =>
@@ -190,7 +190,7 @@
             socketProxy.Verify(mock => mock.Send(IncludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking partial")]
     class when_sending_a_partial_message_to_a_remote_socket_with_expiring_timeout : using_send_socket
     {
         Establish context = () =>
@@ -215,7 +215,7 @@
             socketProxy.Verify(mock => mock.Send(IncludesSocketFlag(SocketFlags.SendMore), Moq.It.IsAny<byte[]>()));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking partial")]
     class when_sending_a_partial_message_with_timeout_is_interrupted_by_context_termination : using_send_socket_with_context_termination
     {
         Because of = () =>
@@ -224,7 +224,7 @@
         Behaves_like<InterruptedSendResult> interrupted;
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(SendSocket), "non-blocking partial")]
     class when_sending_a_partial_message_with_timeout_and_the_proxy_returns_an_error : using_send_socket_with_socket_error
     {
         Because of = () =>

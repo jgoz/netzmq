@@ -11,7 +11,7 @@
 
     using It = Machine.Specifications.It;
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "close")]
     class when_closing_an_open_socket : using_base_socket_class
     {
         Because of = () =>
@@ -21,7 +21,7 @@
             socketProxy.Verify(mock => mock.Close());
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "close")]
     class when_closing_a_closed_socket : using_base_socket_class
     {
         static Exception exception;
@@ -40,7 +40,7 @@
             exception.ShouldBeNull();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "close")]
     class when_closing_a_disposed_socket : using_base_socket_class
     {
         static Exception exception;
@@ -59,7 +59,7 @@
             exception.ShouldBeNull();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "close")]
     class when_closing_is_interrupted_by_context_termination : using_base_socket_class
     {
         static Exception exception;
@@ -77,7 +77,7 @@
             exception.ShouldBeNull();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "close")]
     class when_closing_and_the_proxy_returns_an_error : using_base_socket_class
     {
         static Exception exception;

@@ -7,7 +7,7 @@
     using ZeroMQ.Proxy;
     using ZeroMQ.Sockets;
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "bind")]
     class when_binding_a_socket_to_a_valid_endpoint : using_base_socket_class
     {
         Because of = () =>
@@ -17,7 +17,7 @@
             socketProxy.Verify(mock => mock.Bind("tcp://*:9090"));
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "bind")]
     class when_binding_a_socket_to_a_null_endpoint : using_base_socket_class
     {
         static Exception exception;
@@ -29,7 +29,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "bind")]
     class when_binding_a_socket_to_an_empty_endpoint : using_base_socket_class
     {
         static Exception exception;
@@ -41,7 +41,7 @@
             exception.ShouldBeOfType<ArgumentException>();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "bind")]
     class when_binding_is_interrupted_by_context_termination : using_base_socket_class
     {
         static Exception exception;
@@ -59,7 +59,7 @@
             exception.ShouldBeNull();
     }
 
-    [Subject("ZMQ Socket")]
+    [Subject(typeof(ZmqSocket), "bind")]
     class when_binding_and_the_proxy_returns_an_error : using_base_socket_class
     {
         static Exception exception;

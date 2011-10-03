@@ -11,7 +11,7 @@
 
     using It = Machine.Specifications.It;
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "pollset")]
     class when_creating_a_poll_set_with_one_socket : using_context_to_create_poll_set
     {
         Because of = () =>
@@ -21,7 +21,7 @@
             factory.Verify(mock => mock.CreatePollSet(1));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "pollset")]
     class when_creating_a_poll_set_with_no_sockets : using_context_to_create_poll_set
     {
         static Exception exception;
@@ -33,7 +33,7 @@
             exception.ShouldBeOfType<ArgumentException>();
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "pollset")]
     class when_creating_a_poll_set_with_a_foreign_socket_implementation : using_context_to_create_poll_set
     {
         static Exception exception;

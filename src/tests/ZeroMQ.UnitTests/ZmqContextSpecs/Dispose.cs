@@ -6,9 +6,11 @@
 
     using Moq;
 
+    using ZeroMQ.Sockets;
+
     using It = Machine.Specifications.It;
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "dispose")]
     class when_disposing_a_zmq_context : using_mock_context_proxy
     {
         Because of = () =>
@@ -18,7 +20,7 @@
             contextProxy.Verify(mock => mock.Terminate());
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "dispose")]
     class when_disposing_a_zmq_context_multiple_times : using_mock_context_proxy
     {
         static Exception exception;

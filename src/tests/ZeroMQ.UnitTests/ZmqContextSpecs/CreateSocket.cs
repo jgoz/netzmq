@@ -11,7 +11,7 @@
 
     using It = Machine.Specifications.It;
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_pair_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -24,7 +24,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_pub_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -37,7 +37,7 @@
             socket.ShouldBeOfType(typeof(ISendSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_an_xpub_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -50,7 +50,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_sub_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -63,7 +63,7 @@
             socket.ShouldBeOfType(typeof(IReceiveSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_an_xsub_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -76,7 +76,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_pull_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -89,7 +89,7 @@
             socket.ShouldBeOfType(typeof(IReceiveSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_push_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -102,7 +102,7 @@
             socket.ShouldBeOfType(typeof(ISendSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_rep_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -115,7 +115,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_req_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -128,7 +128,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_xrep_socket : using_context_to_create_socket
     {
         Because of = () =>
@@ -141,7 +141,7 @@
             socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
-    [Subject("ZMQ Context")]
+    [Subject(typeof(ZmqContext), "socket")]
     class when_creating_a_xreq_socket : using_context_to_create_socket
     {
         Because of = () =>
