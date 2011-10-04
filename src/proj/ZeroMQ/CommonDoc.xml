@@ -37,6 +37,25 @@
     </summary>
   </Members>
   
+  <Members name="CreateDealerSocket">
+    <summary>
+    Create a ZMQ_DEALER socket. Extends the request/reply pattern by load-balancing outgoing messages
+    to all connected peers and by fair-queuing incoming messages from all connected peers.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_DEALER socket.</returns>
+    <remarks>
+    When connected to a ZMQ_REP socket, each message sent must consist of an empty message part,
+    the delimiter, followed by one or more data parts.
+    </remarks>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
   <Members name="CreatePairSocket">
     <summary>
     Create a ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
@@ -156,6 +175,33 @@
     Create a ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
     </summary>
     <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_REQ socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreateRouterSocket">
+    <summary>
+    Create a ZMQ_ROUTER socket. Extends the request/reply pattern by fair-queuing incoming messages
+    from all connected peers.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_DEALER socket.</returns>
+    <remarks>
+      <para>
+      Incoming messages are prepended with a message part containing an identifier that represents the
+      sending socket. When sending replies, the application must send a message part containing
+      recipient's identity, followed by any remaining message parts.
+      </para>
+      <para>
+      When connected to a ZMQ_REQ socket, received messages also contain an empty delimiter between the
+      sender's identity and the message contents. The application must also include an empty delimiter
+      between the recipient's identity and the message parts when sending replies.
+      </para>
+    </remarks>
     <exception cref="System.ObjectDisposedException">
       The <see cref="ZmqContext"/> has already been disposed.
     </exception>

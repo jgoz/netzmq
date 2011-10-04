@@ -8,6 +8,9 @@ namespace ZeroMQ
     /// </summary>
     public interface IZmqContext : IDisposable
     {
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateDealerSocket"]/node()[name()!="exception"]'/>
+        IDuplexSocket CreateDealerSocket();
+
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePairSocket"]/node()[name()!="exception"]'/>
         IDuplexSocket CreatePairSocket();
 
@@ -34,6 +37,9 @@ namespace ZeroMQ
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateRequestSocket"]/node()[name()!="exception"]'/>
         IDuplexSocket CreateRequestSocket();
+
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateRouterSocket"]/node()[name()!="exception"]'/>
+        IDuplexSocket CreateRouterSocket();
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeExtSocket"]/node()[name()!="exception"]'/>
         ISubscribeSocket CreateSubscribeExtSocket();

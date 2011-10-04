@@ -19,9 +19,6 @@
 
         It should_use_zmq_pair_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Pair));
-
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -32,9 +29,6 @@
 
         It should_use_zmq_pub_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Pub));
-
-        It should_be_a_send_socket = () =>
-            socket.ShouldBeOfType(typeof(ISendSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -45,9 +39,6 @@
 
         It should_use_zmq_xpub_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Xpub));
-
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -58,9 +49,6 @@
 
         It should_use_zmq_sub_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Sub));
-
-        It should_be_a_receive_socket = () =>
-            socket.ShouldBeOfType(typeof(IReceiveSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -71,9 +59,6 @@
 
         It should_use_zmq_xsub_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Xsub));
-
-        It should_be_a_subscribe_socket = () =>
-            socket.ShouldBeOfType(typeof(ISubscribeSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -84,9 +69,6 @@
 
         It should_use_zmq_pull_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Pull));
-
-        It should_be_a_receive_socket = () =>
-            socket.ShouldBeOfType(typeof(IReceiveSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -97,9 +79,6 @@
 
         It should_use_zmq_push_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Push));
-
-        It should_be_a_send_socket = () =>
-            socket.ShouldBeOfType(typeof(ISendSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -110,9 +89,6 @@
 
         It should_use_zmq_rep_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Rep));
-
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -123,9 +99,6 @@
 
         It should_use_zmq_req_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Req));
-
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -136,9 +109,6 @@
 
         It should_use_zmq_xrep_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Xrep));
-
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]
@@ -149,9 +119,26 @@
 
         It should_use_zmq_xreq_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Xreq));
+    }
 
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
+    [Subject(typeof(ZmqContext), "socket")]
+    class when_creating_a_dealer_socket : using_context_to_create_socket
+    {
+        Because of = () =>
+            socket = zmqContext.CreateDealerSocket();
+
+        It should_use_zmq_dealer_socket_type = () =>
+            contextProxy.Verify(p => p.CreateSocket((int)SocketType.Dealer));
+    }
+
+    [Subject(typeof(ZmqContext), "socket")]
+    class when_creating_a_router_socket : using_context_to_create_socket
+    {
+        Because of = () =>
+            socket = zmqContext.CreateRouterSocket();
+
+        It should_use_zmq_router_socket_type = () =>
+            contextProxy.Verify(p => p.CreateSocket((int)SocketType.Router));
     }
 
     abstract class using_context_to_create_socket : using_mock_context_proxy

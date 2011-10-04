@@ -91,6 +91,12 @@
             }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateDealerSocket"]/*'/>
+        public IDuplexSocket CreateDealerSocket()
+        {
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Dealer);
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreatePairSocket"]/*'/>
         public IDuplexSocket CreatePairSocket()
         {
@@ -143,6 +149,12 @@
         public IDuplexSocket CreateRequestSocket()
         {
             return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Req);
+        }
+
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateRouterSocket"]/*'/>
+        public IDuplexSocket CreateRouterSocket()
+        {
+            return this.TryCreateSocket((p, e) => new DuplexSocket(p, e), SocketType.Router);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeExtSocket"]/*'/>
