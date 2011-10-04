@@ -5,8 +5,18 @@
     using ZeroMQ.Proxy;
 
     /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeExtSocket"]/*'/>
-    public sealed class SubscribeExtSocket : ZmqSocket, ISubscribeExtSocket
+    public sealed class SubscribeExtSocket : ZmqSocket, ISubscribeSocket
     {
+        /// <summary>
+        /// The byte value prefixed to outgoing subscription messages.
+        /// </summary>
+        public const byte SubscribePrefix = 1;
+
+        /// <summary>
+        /// The byte value prefixed to outgoing unsubscription messages.
+        /// </summary>
+        public const byte UnsubscribePrefix = 0;
+
         internal SubscribeExtSocket(ISocketProxy proxy, IErrorProviderProxy errorProviderProxy)
             : base(proxy, errorProviderProxy)
         {
@@ -38,30 +48,6 @@
             return base.Receive(timeout);
         }
 
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send1"]/*'/>
-        public SendResult Send(byte[] buffer)
-        {
-            return this.Send(buffer, SocketFlags.None);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Send2"]/*'/>
-        public SendResult Send(byte[] buffer, TimeSpan timeout)
-        {
-            return this.Send(buffer, SocketFlags.DontWait, timeout);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendPart1"]/*'/>
-        public SendResult SendPart(byte[] buffer)
-        {
-            return this.Send(buffer, SocketFlags.SendMore);
-        }
-
-        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendPart2"]/*'/>
-        public SendResult SendPart(byte[] buffer, TimeSpan timeout)
-        {
-            return this.Send(buffer, SocketFlags.SendMore | SocketFlags.DontWait, timeout);
-        }
-
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SubscribeAll"]/*'/>
         public void SubscribeAll()
         {
@@ -71,7 +57,17 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Subscribe"]/*'/>
         public new void Subscribe(byte[] prefix)
         {
-            base.Subscribe(prefix);
+            if (prefix == null)
+            {
+                throw new ArgumentNullException("prefix");
+            }
+
+            var buffer = new byte[prefix.Length + 1];
+
+            buffer[0] = SubscribePrefix;
+            prefix.CopyTo(buffer, 1);
+
+            this.Send(buffer, SocketFlags.None);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="UnsubscribeAll"]/*'/>
@@ -83,7 +79,17 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Unsubscribe"]/*'/>
         public new void Unsubscribe(byte[] prefix)
         {
-            base.Unsubscribe(prefix);
+            if (prefix == null)
+            {
+                throw new ArgumentNullException("prefix");
+            }
+
+            var buffer = new byte[prefix.Length + 1];
+
+            buffer[0] = UnsubscribePrefix;
+            prefix.CopyTo(buffer, 1);
+
+            this.Send(buffer, SocketFlags.None);
         }
     }
 }

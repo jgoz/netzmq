@@ -72,8 +72,8 @@
         It should_use_zmq_xsub_socket_type = () =>
             contextProxy.Verify(p => p.CreateSocket((int)SocketType.Xsub));
 
-        It should_be_a_duplex_socket = () =>
-            socket.ShouldBeOfType(typeof(IDuplexSocket));
+        It should_be_a_subscribe_socket = () =>
+            socket.ShouldBeOfType(typeof(ISubscribeSocket));
     }
 
     [Subject(typeof(ZmqContext), "socket")]

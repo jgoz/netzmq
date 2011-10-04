@@ -21,7 +21,7 @@
   <Members name="SubscribeExtSocket">
     <summary>
     A socket that can subscribe to and receive data distributed by a remote publisher.
-    Extends <see cref="ISubscribeSocket"/> by allowing outgoing subscription messages to be sent
+    Extends <see cref="ISubscribeSocket"/> by sending subscription messages directly to the publisher.
     </summary>
   </Members>
 
@@ -171,7 +171,7 @@
     Set a subscription filter via <see cref="ISubscribeSocket.Subscribe(byte[])"/> or <see cref="ISubscribeSocket.SubscribeAll"/>
     before connecting to a publisher.
     </summary>
-    <returns>An <see cref="ISubscribeExtSocket"/> instance for a ZMQ_XSUB socket.</returns>
+    <returns>An <see cref="ISubscribeSocket"/> instance for a ZMQ_XSUB socket.</returns>
     <exception cref="System.ObjectDisposedException">
       The <see cref="ZmqContext"/> has already been disposed.
     </exception>

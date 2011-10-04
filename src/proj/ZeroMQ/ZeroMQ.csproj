@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="IPollSet.cs" />
     <Compile Include="ISocket.cs" />
-    <Compile Include="ISubscribeExtSocket.cs" />
     <Compile Include="IZmqContext.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
     <Compile Include="Sockets\ZmqErrorProvider.cs" />

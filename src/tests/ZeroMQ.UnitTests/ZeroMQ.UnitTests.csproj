@@ -59,6 +59,7 @@
     <Compile Include="ZmqSocketSpecs\Receive.cs" />
     <Compile Include="ZmqSocketSpecs\Send.cs" />
     <Compile Include="ZmqSocketSpecs\SpecContext.cs" />
+    <Compile Include="ZmqSocketSpecs\Subscribe.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -146,7 +146,7 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeExtSocket"]/*'/>
-        public ISubscribeExtSocket CreateSubscribeExtSocket()
+        public ISubscribeSocket CreateSubscribeExtSocket()
         {
             return this.TryCreateSocket((p, e) => new SubscribeExtSocket(p, e), SocketType.Xsub);
         }

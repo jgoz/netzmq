@@ -36,7 +36,7 @@ namespace ZeroMQ
         IDuplexSocket CreateRequestSocket();
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeExtSocket"]/node()[name()!="exception"]'/>
-        ISubscribeExtSocket CreateSubscribeExtSocket();
+        ISubscribeSocket CreateSubscribeExtSocket();
 
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="CreateSubscribeSocket"]/node()[name()!="exception"]'/>
         ISubscribeSocket CreateSubscribeSocket();
