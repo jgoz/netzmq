@@ -7,5 +7,7 @@
         IntPtr Socket { get; }
         PollFlags Events { get; set; }
         PollFlags REvents { get; set; }
+
+        void InvokeEvents();
     }
 }

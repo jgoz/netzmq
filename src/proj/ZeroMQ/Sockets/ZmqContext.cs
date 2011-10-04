@@ -191,9 +191,9 @@
 
             try
             {
-                IPollItem[] pollItems = sockets.Select(s => new PollItem((ZmqSocket)s)).ToArray();
+                var pollItems = sockets.Select(s => new PollItem((ZmqSocket)s));
 
-                return new ZmqPollSet(this.proxyFactory.CreatePollSet(pollItems.Length), pollItems, this.proxyFactory.ErrorProvider);
+                return new ZmqPollSet(pollItems, this.proxyFactory.CreatePollSet(pollItems.Count()), this.proxyFactory.ErrorProvider);
             }
             catch (ProxyException ex)
             {

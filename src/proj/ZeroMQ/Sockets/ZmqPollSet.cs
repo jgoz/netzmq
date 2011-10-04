@@ -1,7 +1,9 @@
 ﻿namespace ZeroMQ.Sockets
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     using ZeroMQ.Proxy;
 
@@ -14,20 +16,30 @@
 
         private bool disposed;
 
-        internal ZmqPollSet(IPollSetProxy proxy, IPollItem[] pollItems, IErrorProviderProxy errorProviderProxy)
+        internal ZmqPollSet(IEnumerable<IPollItem> pollItems, IPollSetProxy proxy, IErrorProviderProxy errorProviderProxy)
         {
-            if (proxy == null)
-            {
-                throw new ArgumentNullException("proxy");
-            }
-
             if (pollItems == null)
             {
                 throw new ArgumentNullException("pollItems");
             }
 
+            if (!pollItems.Any())
+            {
+                throw new ArgumentException("At least one poll item is required.", "pollItems");
+            }
+
+            if (proxy == null)
+            {
+                throw new ArgumentNullException("proxy");
+            }
+
+            if (errorProviderProxy == null)
+            {
+                throw new ArgumentNullException("errorProviderProxy");
+            }
+
+            this.pollItems = pollItems.ToArray();
             this.proxy = proxy;
-            this.pollItems = pollItems;
             this.errorProvider = new ZmqErrorProvider(errorProviderProxy);
         }
 
@@ -61,7 +73,7 @@
 
         private void PollBlocking()
         {
-            while (this.Poll(-1) == -1)
+            while (this.Poll(-1) == -1 && !this.errorProvider.ContextWasTerminated)
             {
                 this.ContinueIfInterrupted();
             }
@@ -95,7 +107,7 @@
 
             if (readyCount > 0)
             {
-                foreach (PollItem pollItem in this.pollItems)
+                foreach (IPollItem pollItem in this.pollItems.Where(item => item.REvents != PollFlags.None))
                 {
                     pollItem.InvokeEvents();
                 }
@@ -109,10 +121,7 @@
             // An error value of EINTR indicates that the operation was interrupted
             // by delivery of a signal before any events were available. This is a recoverable
             // error, so try polling again for the remaining amount of time in the timeout.
-            //
-            // ETERM indicates that the context was terminated during the operation execution.
-            // While it is not recoverable, it should not result in an exception being thrown.
-            if (!this.errorProvider.ThreadWasInterrupted && !this.errorProvider.ContextWasTerminated)
+            if (!this.errorProvider.ThreadWasInterrupted)
             {
                 throw this.errorProvider.GetLastSocketError();
             }
