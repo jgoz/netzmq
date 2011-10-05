@@ -90,7 +90,7 @@
         /// <summary>
         /// Blocks the calling thread until the device terminates.
         /// </summary>
-        public void Join()
+        public virtual void Join()
         {
             this.runningEvent.WaitOne();
         }
@@ -105,7 +105,7 @@
         /// true if the device terminated; false if the device has not terminated after
         /// the amount of time specified by <paramref name="timeout"/> has elapsed.
         /// </returns>
-        public bool Join(TimeSpan timeout)
+        public virtual bool Join(TimeSpan timeout)
         {
             return this.runningEvent.WaitOne(timeout);
         }
@@ -113,7 +113,7 @@
         /// <summary>
         /// Terminate the device safely.
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
             this.IsRunning = false;
         }
