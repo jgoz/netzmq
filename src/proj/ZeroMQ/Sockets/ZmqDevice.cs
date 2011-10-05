@@ -9,6 +9,17 @@
     /// Forwards messages received by a front-end socket to a back-end socket, from which
     /// they are then sent.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The base implementation of <see cref="ZmqDevice"/> is <b>not</b> threadsafe. It is
+    /// possible to construct a device with sockets that were created in separate threads or
+    /// separate contexts.
+    /// </para>
+    /// <para>
+    /// For this reason, the preferred way to create devices is to inherit from <see cref="ZmqDevice"/>
+    /// and create the frontend and backend sockets from within the subclass using a single context.
+    /// </para>
+    /// </remarks>
     public abstract class ZmqDevice
     {
         private readonly IDeviceProxy device;
@@ -35,8 +46,13 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ZmqDevice"/> class.
         /// </summary>
-        /// <param name="frontend">A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.</param>
-        /// <param name="backend">A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies to) <paramref name="frontend"/>.</param>
+        /// <param name="frontend">
+        /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
+        /// </param>
+        /// <param name="backend">
+        /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
+        /// to) <paramref name="frontend"/>.
+        /// </param>
         protected ZmqDevice(ZmqSocket frontend, ZmqSocket backend)
         {
             if (frontend == null)
