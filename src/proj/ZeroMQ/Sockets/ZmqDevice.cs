@@ -1,0 +1,113 @@
+﻿namespace ZeroMQ.Sockets
+{
+    using System;
+    using System.Threading;
+
+    using ZeroMQ.Proxy;
+
+    /// <summary>
+    /// Forwards messages received by a front-end socket to a back-end socket, from which
+    /// they are then sent.
+    /// </summary>
+    public abstract class ZmqDevice
+    {
+        private readonly IDeviceProxy device;
+        private readonly ZmqErrorProvider errorProvider;
+        private readonly ManualResetEvent runningEvent;
+
+        internal ZmqDevice(IDeviceProxy device, IErrorProviderProxy errorProvider)
+        {
+            if (device == null)
+            {
+                throw new ArgumentNullException("device");
+            }
+
+            if (errorProvider == null)
+            {
+                throw new ArgumentNullException("errorProvider");
+            }
+
+            this.device = device;
+            this.errorProvider = new ZmqErrorProvider(errorProvider);
+            this.runningEvent = new ManualResetEvent(true);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZmqDevice"/> class.
+        /// </summary>
+        /// <param name="frontend">A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.</param>
+        /// <param name="backend">A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies to) <paramref name="frontend"/>.</param>
+        protected ZmqDevice(ZmqSocket frontend, ZmqSocket backend)
+        {
+            if (frontend == null)
+            {
+                throw new ArgumentNullException("frontend");
+            }
+
+            if (backend == null)
+            {
+                throw new ArgumentNullException("backend");
+            }
+
+            this.device = ZmqContext.ProxyFactory.CreateDevice(frontend.Handle, backend.Handle);
+            this.errorProvider = new ZmqErrorProvider(ZmqContext.ProxyFactory.ErrorProvider);
+            this.runningEvent = new ManualResetEvent(true);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the device loop is running;
+        /// </summary>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// Start the device in the current thread.
+        /// </summary>
+        public virtual void Start()
+        {
+            this.Run();
+        }
+
+        /// <summary>
+        /// Blocks the calling thread until the device terminates.
+        /// </summary>
+        public void Join()
+        {
+            this.runningEvent.WaitOne();
+        }
+
+        /// <summary>
+        /// Blocks the calling thread until the device terminates or the specified time elapses.
+        /// </summary>
+        /// <param name="timeout">
+        /// A <see cref="TimeSpan"/> set to the amount of time to wait for the device to terminate.
+        /// </param>
+        /// <returns>
+        /// true if the device terminated; false if the device has not terminated after
+        /// the amount of time specified by <paramref name="timeout"/> has elapsed.
+        /// </returns>
+        public bool Join(TimeSpan timeout)
+        {
+            return this.runningEvent.WaitOne(timeout);
+        }
+
+        /// <summary>
+        /// Start the device in the current thread. Should be used by implementations of
+        /// the <see cref="Start"/> method.
+        /// </summary>
+        protected void Run()
+        {
+            this.IsRunning = true;
+            this.runningEvent.Reset();
+
+            int errorCode = this.device.Run();
+
+            this.runningEvent.Set();
+            this.IsRunning = false;
+
+            if (errorCode == -1 && !this.errorProvider.ContextWasTerminated)
+            {
+                throw this.errorProvider.GetLastError();
+            }
+        }
+    }
+}

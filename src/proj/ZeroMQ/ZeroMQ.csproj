@@ -46,6 +46,7 @@
     <Compile Include="IZmqContext.cs" />
     <Compile Include="Proxy\IDeviceProxy.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
+    <Compile Include="Sockets\ZmqDevice.cs" />
     <Compile Include="Sockets\ZmqErrorProvider.cs" />
     <Compile Include="Sockets\ZmqSocketException.cs" />
     <Compile Include="Sockets\MillisecondExtensions.cs" />
