@@ -2,6 +2,8 @@
 {
     internal interface IDeviceProxy
     {
+        bool IsRunning { get; set; }
+
         int Run();
     }
 }

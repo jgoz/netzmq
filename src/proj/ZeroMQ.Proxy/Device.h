@@ -14,10 +14,18 @@ namespace Proxy {
         void* m_inSocket;
         void* m_outSocket;
 
+        volatile bool m_running;
+
     public:
         Device(IntPtr inSocket, IntPtr outSocket)
             : m_inSocket((void*)inSocket), m_outSocket((void*)outSocket)
         {
+        }
+
+        virtual property bool IsRunning
+        {
+            bool get() { return m_running; }
+            void set(bool value) { m_running = value; }
         }
 
         // Copied from zmq_device in zeromq release-2.1.11
@@ -41,7 +49,7 @@ namespace Proxy {
             items[1].events = ZMQ_POLLIN;
             items[1].revents = 0;
 
-            while (true) {
+            while (m_running) {
                 // Wait while there are either requests or replies to process.
                 TEMP_FAILURE_RETRY(rc, zmq_poll(&items[0], 2, -1));
                 if (rc == -1) {

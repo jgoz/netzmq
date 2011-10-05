@@ -57,7 +57,11 @@
         /// <summary>
         /// Gets a value indicating whether the device loop is running;
         /// </summary>
-        public bool IsRunning { get; private set; }
+        public bool IsRunning
+        {
+            get { return this.device.IsRunning; }
+            private set { this.device.IsRunning = value; }
+        }
 
         /// <summary>
         /// Start the device in the current thread.
@@ -91,18 +95,26 @@
         }
 
         /// <summary>
+        /// Terminate the device safely.
+        /// </summary>
+        public void Stop()
+        {
+            this.IsRunning = false;
+        }
+
+        /// <summary>
         /// Start the device in the current thread. Should be used by implementations of
         /// the <see cref="Start"/> method.
         /// </summary>
         protected void Run()
         {
-            this.IsRunning = true;
             this.runningEvent.Reset();
+            this.IsRunning = true;
 
             int errorCode = this.device.Run();
 
-            this.runningEvent.Set();
             this.IsRunning = false;
+            this.runningEvent.Set();
 
             if (errorCode == -1 && !this.errorProvider.ContextWasTerminated)
             {
