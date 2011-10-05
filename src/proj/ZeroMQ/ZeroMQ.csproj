@@ -44,6 +44,7 @@
     <Compile Include="IPollSet.cs" />
     <Compile Include="ISocket.cs" />
     <Compile Include="IZmqContext.cs" />
+    <Compile Include="Proxy\IDeviceProxy.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
     <Compile Include="Sockets\ZmqErrorProvider.cs" />
     <Compile Include="Sockets\ZmqSocketException.cs" />

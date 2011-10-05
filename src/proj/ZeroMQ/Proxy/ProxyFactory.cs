@@ -9,12 +9,14 @@
         private readonly Type contextProxyType;
         private readonly Type socketProxyType;
         private readonly Type pollSetProxyType;
+        private readonly Type deviceProxyType;
 
-        private ProxyFactory(Type contextProxyType, Type socketProxyType, Type pollSetProxyType, IErrorProviderProxy errorProviderProxy)
+        private ProxyFactory(Type contextProxyType, Type socketProxyType, Type pollSetProxyType, Type deviceProxyType, IErrorProviderProxy errorProviderProxy)
         {
             this.contextProxyType = contextProxyType;
             this.socketProxyType = socketProxyType;
             this.pollSetProxyType = pollSetProxyType;
+            this.deviceProxyType = deviceProxyType;
             this.ErrorProvider = errorProviderProxy;
         }
 
@@ -27,11 +29,12 @@
             Type contextProxyType = GetSingleImplementor<IContextProxy>(proxyAssembly);
             Type socketProxyType = GetSingleImplementor<ISocketProxy>(proxyAssembly);
             Type pollSetProxyType = GetSingleImplementor<IPollSetProxy>(proxyAssembly);
+            Type deviceProxyType = GetSingleImplementor<IDeviceProxy>(proxyAssembly);
 
             Type errorProviderType = GetSingleImplementor<IErrorProviderProxy>(proxyAssembly);
             var errorProviderProxy = (IErrorProviderProxy)Activator.CreateInstance(errorProviderType);
 
-            return new ProxyFactory(contextProxyType, socketProxyType, pollSetProxyType, errorProviderProxy);
+            return new ProxyFactory(contextProxyType, socketProxyType, pollSetProxyType, deviceProxyType, errorProviderProxy);
         }
 
         public IContextProxy CreateContext(int threadPoolSize)
@@ -47,6 +50,11 @@
         public IPollSetProxy CreatePollSet(int socketCount)
         {
             return (IPollSetProxy)Activator.CreateInstance(this.pollSetProxyType, socketCount);
+        }
+
+        public IDeviceProxy CreateDevice(IntPtr inSocket, IntPtr outSocket)
+        {
+            return (IDeviceProxy)Activator.CreateInstance(this.deviceProxyType, inSocket, outSocket);
         }
 
         private static Type GetSingleImplementor<TInterface>(Assembly assembly)
