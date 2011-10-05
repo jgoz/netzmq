@@ -43,7 +43,7 @@ namespace Proxy {
 
             while (true) {
                 // Wait while there are either requests or replies to process.
-                rc = zmq_poll(&items[0], 2, -1);
+                TEMP_FAILURE_RETRY(rc, zmq_poll(&items[0], 2, -1));
                 if (rc == -1) {
                     return -1;
                 }
@@ -70,9 +70,9 @@ namespace Proxy {
                         return -1;
                     }
                 }
-
-                return 0;
             }
+
+            return 0;
         }
 
     private:
@@ -87,17 +87,17 @@ namespace Proxy {
 
             while (true) {
 
-                rc = zmq_recvmsg(insocket, &msg, 0);
+                TEMP_FAILURE_RETRY(rc, zmq_recvmsg(insocket, &msg, 0));
                 if (rc == -1) {
                     return -1;
                 }
 
-                rc = zmq_getsockopt(insocket, ZMQ_RCVMORE, &more, &flagsz);
+                TEMP_FAILURE_RETRY(rc, zmq_getsockopt(insocket, ZMQ_RCVMORE, &more, &flagsz));
                 if (rc == -1) {
                     return -1;
                 }
 
-                rc = zmq_getsockopt(insocket, ZMQ_RCVLABEL, &label, &flagsz);
+                TEMP_FAILURE_RETRY(rc, zmq_getsockopt(insocket, ZMQ_RCVLABEL, &label, &flagsz));
                 if (rc == -1) {
                     return -1;
                 }
@@ -110,7 +110,7 @@ namespace Proxy {
                     flags |= ZMQ_SNDLABEL;
                 }
 
-                rc = zmq_sendmsg(outsocket, &msg, flags);
+                TEMP_FAILURE_RETRY(rc, zmq_sendmsg(outsocket, &msg, flags));
                 if (rc == -1) {
                     return -1;
                 }
