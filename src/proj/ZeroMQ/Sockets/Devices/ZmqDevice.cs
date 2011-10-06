@@ -20,7 +20,7 @@
     /// and create the frontend and backend sockets from within the subclass using a single context.
     /// </para>
     /// </remarks>
-    public abstract class ZmqDevice
+    public class ZmqDevice
     {
         private readonly ISocket frontend;
         private readonly ISocket backend;
