@@ -1,4 +1,4 @@
-﻿namespace ZeroMQ.Sockets
+﻿namespace ZeroMQ.Sockets.Devices
 {
     using System;
     using System.Threading;
