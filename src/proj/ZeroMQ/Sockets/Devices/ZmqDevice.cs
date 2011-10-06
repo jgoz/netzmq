@@ -22,12 +22,28 @@
     /// </remarks>
     public abstract class ZmqDevice
     {
+        private readonly ISocket frontend;
+        private readonly ISocket backend;
+        private readonly DeviceSocketSetup frontendSetup;
+        private readonly DeviceSocketSetup backendSetup;
+
         private readonly IDeviceProxy device;
         private readonly ZmqErrorProvider errorProvider;
+
         private readonly ManualResetEvent runningEvent;
 
-        internal ZmqDevice(IDeviceProxy device, IErrorProviderProxy errorProvider)
+        internal ZmqDevice(ISocket frontend, ISocket backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
         {
+            if (frontend == null)
+            {
+                throw new ArgumentNullException("frontend");
+            }
+
+            if (backend == null)
+            {
+                throw new ArgumentNullException("backend");
+            }
+
             if (device == null)
             {
                 throw new ArgumentNullException("device");
@@ -37,6 +53,11 @@
             {
                 throw new ArgumentNullException("errorProvider");
             }
+
+            this.frontend = frontend;
+            this.frontendSetup = new DeviceSocketSetup(this.frontend);
+            this.backend = backend;
+            this.backendSetup = new DeviceSocketSetup(this.backend);
 
             this.device = device;
             this.errorProvider = new ZmqErrorProvider(errorProvider);
@@ -69,6 +90,11 @@
                 throw new ArgumentNullException("backend");
             }
 
+            this.frontend = frontend;
+            this.frontendSetup = new DeviceSocketSetup(this.frontend);
+            this.backend = backend;
+            this.backendSetup = new DeviceSocketSetup(this.backend);
+
             this.device = ZmqContext.ProxyFactory.CreateDevice(frontend.Handle, backend.Handle);
             this.errorProvider = new ZmqErrorProvider(ZmqContext.ProxyFactory.ErrorProvider);
             this.runningEvent = new ManualResetEvent(true);
@@ -81,6 +107,24 @@
         {
             get { return this.device.IsRunning; }
             private set { this.device.IsRunning = value; }
+        }
+
+        /// <summary>
+        /// Gets the configuration object for the frontend socket.
+        /// </summary>
+        /// <returns>A <see cref="DeviceSocketSetup"/> object used to define socket configuration options.</returns>
+        public DeviceSocketSetup ConfigureFrontend()
+        {
+            return this.frontendSetup;
+        }
+
+        /// <summary>
+        /// Gets the configuration object for the backend socket.
+        /// </summary>
+        /// <returns>A <see cref="DeviceSocketSetup"/> object used to define socket configuration options.</returns>
+        public DeviceSocketSetup ConfigureBackend()
+        {
+            return this.backendSetup;
         }
 
         /// <summary>
@@ -128,6 +172,9 @@
         /// </summary>
         protected void Run()
         {
+            this.frontendSetup.Configure();
+            this.backendSetup.Configure();
+
             this.runningEvent.Reset();
             this.IsRunning = true;
 
