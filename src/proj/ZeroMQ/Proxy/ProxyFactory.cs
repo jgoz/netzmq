@@ -52,7 +52,7 @@
             return (IPollSetProxy)Activator.CreateInstance(this.pollSetProxyType, socketCount);
         }
 
-        public IDeviceProxy CreateDevice(IntPtr inSocket, IntPtr outSocket)
+        public IDeviceProxy CreateDevice(ISocketProxy inSocket, ISocketProxy outSocket)
         {
             return (IDeviceProxy)Activator.CreateInstance(this.deviceProxyType, inSocket, outSocket);
         }

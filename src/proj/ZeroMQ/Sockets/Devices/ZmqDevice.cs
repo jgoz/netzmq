@@ -86,7 +86,7 @@
             this.backend = backend;
             this.backendSetup = new DeviceSocketSetup(this.backend);
 
-            this.device = ZmqContext.ProxyFactory.CreateDevice(frontend.Handle, backend.Handle);
+            this.device = ZmqContext.ProxyFactory.CreateDevice(frontend.Proxy, backend.Proxy);
             this.errorProvider = new ZmqErrorProvider(ZmqContext.ProxyFactory.ErrorProvider);
             this.runningEvent = new ManualResetEvent(true);
         }

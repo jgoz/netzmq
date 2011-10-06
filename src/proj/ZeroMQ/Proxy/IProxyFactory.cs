@@ -9,6 +9,6 @@ namespace ZeroMQ.Proxy
         IContextProxy CreateContext(int threadPoolSize);
         ISocketProxy CreateSocket(IntPtr socket);
         IPollSetProxy CreatePollSet(int socketCount);
-        IDeviceProxy CreateDevice(IntPtr inSocket, IntPtr outSocket);
+        IDeviceProxy CreateDevice(ISocketProxy inSocket, ISocketProxy outSocket);
     }
 }
