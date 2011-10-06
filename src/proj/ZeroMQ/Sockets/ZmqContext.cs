@@ -21,7 +21,7 @@
         private readonly IProxyFactory proxyFactory;
         private readonly IContextProxy proxy;
 
-        private static readonly Lazy<IProxyFactory> Factory = new Lazy<IProxyFactory>(ProxyFactory.Create);
+        private static readonly Lazy<IProxyFactory> Factory = new Lazy<IProxyFactory>(Proxy.ProxyFactory.Create);
 
         private static Encoding defaultEncoding = Encoding.UTF8;
 
@@ -58,6 +58,11 @@
         {
             get { return defaultEncoding; }
             set { defaultEncoding = value; }
+        }
+
+        internal static IProxyFactory ProxyFactory
+        {
+            get { return Factory.Value; }
         }
 
         /// <summary>

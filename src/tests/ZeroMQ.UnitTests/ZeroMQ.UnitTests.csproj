@@ -20,7 +20,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <NoWarn>169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -29,7 +29,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <NoWarn>169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -53,6 +53,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZmqContextSpecs\Dispose.cs" />
     <Compile Include="ZmqContextSpecs\SpecContext.cs" />
+    <Compile Include="ZmqDeviceSpecs\SpecContext.cs" />
+    <Compile Include="ZmqDeviceSpecs\Start.cs" />
     <Compile Include="ZmqPollSetSpecs\PollBlocking.cs" />
     <Compile Include="ZmqPollSetSpecs\PollNonBlocking.cs" />
     <Compile Include="ZmqPollSetSpecs\SpecContext.cs" />

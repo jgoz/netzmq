@@ -11,7 +11,7 @@
     /// <remarks>
     /// The <see cref="ZmqSocket"/> class defines the common behavior for derived socket types. 
     /// </remarks>
-    public abstract class ZmqSocket : ISocket
+    public class ZmqSocket : ISocket
     {
         private readonly ISocketProxy proxy;
         private readonly ZmqErrorProvider errorProvider;
