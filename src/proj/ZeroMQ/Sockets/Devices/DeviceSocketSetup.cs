@@ -8,16 +8,18 @@
     /// <summary>
     /// Defines a fluent interface for configuring device sockets.
     /// </summary>
-    public class DeviceSocketSetup
+    /// <typeparam name="TSocket">The device socket type.</typeparam>
+    public class DeviceSocketSetup<TSocket>
+        where TSocket : class, ISocket
     {
-        private readonly ISocket socket;
-        private readonly List<Action<ISocket>> socketOptions;
+        private readonly TSocket socket;
+        private readonly List<Action<TSocket>> socketInitializers;
         private readonly List<string> bindings;
         private readonly List<string> connections;
 
         private bool isConfigured;
 
-        internal DeviceSocketSetup(ISocket socket)
+        internal DeviceSocketSetup(TSocket socket)
         {
             if (socket == null)
             {
@@ -25,7 +27,7 @@
             }
 
             this.socket = socket;
-            this.socketOptions = new List<Action<ISocket>>();
+            this.socketInitializers = new List<Action<TSocket>>();
             this.bindings = new List<string>();
             this.connections = new List<string>();
         }
@@ -34,8 +36,8 @@
         /// Configure the socket to bind to a given endpoint. See <see cref="ZmqSocket.Bind"/> for details.
         /// </summary>
         /// <param name="endpoint">A string representing the endpoint to which the socket will bind.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup BindTo(string endpoint)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> BindTo(string endpoint)
         {
             if (endpoint == null)
             {
@@ -51,8 +53,8 @@
         /// Configure the socket to connect to a given endpoint. See <see cref="ZmqSocket.Connect"/> for details.
         /// </summary>
         /// <param name="endpoint">A string representing the endpoint to which the socket will connect.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup ConnectTo(string endpoint)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> ConnectTo(string endpoint)
         {
             if (endpoint == null)
             {
@@ -69,8 +71,8 @@
         /// </summary>
         /// <param name="property">The <see cref="ISocket"/> property to set.</param>
         /// <param name="value">The int value to assign.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup SetSocketOption(Expression<Func<ISocket, int>> property, int value)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> SetSocketOption(Expression<Func<ISocket, int>> property, int value)
         {
             return this.SetSocketOption<int>(property, value);
         }
@@ -80,8 +82,8 @@
         /// </summary>
         /// <param name="property">The <see cref="ISocket"/> property to set.</param>
         /// <param name="value">The long value to assign.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup SetSocketOption(Expression<Func<ISocket, long>> property, long value)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> SetSocketOption(Expression<Func<ISocket, long>> property, long value)
         {
             return this.SetSocketOption<long>(property, value);
         }
@@ -91,8 +93,8 @@
         /// </summary>
         /// <param name="property">The <see cref="ISocket"/> property to set.</param>
         /// <param name="value">The ulong value to assign.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup SetSocketOption(Expression<Func<ISocket, ulong>> property, ulong value)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> SetSocketOption(Expression<Func<ISocket, ulong>> property, ulong value)
         {
             return this.SetSocketOption<ulong>(property, value);
         }
@@ -102,8 +104,8 @@
         /// </summary>
         /// <param name="property">The <see cref="ISocket"/> property to set.</param>
         /// <param name="value">The byte array value to assign.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup SetSocketOption(Expression<Func<ISocket, byte[]>> property, byte[] value)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> SetSocketOption(Expression<Func<ISocket, byte[]>> property, byte[] value)
         {
             return this.SetSocketOption<byte[]>(property, value);
         }
@@ -113,10 +115,17 @@
         /// </summary>
         /// <param name="property">The <see cref="ISocket"/> property to set.</param>
         /// <param name="value">The <see cref="TimeSpan"/> value to assign.</param>
-        /// <returns>The current <see cref="DeviceSocketSetup"/> object.</returns>
-        public DeviceSocketSetup SetSocketOption(Expression<Func<ISocket, TimeSpan>> property, TimeSpan value)
+        /// <returns>The current <see cref="DeviceSocketSetup{TSocket}"/> object.</returns>
+        public DeviceSocketSetup<TSocket> SetSocketOption(Expression<Func<ISocket, TimeSpan>> property, TimeSpan value)
         {
             return this.SetSocketOption<TimeSpan>(property, value);
+        }
+
+        internal DeviceSocketSetup<TSocket> AddSocketInitializer(Action<TSocket> setupMethod)
+        {
+            this.socketInitializers.Add(setupMethod);
+
+            return this;
         }
 
         internal void Configure()
@@ -126,9 +135,9 @@
                 return;
             }
 
-            foreach (Action<ISocket> optionAction in this.socketOptions)
+            foreach (Action<ISocket> initializer in this.socketInitializers)
             {
-                optionAction.Invoke(this.socket);
+                initializer.Invoke(this.socket);
             }
 
             foreach (string endpoint in this.bindings)
@@ -144,7 +153,7 @@
             this.isConfigured = true;
         }
 
-        private DeviceSocketSetup SetSocketOption<T>(Expression<Func<ISocket, T>> property, T value)
+        private DeviceSocketSetup<TSocket> SetSocketOption<T>(Expression<Func<ISocket, T>> property, T value)
         {
             PropertyInfo propertyInfo;
 
@@ -162,7 +171,7 @@
                 throw new InvalidOperationException("The specified ISocket member is not a property: " + property.Body);
             }
 
-            this.socketOptions.Add(s => propertyInfo.SetValue(s, value, null));
+            this.socketInitializers.Add(s => propertyInfo.SetValue(s, value, null));
 
             return this;
         }

@@ -172,11 +172,6 @@
             get { return this.proxy.Handle; }
         }
 
-        internal ISocketProxy Proxy
-        {
-            get { return this.proxy; }
-        }
-
         private bool ShouldTryAgain
         {
             get { return this.errorProvider.ShouldTryAgain; }

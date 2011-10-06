@@ -9,20 +9,16 @@ using namespace System;
 namespace ZeroMQ {
 namespace Proxy {
 
-    ref class Device : public IDeviceProxy
+    public ref class Device : public IDeviceProxy
     {
         void* m_inSocket;
         void* m_outSocket;
 
-        ISocketProxy^ m_frontend;
-        ISocketProxy^ m_backend;
-
         volatile bool m_running;
 
     public:
-        Device(ISocketProxy^ inSocket, ISocketProxy^ outSocket)
-            : m_inSocket((void*)inSocket->Handle), m_outSocket((void*)outSocket->Handle),
-              m_frontend(inSocket), m_backend(outSocket)
+        Device(IntPtr inSocket, IntPtr outSocket)
+            : m_inSocket((void*)inSocket), m_outSocket((void*)outSocket)
         {
         }
 
@@ -30,16 +26,6 @@ namespace Proxy {
         {
             bool get() { return m_running; }
             void set(bool value) { m_running = value; }
-        }
-
-        virtual property ISocketProxy^ Frontend
-        {
-            ISocketProxy^ get() { return m_frontend; }
-        }
-
-        virtual property ISocketProxy^ Backend
-        {
-            ISocketProxy^ get() { return m_backend; }
         }
 
         // Copied from zmq_device in zeromq release-2.1.11

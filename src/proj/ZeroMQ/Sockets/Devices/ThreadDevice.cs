@@ -3,15 +3,38 @@
     using System;
     using System.Threading;
 
+    using ZeroMQ.Proxy;
+
     /// <summary>
-    /// A <see cref="ZmqDevice"/> that runs in a self-managed <see cref="Thread"/>.
+    /// A <see cref="ZmqDevice{TFrontend,TBackend}"/> that runs in a self-managed <see cref="Thread"/>.
     /// </summary>
-    public class ThreadDevice : ZmqDevice
+    /// <typeparam name="TFrontend">The frontend socket type.</typeparam>
+    /// <typeparam name="TBackend">The backend socket type.</typeparam>
+    /// <remarks>
+    /// <para>
+    /// The base implementation of <see cref="ThreadDevice{TFrontend,TBackend}"/>
+    /// is <b>not</b> threadsafe. It is possible to construct a device with sockets that were
+    /// created in separate threads or separate contexts.
+    /// </para>
+    /// <para>
+    /// For this reason, the preferred way to create devices is use a factory method to construct the
+    /// <see cref="ThreadDevice{TFrontend,TBackend}"/> for a given <see cref="IZmqContext"/>.
+    /// </para>
+    /// </remarks>
+    public class ThreadDevice<TFrontend, TBackend> : ZmqDevice<TFrontend, TBackend>
+        where TFrontend : class, ISocket
+        where TBackend : class, ISocket
     {
         private readonly Thread runThread;
 
+        internal ThreadDevice(TFrontend frontend, TBackend backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
+            : base(frontend, backend, device, errorProvider)
+        {
+            this.runThread = new Thread(this.Run);
+        }
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadDevice"/> class.
+        /// Initializes a new instance of the <see cref="ThreadDevice{TFrontend,TBackend}"/> class.
         /// </summary>
         /// <param name="frontend">
         /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
@@ -20,10 +43,18 @@
         /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
         /// to) <paramref name="frontend"/>.
         /// </param>
-        protected internal ThreadDevice(ZmqSocket frontend, ZmqSocket backend)
-            : base(frontend, backend)
+        /// <returns>A new <see cref="ThreadDevice{TFrontend,TBackend}"/> object for the specified sockets.</returns>
+        /// <remarks>
+        /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
+        /// must be created with the same <see cref="ZmqContext"/>.
+        /// </remarks>
+        public static new ThreadDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
         {
-            this.runThread = new Thread(this.Run);
+            ValidateSockets(frontend, backend);
+
+            var deviceProxy = CreateDeviceProxy(frontend, backend);
+
+            return new ThreadDevice<TFrontend, TBackend>(frontend, backend, deviceProxy, ZmqContext.ProxyFactory.ErrorProvider);
         }
 
         /// <summary>

@@ -11,23 +11,20 @@
     {
         protected static Mock<IDeviceProxy> deviceProxy;
         protected static Mock<IErrorProviderProxy> errorProviderProxy;
-        protected static Mock<ISocketProxy> frontendProxy;
-        protected static Mock<ISocketProxy> backendProxy;
+        protected static Mock<ISocket> frontend;
+        protected static Mock<ISocket> backend;
 
-        protected static ZmqDevice device;
+        protected static ZmqDevice<ISocket, ISocket> device;
 
         Establish context = () =>
         {
             deviceProxy = new Mock<IDeviceProxy>();
             errorProviderProxy = new Mock<IErrorProviderProxy>();
 
-            frontendProxy = new Mock<ISocketProxy>();
-            backendProxy = new Mock<ISocketProxy>();
+            frontend = new Mock<ISocket>();
+            backend = new Mock<ISocket>();
 
-            deviceProxy.SetupGet(mock => mock.Frontend).Returns(frontendProxy.Object);
-            deviceProxy.SetupGet(mock => mock.Backend).Returns(backendProxy.Object);
-
-            device = new ZmqDevice(deviceProxy.Object, errorProviderProxy.Object);
+            device = new ZmqDevice<ISocket, ISocket>(frontend.Object, backend.Object, deviceProxy.Object, errorProviderProxy.Object);
         };
     }
 }

@@ -11,25 +11,25 @@
     public static class StreamerDevice
     {
         /// <summary>
-        /// Creates a new <see cref="ZmqDevice"/> using the specified context that will
+        /// Creates a new <see cref="ZmqDevice{TFrontend,TBackend}"/> using the specified context that will
         /// run in the current thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ZmqDevice"/> object implementing the Streamer pattern.</returns>
-        public static ZmqDevice Create(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ZmqDevice{TFrontend,TBackend}"/> object implementing the Streamer pattern.</returns>
+        public static ZmqDevice<IReceiveSocket, ISendSocket> Create(IZmqContext context)
         {
-            return new ZmqDevice((ZmqSocket)context.CreatePullSocket(), (ZmqSocket)context.CreatePushSocket());
+            return ZmqDevice<IReceiveSocket, ISendSocket>.Create(context.CreatePullSocket(), context.CreatePushSocket());
         }
 
         /// <summary>
-        /// Creates a new <see cref="ThreadDevice"/> using the specified context that will
+        /// Creates a new <see cref="ThreadDevice{TFrontend,TBackend}"/> using the specified context that will
         /// run in its own thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ThreadDevice"/> object implementing the Streamer pattern.</returns>
-        public static ThreadDevice CreateThreaded(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Streamer pattern.</returns>
+        public static ThreadDevice<IReceiveSocket, ISendSocket> CreateThreaded(IZmqContext context)
         {
-            return new ThreadDevice((ZmqSocket)context.CreatePullSocket(), (ZmqSocket)context.CreatePushSocket());
+            return ThreadDevice<IReceiveSocket, ISendSocket>.Create(context.CreatePullSocket(), context.CreatePushSocket());
         }
     }
 }

@@ -6,9 +6,8 @@
 
     using ZeroMQ.Proxy;
     using ZeroMQ.Sockets;
-    using ZeroMQ.Sockets.Devices;
 
-    [Subject(typeof(ZmqDevice))]
+    [Subject("ZmqDevice")]
     class when_starting_a_base_device : using_mock_device_proxy
     {
         Because of = () =>
@@ -22,19 +21,19 @@
             deviceProxy.Verify(mock => mock.Run());
 
         It should_set_frontend_socket_options = () =>
-            frontendProxy.Verify(mock => mock.SetSocketOption((int)SocketOption.RcvHwm, 10));
+            frontend.VerifySet(mock => mock.ReceiveHighWatermark = 10);
 
         It should_bind_the_frontend_socket = () =>
-            frontendProxy.Verify(mock => mock.Bind("bind"));
+            frontend.Verify(mock => mock.Bind("bind"));
 
         It should_set_backend_socket_options = () =>
-            backendProxy.Verify(mock => mock.SetSocketOption((int)SocketOption.SndHwm, 10));
+            backend.VerifySet(mock => mock.SendHighWatermark = 10);
 
         It should_connect_the_backend_socket = () =>
-            backendProxy.Verify(mock => mock.Connect("connect"));
+            backend.Verify(mock => mock.Connect("connect"));
     }
 
-    [Subject(typeof(ZmqDevice))]
+    [Subject("ZmqDevice")]
     class when_the_context_is_terminated : using_mock_device_proxy
     {
         static Exception exception;
@@ -55,7 +54,7 @@
             device.IsRunning.ShouldBeFalse();
     }
 
-    [Subject(typeof(ZmqDevice))]
+    [Subject("ZmqDevice")]
     class when_a_fatal_error_occurs : using_mock_device_proxy
     {
         static Exception exception;

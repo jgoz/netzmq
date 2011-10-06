@@ -13,25 +13,25 @@
     public static class QueueDevice
     {
         /// <summary>
-        /// Creates a new <see cref="ZmqDevice"/> using the specified context that will
+        /// Creates a new <see cref="ZmqDevice{TFrontend,TBackend}"/> using the specified context that will
         /// run in the current thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ZmqDevice"/> object implementing the Queue pattern.</returns>
-        public static ZmqDevice Create(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ZmqDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
+        public static ZmqDevice<IDuplexSocket, IDuplexSocket> Create(IZmqContext context)
         {
-            return new ZmqDevice((ZmqSocket)context.CreateReplyExtSocket(), (ZmqSocket)context.CreateRequestExtSocket());
+            return ZmqDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
         }
 
         /// <summary>
-        /// Creates a new <see cref="ThreadDevice"/> using the specified context that will
+        /// Creates a new <see cref="ThreadDevice{TFrontend,TBackend}"/> using the specified context that will
         /// run in its own thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ThreadDevice"/> object implementing the Queue pattern.</returns>
-        public static ThreadDevice CreateThreaded(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
+        public static ThreadDevice<IDuplexSocket, IDuplexSocket> CreateThreaded(IZmqContext context)
         {
-            return new ThreadDevice((ZmqSocket)context.CreateReplyExtSocket(), (ZmqSocket)context.CreateRequestExtSocket());
+            return ThreadDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
         }
     }
 }

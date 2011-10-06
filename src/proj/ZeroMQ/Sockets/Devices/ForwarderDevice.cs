@@ -11,25 +11,25 @@
     public static class ForwarderDevice
     {
         /// <summary>
-        /// Creates a new <see cref="ZmqDevice"/> using the specified context that will
-        /// run in the current thread.
+        /// Creates a new <see cref="ZmqDevice{TFrontendSocket,TBackendSocket}"/> using the
+        /// specified context that will run in the current thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ZmqDevice"/> object implementing the Forwarder pattern.</returns>
-        public static ZmqDevice Create(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ZmqDevice{TFrontendSocket,TBackendSocket}"/> object implementing the Forwarder pattern.</returns>
+        public static ZmqDevice<ISubscribeSocket, ISendSocket> Create(IZmqContext context)
         {
-            return new ZmqDevice((ZmqSocket)context.CreateSubscribeSocket(), (ZmqSocket)context.CreatePublishSocket());
+            return ZmqDevice<ISubscribeSocket, ISendSocket>.Create(context.CreateSubscribeSocket(), context.CreatePublishSocket());
         }
 
         /// <summary>
-        /// Creates a new <see cref="ThreadDevice"/> using the specified context that will
+        /// Creates a new <see cref="ThreadDevice{TFrontend,TBackend}"/> using the specified context that will
         /// run in its own thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ThreadDevice"/> object implementing the Forwarder pattern.</returns>
-        public static ThreadDevice CreateThreaded(IZmqContext context)
+        /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Forwarder pattern.</returns>
+        public static ThreadDevice<ISubscribeSocket, ISendSocket> CreateThreaded(IZmqContext context)
         {
-            return new ThreadDevice((ZmqSocket)context.CreateSubscribeSocket(), (ZmqSocket)context.CreatePublishSocket());
+            return ThreadDevice<ISubscribeSocket, ISendSocket>.Create(context.CreateSubscribeSocket(), context.CreatePublishSocket());
         }
     }
 }
