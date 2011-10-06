@@ -16,6 +16,8 @@ namespace Proxy {
 
         volatile bool m_running;
 
+        const int PollingIntervalMsec = 500;
+
     public:
         Device(IntPtr inSocket, IntPtr outSocket)
             : m_inSocket((void*)inSocket), m_outSocket((void*)outSocket)
@@ -51,7 +53,7 @@ namespace Proxy {
 
             while (m_running) {
                 // Wait while there are either requests or replies to process.
-                TEMP_FAILURE_RETRY(rc, zmq_poll(&items[0], 2, -1));
+                TEMP_FAILURE_RETRY(rc, zmq_poll(&items[0], 2, PollingIntervalMsec));
                 if (rc == -1) {
                     return -1;
                 }
