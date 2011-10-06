@@ -47,6 +47,7 @@
     <Compile Include="Proxy\IDeviceProxy.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetup.cs" />
+    <Compile Include="Sockets\Devices\ThreadDevice.cs" />
     <Compile Include="Sockets\Devices\ZmqDevice.cs">
       <SubType>Code</SubType>
     </Compile>

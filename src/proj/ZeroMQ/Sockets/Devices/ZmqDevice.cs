@@ -69,7 +69,7 @@
         /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
         /// must be created with the same <see cref="ZmqContext"/>.
         /// </remarks>
-        protected ZmqDevice(ZmqSocket frontend, ZmqSocket backend)
+        protected internal ZmqDevice(ZmqSocket frontend, ZmqSocket backend)
         {
             if (frontend == null)
             {
