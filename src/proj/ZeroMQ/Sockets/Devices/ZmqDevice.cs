@@ -22,7 +22,7 @@
     /// <see cref="ZmqDevice{TFrontend,TBackend}"/> for a given <see cref="IZmqContext"/>.
     /// </para>
     /// </remarks>
-    public class ZmqDevice<TFrontend, TBackend> : IDisposable
+    public class ZmqDevice<TFrontend, TBackend> : IDevice<TFrontend, TBackend>
         where TFrontend : class, ISocket
         where TBackend : class, ISocket
     {
@@ -73,14 +73,15 @@
             this.backendSetup = new DeviceSocketSetup<TBackend>(this.backend);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ZmqDevice{TFrontend,TBackend}"/> class.
+        /// </summary>
         ~ZmqDevice()
         {
             Dispose(false);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the device loop is running;
-        /// </summary>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="IsRunning"]/*'/>
         public bool IsRunning
         {
             get { return this.device.IsRunning; }
@@ -88,7 +89,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZmqDevice{TFrontend,TBackend}"/> class.
+        /// Creates a new instance of the <see cref="ZmqDevice{TFrontend,TBackend}"/> class.
         /// </summary>
         /// <param name="frontend">
         /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
@@ -102,7 +103,7 @@
         /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
         /// must be created with the same <see cref="ZmqContext"/>.
         /// </remarks>
-        public static ZmqDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
+        public static IDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
         {
             ValidateSockets(frontend, backend);
 
@@ -111,19 +112,13 @@
             return new ZmqDevice<TFrontend, TBackend>(frontend, backend, deviceProxy, ZmqContext.ProxyFactory.ErrorProvider);
         }
 
-        /// <summary>
-        /// Configure the frontend socket using a fluent interface.
-        /// </summary>
-        /// <returns>A <see cref="DeviceSocketSetup{TSocket}"/> object used to define socket configuration options.</returns>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="ConfigureFrontend"]/*'/>
         public DeviceSocketSetup<TFrontend> ConfigureFrontend()
         {
             return this.frontendSetup;
         }
 
-        /// <summary>
-        /// Configure the backend socket using a fluent interface.
-        /// </summary>
-        /// <returns>A <see cref="DeviceSocketSetup{TSocket}"/> object used to define socket configuration options.</returns>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="ConfigureBackend"]/*'/>
         public DeviceSocketSetup<TBackend> ConfigureBackend()
         {
             return this.backendSetup;
@@ -132,37 +127,25 @@
         /// <summary>
         /// Start the device in the current thread.
         /// </summary>
+        /// <exception cref="ObjectDisposedException">The <see cref="ZmqDevice{TFrontend,TBackend}"/> has already been disposed.</exception>
         public virtual void Start()
         {
             this.Run();
         }
 
-        /// <summary>
-        /// Blocks the calling thread until the device terminates.
-        /// </summary>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Join1"]/*'/>
         public virtual void Join()
         {
             this.runningEvent.WaitOne();
         }
 
-        /// <summary>
-        /// Blocks the calling thread until the device terminates or the specified time elapses.
-        /// </summary>
-        /// <param name="timeout">
-        /// A <see cref="TimeSpan"/> set to the amount of time to wait for the device to terminate.
-        /// </param>
-        /// <returns>
-        /// true if the device terminated; false if the device has not terminated after
-        /// the amount of time specified by <paramref name="timeout"/> has elapsed.
-        /// </returns>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Join2"]/*'/>
         public virtual bool Join(TimeSpan timeout)
         {
             return this.runningEvent.WaitOne(timeout);
         }
 
-        /// <summary>
-        /// Terminate the device safely.
-        /// </summary>
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Stop"]/*'/>
         public virtual void Stop()
         {
             this.IsRunning = false;

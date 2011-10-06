@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ZmqDevice{TFrontendSocket,TBackendSocket}"/> object implementing the Forwarder pattern.</returns>
-        public static ZmqDevice<ISubscribeSocket, ISendSocket> Create(IZmqContext context)
+        public static IDevice<ISubscribeSocket, ISendSocket> Create(IZmqContext context)
         {
             return ZmqDevice<ISubscribeSocket, ISendSocket>.Create(context.CreateSubscribeSocket(), context.CreatePublishSocket());
         }
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Forwarder pattern.</returns>
-        public static ThreadDevice<ISubscribeSocket, ISendSocket> CreateThreaded(IZmqContext context)
+        public static IDevice<ISubscribeSocket, ISendSocket> CreateThreaded(IZmqContext context)
         {
             return ThreadDevice<ISubscribeSocket, ISendSocket>.Create(context.CreateSubscribeSocket(), context.CreatePublishSocket());
         }

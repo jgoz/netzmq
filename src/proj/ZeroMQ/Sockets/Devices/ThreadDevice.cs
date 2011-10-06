@@ -48,7 +48,7 @@
         /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
         /// must be created with the same <see cref="ZmqContext"/>.
         /// </remarks>
-        public static new ThreadDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
+        public static new IDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
         {
             ValidateSockets(frontend, backend);
 
@@ -80,7 +80,7 @@
         /// A <see cref="TimeSpan"/> set to the amount of time to wait for the device to terminate.
         /// </param>
         /// <returns>
-        /// true if the device terminated; false if the device has not terminated after
+        /// true if the device thread terminated; false if the device thread has not terminated after
         /// the amount of time specified by <paramref name="timeout"/> has elapsed.
         /// </returns>
         public override bool Join(TimeSpan timeout)

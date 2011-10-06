@@ -47,6 +47,7 @@
     <Compile Include="Proxy\IDeviceProxy.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetupExtensions.cs" />
+    <Compile Include="Sockets\Devices\IDevice.cs" />
     <Compile Include="Sockets\Devices\StreamerDevice.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetup.cs" />
     <Compile Include="Sockets\Devices\ForwarderDevice.cs" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CommonDoc.xml" />
+    <Content Include="Sockets\Devices\DeviceDoc.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

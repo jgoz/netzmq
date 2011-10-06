@@ -18,7 +18,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ZmqDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
-        public static ZmqDevice<IDuplexSocket, IDuplexSocket> Create(IZmqContext context)
+        public static IDevice<IDuplexSocket, IDuplexSocket> Create(IZmqContext context)
         {
             return ZmqDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
         }
@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
-        public static ThreadDevice<IDuplexSocket, IDuplexSocket> CreateThreaded(IZmqContext context)
+        public static IDevice<IDuplexSocket, IDuplexSocket> CreateThreaded(IZmqContext context)
         {
             return ThreadDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
         }

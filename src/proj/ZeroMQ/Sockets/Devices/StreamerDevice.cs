@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ZmqDevice{TFrontend,TBackend}"/> object implementing the Streamer pattern.</returns>
-        public static ZmqDevice<IReceiveSocket, ISendSocket> Create(IZmqContext context)
+        public static IDevice<IReceiveSocket, ISendSocket> Create(IZmqContext context)
         {
             return ZmqDevice<IReceiveSocket, ISendSocket>.Create(context.CreatePullSocket(), context.CreatePushSocket());
         }
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
         /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Streamer pattern.</returns>
-        public static ThreadDevice<IReceiveSocket, ISendSocket> CreateThreaded(IZmqContext context)
+        public static IDevice<IReceiveSocket, ISendSocket> CreateThreaded(IZmqContext context)
         {
             return ThreadDevice<IReceiveSocket, ISendSocket>.Create(context.CreatePullSocket(), context.CreatePushSocket());
         }
