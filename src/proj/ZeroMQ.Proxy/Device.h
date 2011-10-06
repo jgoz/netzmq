@@ -8,6 +8,7 @@ using namespace System;
 
 namespace ZeroMQ {
 namespace Proxy {
+    const int PollingIntervalMsec = 500;
 
     public ref class Device : public IDeviceProxy
     {
@@ -15,8 +16,6 @@ namespace Proxy {
         void* m_outSocket;
 
         volatile bool m_running;
-
-        const int PollingIntervalMsec = 500;
 
     public:
         Device(IntPtr inSocket, IntPtr outSocket)
