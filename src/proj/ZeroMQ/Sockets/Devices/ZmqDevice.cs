@@ -32,18 +32,8 @@
 
         private readonly ManualResetEvent runningEvent;
 
-        internal ZmqDevice(ISocket frontend, ISocket backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
+        internal ZmqDevice(IDeviceProxy device, IErrorProviderProxy errorProvider)
         {
-            if (frontend == null)
-            {
-                throw new ArgumentNullException("frontend");
-            }
-
-            if (backend == null)
-            {
-                throw new ArgumentNullException("backend");
-            }
-
             if (device == null)
             {
                 throw new ArgumentNullException("device");
@@ -54,14 +44,15 @@
                 throw new ArgumentNullException("errorProvider");
             }
 
-            this.frontend = frontend;
-            this.frontendSetup = new DeviceSocketSetup(this.frontend);
-            this.backend = backend;
-            this.backendSetup = new DeviceSocketSetup(this.backend);
-
             this.device = device;
             this.errorProvider = new ZmqErrorProvider(errorProvider);
             this.runningEvent = new ManualResetEvent(true);
+
+            this.frontend = new ZmqSocket(device.Frontend, errorProvider);
+            this.frontendSetup = new DeviceSocketSetup(this.frontend);
+
+            this.backend = new ZmqSocket(device.Backend, errorProvider);
+            this.backendSetup = new DeviceSocketSetup(this.backend);
         }
 
         /// <summary>
@@ -110,7 +101,7 @@
         }
 
         /// <summary>
-        /// Gets the configuration object for the frontend socket.
+        /// Configure the frontend socket using a fluent interface.
         /// </summary>
         /// <returns>A <see cref="DeviceSocketSetup"/> object used to define socket configuration options.</returns>
         public DeviceSocketSetup ConfigureFrontend()
@@ -119,7 +110,7 @@
         }
 
         /// <summary>
-        /// Gets the configuration object for the backend socket.
+        /// Configure the backend socket using a fluent interface.
         /// </summary>
         /// <returns>A <see cref="DeviceSocketSetup"/> object used to define socket configuration options.</returns>
         public DeviceSocketSetup ConfigureBackend()
