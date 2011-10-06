@@ -22,10 +22,12 @@
     /// <see cref="ZmqDevice{TFrontend,TBackend}"/> for a given <see cref="IZmqContext"/>.
     /// </para>
     /// </remarks>
-    public class ZmqDevice<TFrontend, TBackend>
+    public class ZmqDevice<TFrontend, TBackend> : IDisposable
         where TFrontend : class, ISocket
         where TBackend : class, ISocket
     {
+        private const int PollingIntervalMsec = 500;
+
         private readonly TFrontend frontend;
         private readonly TBackend backend;
         private readonly DeviceSocketSetup<TFrontend> frontendSetup;
@@ -35,6 +37,8 @@
         private readonly ZmqErrorProvider errorProvider;
 
         private readonly ManualResetEvent runningEvent;
+
+        private bool disposed;
 
         internal ZmqDevice(TFrontend frontend, TBackend backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
         {
@@ -67,6 +71,11 @@
 
             this.backend = backend;
             this.backendSetup = new DeviceSocketSetup<TBackend>(this.backend);
+        }
+
+        ~ZmqDevice()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -159,6 +168,15 @@
             this.IsRunning = false;
         }
 
+        /// <summary>
+        /// Releases all resources used by the current instance, including the frontend and backend sockets.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         internal static void ValidateSockets(TFrontend frontend, TBackend backend)
         {
             if (frontend == null)
@@ -193,6 +211,8 @@
         /// </summary>
         protected void Run()
         {
+            this.EnsureNotDisposed();
+
             this.frontendSetup.Configure();
             this.backendSetup.Configure();
 
@@ -207,6 +227,40 @@
             if (errorCode == -1 && !this.errorProvider.ContextWasTerminated)
             {
                 throw this.errorProvider.GetLastError();
+            }
+        }
+
+        /// <summary>
+        /// Stops the device and releases the underlying sockets. Optionally disposes of managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (this.IsRunning)
+            {
+                this.Stop();
+                this.Join(TimeSpan.FromMilliseconds(PollingIntervalMsec * 2));
+            }
+
+            if (disposing)
+            {
+                this.frontend.Dispose();
+                this.backend.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("ZmqSocket", "The current ZmqSocket has already been disposed and cannot be reused.");
             }
         }
     }
