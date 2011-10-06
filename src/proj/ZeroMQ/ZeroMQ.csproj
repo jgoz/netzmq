@@ -58,7 +58,6 @@
     </Compile>
     <Compile Include="Sockets\ZmqErrorProvider.cs" />
     <Compile Include="Sockets\ZmqSocketException.cs" />
-    <Compile Include="Sockets\MillisecondExtensions.cs" />
     <Compile Include="Proxy\PollFlags.cs" />
     <Compile Include="Sockets\ZmqPollSet.cs" />
     <Compile Include="Proxy\IPollSetProxy.cs" />

@@ -73,8 +73,8 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Linger"]/*'/>
         public TimeSpan Linger
         {
-            get { return this.GetSocketOptionInt32(SocketOption.Linger).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.Linger, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.Linger)); }
+            set { this.SetSocketOption(SocketOption.Linger, (int)value.TotalMilliseconds); }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MaxMessageSize"]/*'/>
@@ -101,8 +101,8 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="MulticastRecoveryInterval"]/*'/>
         public TimeSpan MulticastRecoveryInterval
         {
-            get { return this.GetSocketOptionInt32(SocketOption.RecoveryIvl).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.RecoveryIvl, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.RecoveryIvl)); }
+            set { this.SetSocketOption(SocketOption.RecoveryIvl, (int)value.TotalMilliseconds); }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveBufferSize"]/*'/>
@@ -128,22 +128,22 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveTimeout"]/*'/>
         public TimeSpan ReceiveTimeout
         {
-            get { return this.GetSocketOptionInt32(SocketOption.RcvTimeo).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.RcvTimeo, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.RcvTimeo)); }
+            set { this.SetSocketOption(SocketOption.RcvTimeo, (int)value.TotalMilliseconds); }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReconnectInterval"]/*'/>
         public TimeSpan ReconnectInterval
         {
-            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvl).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvl, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.ReconnectIvl)); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvl, (int)value.TotalMilliseconds); }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReconnectIntervalMax"]/*'/>
         public TimeSpan ReconnectIntervalMax
         {
-            get { return this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.ReconnectIvlMax)); }
+            set { this.SetSocketOption(SocketOption.ReconnectIvlMax, (int)value.TotalMilliseconds); }
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendBufferSize"]/*'/>
@@ -163,8 +163,8 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendTimeout"]/*'/>
         public TimeSpan SendTimeout
         {
-            get { return this.GetSocketOptionInt32(SocketOption.SndTimeo).GetTimeSpan(); }
-            set { this.SetSocketOption(SocketOption.SndTimeo, value.GetMilliseconds()); }
+            get { return TimeSpan.FromMilliseconds(this.GetSocketOptionInt32(SocketOption.SndTimeo)); }
+            set { this.SetSocketOption(SocketOption.SndTimeo, (int)value.TotalMilliseconds); }
         }
 
         internal IntPtr Handle

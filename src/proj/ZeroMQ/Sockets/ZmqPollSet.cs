@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
 
     using ZeroMQ.Proxy;
 
@@ -61,7 +62,7 @@
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Poll2"]/*'/>
         public void Poll(TimeSpan timeout)
         {
-            if (timeout == TimeSpan.MaxValue)
+            if (timeout.TotalMilliseconds == Timeout.Infinite)
             {
                 this.PollBlocking();
             }
@@ -73,7 +74,7 @@
 
         private void PollBlocking()
         {
-            while (this.Poll(-1) == -1 && !this.errorProvider.ContextWasTerminated)
+            while (this.Poll(Timeout.Infinite) == -1 && !this.errorProvider.ContextWasTerminated)
             {
                 this.ContinueIfInterrupted();
             }
@@ -81,7 +82,7 @@
 
         private void PollNonBlocking(TimeSpan timeout)
         {
-            int remainingTimeout = timeout.GetMilliseconds();
+            var remainingTimeout = (int)timeout.TotalMilliseconds;
             var elapsed = Stopwatch.StartNew();
 
             do
