@@ -94,9 +94,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SocketOptionsSpecs.cs">
+    <Compile Include="SocketSpecs\BindConnect.cs" />
+    <Compile Include="SocketSpecs\SocketOptions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SocketSpecs\SpecContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
