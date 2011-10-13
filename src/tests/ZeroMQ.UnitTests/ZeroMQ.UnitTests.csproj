@@ -56,6 +56,7 @@
     <Compile Include="ZmqDeviceSpecs\Configure.cs" />
     <Compile Include="ZmqDeviceSpecs\SpecContext.cs" />
     <Compile Include="ZmqDeviceSpecs\Start.cs" />
+    <Compile Include="ZmqLibExceptionSpecs\Properties.cs" />
     <Compile Include="ZmqPollSetSpecs\PollBlocking.cs" />
     <Compile Include="ZmqPollSetSpecs\PollNonBlocking.cs" />
     <Compile Include="ZmqPollSetSpecs\SpecContext.cs" />
