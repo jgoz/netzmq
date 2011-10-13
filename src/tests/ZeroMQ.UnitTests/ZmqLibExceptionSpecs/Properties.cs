@@ -5,6 +5,7 @@
     using ZeroMQ.Proxy;
     using ZeroMQ.Sockets;
 
+    [Subject(typeof(ZmqLibException))]
     class when_error_has_known_posix_error_code
     {
         protected static ZmqLibException exception;
@@ -22,6 +23,7 @@
             exception.Message.ShouldEqual("Protocol is not supported.");
     }
 
+    [Subject(typeof(ZmqLibException))]
     class when_error_has_known_zmq_error_code
     {
         protected static ZmqLibException exception;
@@ -39,6 +41,7 @@
             exception.Message.ShouldEqual("Protocol is not compatible with socket type.");
     }
 
+    [Subject(typeof(ZmqLibException))]
     class when_error_has_unknown_error_code
     {
         protected static ZmqLibException exception;
