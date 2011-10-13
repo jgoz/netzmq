@@ -49,6 +49,7 @@
 
         // Native 0MQ error codes
         ZmqHausNumero = 156384712,
+
         Efsm = ZmqHausNumero + 51,
         Enocompatproto = ZmqHausNumero + 52,
         Eterm = ZmqHausNumero + 53,

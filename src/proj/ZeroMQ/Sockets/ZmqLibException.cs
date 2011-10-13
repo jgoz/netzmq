@@ -18,6 +18,7 @@
         public ZmqLibException(int errorCode)
         {
             this.ErrorCode = errorCode;
+            this.ErrorName = GetErrorName(errorCode);
         }
 
         /// <summary>
@@ -29,6 +30,7 @@
             : base(message)
         {
             this.ErrorCode = errorCode;
+            this.ErrorName = GetErrorName(errorCode);
         }
 
         /// <summary>
@@ -41,6 +43,7 @@
             : base(message, inner)
         {
             this.ErrorCode = errorCode;
+            this.ErrorName = GetErrorName(errorCode);
         }
 
         internal ZmqLibException(ProxyException proxyException)
@@ -62,5 +65,17 @@
         /// Gets the error code returned by the ZeroMQ library call.
         /// </summary>
         public int ErrorCode { get; private set; }
+
+        /// <summary>
+        /// Gets the string representation of the error code, as found in the ZeroMQ docs.
+        /// </summary>
+        public string ErrorName { get; private set; }
+
+        private static string GetErrorName(int errorCode)
+        {
+            return Enum.IsDefined(typeof(ErrorCode), errorCode)
+                ? Enum.GetName(typeof(ErrorCode), errorCode).ToUpper()
+                : "Error " + errorCode;
+        }
     }
 }

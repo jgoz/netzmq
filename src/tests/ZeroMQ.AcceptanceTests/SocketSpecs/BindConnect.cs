@@ -70,8 +70,11 @@
         It should_fail_because_pgm_is_not_supported_by_rep = () =>
             exception.ShouldBeOfType<ZmqSocketException>();
 
-        It should_have_an_error_code_of_eprotonosupport = () =>
+        It should_have_an_error_code_of_enocompatproto = () =>
             ((ZmqSocketException)exception).ErrorCode.ShouldEqual(156384764);
+
+        It should_have_an_error_name_of_enocompatproto = () =>
+            ((ZmqSocketException)exception).ErrorName.ShouldEqual("ENOCOMPATPROTO");
 
         It should_have_a_specific_error_message = () =>
             exception.Message.ShouldContain("protocol is not compatible with the socket type");
@@ -89,6 +92,9 @@
         It should_have_an_error_code_of_eprotonosupport = () =>
             ((ZmqSocketException)exception).ErrorCode.ShouldEqual(135);
 
+        It should_have_an_error_name_of_eprotonosupport = () =>
+            ((ZmqSocketException)exception).ErrorName.ShouldEqual("EPROTONOSUPPORT");
+
         It should_have_a_specific_error_message = () =>
             exception.Message.ShouldContain("Protocol not supported");
     }
@@ -104,6 +110,9 @@
 
         It should_have_an_error_code_of_eprotonosupport = () =>
             ((ZmqSocketException)exception).ErrorCode.ShouldEqual(135);
+
+        It should_have_an_error_name_of_eprotonosupport = () =>
+            ((ZmqSocketException)exception).ErrorName.ShouldEqual("EPROTONOSUPPORT");
 
         It should_have_a_specific_error_message = () =>
             exception.Message.ShouldContain("Protocol not supported");
