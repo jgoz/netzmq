@@ -135,7 +135,7 @@
                 return;
             }
 
-            foreach (Action<ISocket> initializer in this.socketInitializers)
+            foreach (Action<TSocket> initializer in this.socketInitializers)
             {
                 initializer.Invoke(this.socket);
             }
