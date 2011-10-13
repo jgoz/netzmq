@@ -31,28 +31,28 @@
 
         Because of = StartThreads;
 
-        It first_message_should_be_sent_successfully = () =>
+        It should_send_the_first_message_successfully = () =>
             sendResult1.ShouldEqual(SendResult.Sent);
 
-        It second_message_should_be_sent_successfully = () =>
+        It should_send_the_second_message_successfully = () =>
             sendResult2.ShouldEqual(SendResult.Sent);
 
-        It first_message_should_be_successfully_received = () =>
+        It should_receive_the_first_message_successfully = () =>
             message1.Result.ShouldEqual(ReceiveResult.Received);
 
-        It first_message_should_contain_the_given_message = () =>
+        It should_contain_the_correct_first_message_data = () =>
             message1.Data.ShouldEqual("First".ToZmqBuffer());
 
-        It first_message_should_have_more_parts = () =>
+        It should_have_more_parts_after_the_first_message = () =>
             message1.HasMoreParts.ShouldBeTrue();
 
-        It second_message_should_be_successfully_received = () =>
+        It should_receive_the_second_message_successfully = () =>
             message2.Result.ShouldEqual(ReceiveResult.Received);
 
-        It second_message_should_contain_the_given_message = () =>
+        It should_contain_the_correct_second_message_data = () =>
             message2.Data.ShouldEqual("Last".ToZmqBuffer());
 
-        It second_message_should_not_have_more_parts = () =>
+        It should_not_have_more_parts_after_the_second_message = () =>
             message2.HasMoreParts.ShouldBeFalse();
     }
 
@@ -81,28 +81,28 @@
 
         Because of = StartThreads;
 
-        It first_message_should_be_sent_successfully = () =>
+        It should_send_the_first_message_successfully = () =>
             sendResult1.ShouldEqual(SendResult.Sent);
 
-        It second_message_should_be_sent_successfully = () =>
+        It should_send_the_second_message_successfully = () =>
             sendResult2.ShouldEqual(SendResult.Sent);
 
-        It first_message_should_be_successfully_received = () =>
+        It should_receive_the_first_message_successfully = () =>
             message1.Result.ShouldEqual(ReceiveResult.Received);
 
-        It first_message_should_contain_the_given_message = () =>
+        It should_contain_the_correct_first_message_data = () =>
             message1.Data.ShouldEqual("First".ToZmqBuffer());
 
-        It first_message_should_have_more_parts = () =>
+        It should_have_more_parts_after_the_first_message = () =>
             message1.HasMoreParts.ShouldBeTrue();
 
-        It second_message_should_be_successfully_received = () =>
+        It should_receive_the_second_message_successfully = () =>
             message2.Result.ShouldEqual(ReceiveResult.Received);
 
-        It second_message_should_contain_the_given_message = () =>
+        It should_contain_the_correct_second_message_data = () =>
             message2.Data.ShouldEqual("Last".ToZmqBuffer());
 
-        It second_message_should_not_have_more_parts = () =>
+        It should_not_have_more_parts_after_the_second_message = () =>
             message2.HasMoreParts.ShouldBeFalse();
     }
 }
