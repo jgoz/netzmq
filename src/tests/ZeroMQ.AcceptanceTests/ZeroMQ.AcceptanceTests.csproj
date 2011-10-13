@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceSpecs\Streamer.cs" />
     <Compile Include="DeviceSpecs\Forwarder.cs" />
     <Compile Include="DeviceSpecs\Queue.cs" />
     <Compile Include="DeviceSpecs\SpecContext.cs" />
