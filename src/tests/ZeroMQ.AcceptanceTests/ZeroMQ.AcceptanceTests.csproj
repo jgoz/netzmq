@@ -93,6 +93,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceSpecs\Forwarder.cs" />
+    <Compile Include="DeviceSpecs\SpecContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketSpecs\Bind_Connect.cs" />
     <Compile Include="SocketSpecs\SendPart_ReceiveMore.cs" />
