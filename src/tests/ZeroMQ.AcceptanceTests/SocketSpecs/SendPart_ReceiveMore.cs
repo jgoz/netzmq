@@ -7,7 +7,7 @@
     using ZeroMQ.Sockets;
 
     [Subject("Send and receive partial")]
-    class when_sending_and_receiving_partial_messages_in_blocking_mode : using_threaded_req_and_rep_sockets
+    class when_sending_and_receiving_partial_messages_in_blocking_mode : using_threaded_req_rep
     {
         static ReceivedMessage message1;
         static ReceivedMessage message2;
@@ -16,13 +16,13 @@
 
         Establish context = () =>
         {
-            reqAction = req =>
+            senderAction = req =>
             {
                 sendResult1 = req.SendPart("First".ToZmqBuffer());
                 sendResult2 = req.Send("Last".ToZmqBuffer());
             };
 
-            repAction = rep =>
+            receiverAction = rep =>
             {
                 message1 = rep.Receive();
                 message2 = rep.Receive();
@@ -57,7 +57,7 @@
     }
 
     [Subject("Send and receive partial")]
-    class when_sending_and_receiving_partial_messages_with_an_ample_timeout : using_threaded_req_and_rep_sockets
+    class when_sending_and_receiving_partial_messages_with_an_ample_timeout : using_threaded_req_rep
     {
         static ReceivedMessage message1;
         static ReceivedMessage message2;
@@ -66,13 +66,13 @@
 
         Establish context = () =>
         {
-            reqAction = req =>
+            senderAction = req =>
             {
                 sendResult1 = req.SendPart("First".ToZmqBuffer(), TimeSpan.FromMilliseconds(2000));
                 sendResult2 = req.Send("Last".ToZmqBuffer(), TimeSpan.FromMilliseconds(2000));
             };
 
-            repAction = rep =>
+            receiverAction = rep =>
             {
                 message1 = rep.Receive(TimeSpan.FromMilliseconds(2000));
                 message2 = rep.Receive(TimeSpan.FromMilliseconds(2000));

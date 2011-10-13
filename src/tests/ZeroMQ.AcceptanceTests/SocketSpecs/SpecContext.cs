@@ -70,64 +70,85 @@
         };
     }
 
-    abstract class using_threaded_req_and_rep_sockets
+    abstract class using_threaded_req_rep : using_threaded_socket_pair<IDuplexSocket, IDuplexSocket>
     {
-        protected static IDuplexSocket req;
-        protected static IDuplexSocket rep;
+        static using_threaded_req_rep()
+        {
+            createSender = () => zmqContext.CreateRequestSocket();
+            createReceiver = () => zmqContext.CreateReplySocket();
+        }
+    }
+
+    abstract class using_threaded_pub_sub : using_threaded_socket_pair<ISendSocket, ISubscribeSocket>
+    {
+        static using_threaded_pub_sub()
+        {
+            createSender = () => zmqContext.CreatePublishSocket();
+            createReceiver = () => zmqContext.CreateSubscribeSocket();
+        }
+    }
+
+    abstract class using_threaded_socket_pair<TSendSocket, TReceiveSocket>
+        where TSendSocket : ISendSocket
+        where TReceiveSocket : IReceiveSocket
+    {
+        protected static Func<TSendSocket> createSender;
+        protected static Func<TReceiveSocket> createReceiver;
+
+        protected static TSendSocket sender;
+        protected static TReceiveSocket receiver;
         protected static IZmqContext zmqContext;
 
-        protected static Action<IDuplexSocket> reqAction;
-        protected static Action<IDuplexSocket> repAction;
-        protected static Exception reqException;
-        protected static Exception repException;
+        protected static Action<TSendSocket> senderAction;
+        protected static Action<TReceiveSocket> receiverAction;
 
-        private static Thread repThread;
-        private static Thread reqThread;
+        private static Thread receiverThread;
+        private static Thread senderThread;
 
         Establish context = () =>
         {
             zmqContext = ZmqContext.Create();
-            req = zmqContext.CreateRequestSocket();
-            rep = zmqContext.CreateReplySocket();
+            sender = createSender();
+            receiver = createReceiver();
 
-            reqAction = sck => { };
-            repAction = sck => { };
+            senderAction = sck => { };
+            receiverAction = sck => { };
 
-            reqThread = new Thread(() => reqException = Catch.Exception(() =>
+            senderThread = new Thread(() =>
             {
-                req.SendHighWatermark = 1;
-                req.Connect("inproc://spec_context");
-                reqAction(req);
-            }));
+                sender.SendHighWatermark = 1;
+                sender.Connect("inproc://spec_context");
+                senderAction(sender);
+            });
 
-            repThread = new Thread(() => repException = Catch.Exception(() =>
+            receiverThread = new Thread(() =>
             {
-                rep.ReceiveHighWatermark = 1;
-                rep.Bind("inproc://spec_context");
-                repAction(rep);
-            }));
+                receiver.ReceiveHighWatermark = 1;
+                receiver.Bind("inproc://spec_context");
+                receiverAction(receiver);
+            });
         };
 
         Cleanup resources = () =>
         {
-            req.Dispose();
-            rep.Dispose();
+            sender.Dispose();
+            receiver.Dispose();
             zmqContext.Dispose();
         };
 
         protected static void StartThreads()
         {
-            repThread.Start();
-            reqThread.Start();
+            receiverThread.Start();
+            senderThread.Start();
 
-            if (!repThread.Join(5000))
+            if (!receiverThread.Join(5000))
             {
-                repThread.Abort();
+                receiverThread.Abort();
             }
 
-            if (!reqThread.Join(5000))
+            if (!senderThread.Join(5000))
             {
-                reqThread.Abort();
+                senderThread.Abort();
             }
         }
     }

@@ -7,15 +7,15 @@
     using ZeroMQ.Sockets;
 
     [Subject("Send and receive")]
-    class when_sending_and_receiving_in_blocking_mode : using_threaded_req_and_rep_sockets
+    class when_sending_and_receiving_in_blocking_mode : using_threaded_req_rep
     {
         static ReceivedMessage message;
         static SendResult sendResult;
 
         Establish context = () =>
         {
-            reqAction = req => sendResult = req.Send("Test message".ToZmqBuffer());
-            repAction = rep => message = rep.Receive();
+            senderAction = req => sendResult = req.Send("Test message".ToZmqBuffer());
+            receiverAction = rep => message = rep.Receive();
         };
 
         Because of = StartThreads;
@@ -34,15 +34,15 @@
     }
 
     [Subject("Send and receive")]
-    class when_sending_and_receiving_with_an_ample_timeout : using_threaded_req_and_rep_sockets
+    class when_sending_and_receiving_with_an_ample_timeout : using_threaded_req_rep
     {
         static ReceivedMessage message;
         static SendResult sendResult;
 
         Establish context = () =>
         {
-            reqAction = req => sendResult = req.Send("Test message".ToZmqBuffer(), TimeSpan.FromMilliseconds(2000));
-            repAction = rep => message = rep.Receive(TimeSpan.FromMilliseconds(2000));
+            senderAction = req => sendResult = req.Send("Test message".ToZmqBuffer(), TimeSpan.FromMilliseconds(2000));
+            receiverAction = rep => message = rep.Receive(TimeSpan.FromMilliseconds(2000));
         };
 
         Because of = StartThreads;
@@ -61,13 +61,13 @@
     }
 
     [Subject("Receive")]
-    class when_receiving_with_insufficient_timeout : using_threaded_req_and_rep_sockets
+    class when_receiving_with_insufficient_timeout : using_threaded_req_rep
     {
         static ReceivedMessage message;
 
         Establish context = () =>
         {
-            repAction = rep => message = rep.Receive(TimeSpan.FromMilliseconds(0));
+            receiverAction = rep => message = rep.Receive(TimeSpan.FromMilliseconds(0));
         };
 
         Because of = StartThreads;
