@@ -101,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SocketSpecs\SpecContext.cs" />
+    <Compile Include="SocketSpecs\Subscribe.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -111,6 +112,7 @@
       <Name>ZeroMQ</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /c $(SolutionDir)..\out\$(PlatformName)\$(Configuration)\ZeroMQ.Proxy.dll .

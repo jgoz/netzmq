@@ -99,7 +99,9 @@
         protected static TReceiveSocket receiver;
         protected static IZmqContext zmqContext;
 
+        protected static Action<TSendSocket> senderInit;
         protected static Action<TSendSocket> senderAction;
+        protected static Action<TReceiveSocket> receiverInit;
         protected static Action<TReceiveSocket> receiverAction;
 
         private static Thread receiverThread;
@@ -111,11 +113,14 @@
             sender = createSender();
             receiver = createReceiver();
 
+            senderInit = sck => { };
+            receiverInit = sck => { };
             senderAction = sck => { };
             receiverAction = sck => { };
 
             senderThread = new Thread(() =>
             {
+                senderInit(sender);
                 sender.SendHighWatermark = 1;
                 sender.Connect("inproc://spec_context");
                 senderAction(sender);
@@ -123,6 +128,7 @@
 
             receiverThread = new Thread(() =>
             {
+                receiverInit(receiver);
                 receiver.ReceiveHighWatermark = 1;
                 receiver.Bind("inproc://spec_context");
                 receiverAction(receiver);
