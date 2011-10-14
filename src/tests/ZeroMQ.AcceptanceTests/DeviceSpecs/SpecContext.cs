@@ -14,14 +14,14 @@
     {
         protected static Func<TSendSocket> createSender;
         protected static Func<TReceiveSocket> createReceiver;
-        protected static Func<IDevice<TReceiveSocket, TSendSocket>> createDevice;
+        protected static Func<ZmqDevice<TReceiveSocket, TSendSocket>> createDevice;
 
         protected static TSendSocket sender;
         protected static TReceiveSocket receiver;
-        protected static IDevice<TReceiveSocket, TSendSocket> device;
+        protected static ZmqDevice<TReceiveSocket, TSendSocket> device;
         protected static IZmqContext zmqContext;
 
-        protected static Action<IDevice<TReceiveSocket, TSendSocket>> deviceInit;
+        protected static Action<ZmqDevice<TReceiveSocket, TSendSocket>> deviceInit;
         protected static Action<TSendSocket> senderInit;
         protected static Action<TSendSocket> senderAction;
         protected static Action<TReceiveSocket> receiverInit;
@@ -30,6 +30,7 @@
         private static Thread deviceThread;
         private static Thread receiverThread;
         private static Thread senderThread;
+        private static AutoResetEvent signal;
 
         Establish context = () =>
         {
@@ -44,35 +45,43 @@
             senderAction = sck => { };
             receiverAction = sck => { };
 
+            signal = new AutoResetEvent(false);
+
             deviceThread = new Thread(() =>
             {
                 deviceInit(device);
 
                 device.ConfigureFrontend().BindTo("inproc://dev_frontend");
                 device.ConfigureBackend().BindTo("inproc://dev_backend");
+                device.InitializeSockets();
+
+                signal.Set();
 
                 device.Start();
             });
 
             receiverThread = new Thread(() =>
             {
-                // TODO: Can we hook into Device.Start so that signals can be used instead of Sleep?
-                Thread.Sleep(100);
+                signal.WaitOne();
 
                 receiverInit(receiver);
                 receiver.ReceiveHighWatermark = 1;
                 receiver.Connect("inproc://dev_backend");
+
+                signal.Set();
 
                 receiverAction(receiver);
             });
 
             senderThread = new Thread(() =>
             {
-                Thread.Sleep(100);
+                signal.WaitOne();
 
                 senderInit(sender);
                 sender.SendHighWatermark = 1;
                 sender.Connect("inproc://dev_frontend");
+
+                signal.Set();
 
                 senderAction(sender);
             });

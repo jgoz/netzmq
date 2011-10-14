@@ -125,8 +125,24 @@
         }
 
         /// <summary>
+        /// Initializes the frontend and backend sockets based on the configuration specified with
+        /// <see cref="ConfigureFrontend"/> and <see cref="ConfigureBackend"/>.
+        /// </summary>
+        /// <remarks>
+        /// Called automatically when starting the device. If called multiple times, will only execute once.
+        /// </remarks>
+        public void InitializeSockets()
+        {
+            this.frontendSetup.Configure();
+            this.backendSetup.Configure();
+        }
+
+        /// <summary>
         /// Start the device in the current thread.
         /// </summary>
+        /// <remarks>
+        /// Initializes the sockets prior to starting the device. See <see cref="InitializeSockets"/>.
+        /// </remarks>
         /// <exception cref="ObjectDisposedException">The <see cref="ZmqDevice{TFrontend,TBackend}"/> has already been disposed.</exception>
         public virtual void Start()
         {
@@ -196,8 +212,7 @@
         {
             this.EnsureNotDisposed();
 
-            this.frontendSetup.Configure();
-            this.backendSetup.Configure();
+            this.InitializeSockets();
 
             this.runningEvent.Reset();
             this.IsRunning = true;

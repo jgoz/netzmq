@@ -117,7 +117,7 @@
         {
             createSender = () => zmqContext.CreateRequestSocket();
             createReceiver = () => zmqContext.CreateReplySocket();
-            createDevice = () => QueueDevice.Create(zmqContext);
+            createDevice = () => (ZmqDevice<IDuplexSocket, IDuplexSocket>)QueueDevice.Create(zmqContext);
         }
     }
 }

@@ -105,7 +105,7 @@
         {
             createSender = () => zmqContext.CreatePublishSocket();
             createReceiver = () => zmqContext.CreateSubscribeSocket();
-            createDevice = () => ForwarderDevice.Create(zmqContext);
+            createDevice = () => (ZmqDevice<ISubscribeSocket, ISendSocket>)ForwarderDevice.Create(zmqContext);
         }
     }
 }
