@@ -4,16 +4,15 @@
 
     using Machine.Specifications;
 
-    using ZeroMQ.Sockets;
     using ZeroMQ.Sockets.Devices;
 
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_full_subscription : using_forwarder_device
     {
-        static ReceivedMessage message1;
-        static ReceivedMessage message2;
-        static SendResult sendResult1;
-        static SendResult sendResult2;
+        protected static ReceivedMessage message1;
+        protected static ReceivedMessage message2;
+        protected static SendResult sendResult1;
+        protected static SendResult sendResult2;
 
         Establish context = () =>
         {
@@ -28,50 +27,28 @@
 
             senderAction = pub =>
             {
-                sendResult1 = pub.Send("PREFIX Test message".ToZmqBuffer());
-                sendResult2 = pub.Send("NOTPREFIX Test message".ToZmqBuffer());
+                sendResult1 = pub.Send(Messages.PubSubFirst);
+                sendResult2 = pub.Send(Messages.PubSubSecond);
             };
         };
 
         Because of = StartThreads;
 
-        It should_send_the_first_message_successfully = () =>
-            sendResult1.ShouldEqual(SendResult.Sent);
-
-        It should_send_the_second_message_successfully = () =>
-            sendResult2.ShouldEqual(SendResult.Sent);
-
-        It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
-
-        It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual("PREFIX Test message".ToZmqBuffer());
-
-        It should_not_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeFalse();
-
-        It should_receive_the_second_message_successfully = () =>
-            message2.Result.ShouldEqual(ReceiveResult.Received);
-
-        It should_contain_the_correct_second_message_data = () =>
-            message2.Data.ShouldEqual("NOTPREFIX Test message".ToZmqBuffer());
-
-        It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+        Behaves_like<PubSubReceiveAll> successfully_received_all_messages;
     }
 
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_a_receiver_subscription : using_forwarder_device
     {
-        static ReceivedMessage message1;
-        static ReceivedMessage message2;
-        static SendResult sendResult1;
-        static SendResult sendResult2;
+        protected static ReceivedMessage message1;
+        protected static ReceivedMessage message2;
+        protected static SendResult sendResult1;
+        protected static SendResult sendResult2;
 
         Establish context = () =>
         {
             deviceInit = dev => dev.ConfigureFrontend().SubscribeToAll();
-            receiverInit = sub => sub.Subscribe("PREFIX".ToZmqBuffer());
+            receiverInit = sub => sub.Subscribe(Messages.PubSubPrefix);
 
             receiverAction = sub =>
             {
@@ -81,49 +58,27 @@
 
             senderAction = pub =>
             {
-                sendResult1 = pub.Send("PREFIX Test message".ToZmqBuffer());
-                sendResult2 = pub.Send("NOTPREFIX Test message".ToZmqBuffer());
+                sendResult1 = pub.Send(Messages.PubSubFirst);
+                sendResult2 = pub.Send(Messages.PubSubSecond);
             };
         };
 
         Because of = StartThreads;
 
-        It should_send_the_first_message_successfully = () =>
-            sendResult1.ShouldEqual(SendResult.Sent);
-
-        It should_send_the_second_message_successfully = () =>
-            sendResult2.ShouldEqual(SendResult.Sent);
-
-        It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
-
-        It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual("PREFIX Test message".ToZmqBuffer());
-
-        It should_not_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeFalse();
-
-        It should_tell_receiver_to_retry_the_second_message = () =>
-            message2.Result.ShouldEqual(ReceiveResult.TryAgain);
-
-        It should_contain_empty_second_message_data = () =>
-            message2.Data.ShouldBeEmpty();
-
-        It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+        Behaves_like<PubSubReceiveFirst> successfully_received_first_message_and_filtered_out_second;
     }
 
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_a_device_subscription : using_forwarder_device
     {
-        static ReceivedMessage message1;
-        static ReceivedMessage message2;
-        static SendResult sendResult1;
-        static SendResult sendResult2;
+        protected static ReceivedMessage message1;
+        protected static ReceivedMessage message2;
+        protected static SendResult sendResult1;
+        protected static SendResult sendResult2;
 
         Establish context = () =>
         {
-            deviceInit = dev => dev.ConfigureFrontend().SubscribeTo("PREFIX".ToZmqBuffer());
+            deviceInit = dev => dev.ConfigureFrontend().SubscribeTo(Messages.PubSubPrefix);
             receiverInit = sub => sub.SubscribeAll();
 
             receiverAction = sub =>
@@ -134,36 +89,14 @@
 
             senderAction = pub =>
             {
-                sendResult1 = pub.Send("PREFIX Test message".ToZmqBuffer());
-                sendResult2 = pub.Send("NOTPREFIX Test message".ToZmqBuffer());
+                sendResult1 = pub.Send(Messages.PubSubFirst);
+                sendResult2 = pub.Send(Messages.PubSubSecond);
             };
         };
 
         Because of = StartThreads;
 
-        It should_send_the_first_message_successfully = () =>
-            sendResult1.ShouldEqual(SendResult.Sent);
-
-        It should_send_the_second_message_successfully = () =>
-            sendResult2.ShouldEqual(SendResult.Sent);
-
-        It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
-
-        It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual("PREFIX Test message".ToZmqBuffer());
-
-        It should_not_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeFalse();
-
-        It should_tell_receiver_to_retry_the_second_message = () =>
-            message2.Result.ShouldEqual(ReceiveResult.TryAgain);
-
-        It should_contain_empty_second_message_data = () =>
-            message2.Data.ShouldBeEmpty();
-
-        It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+        Behaves_like<PubSubReceiveFirst> successfully_received_first_message_and_filtered_out_second;
     }
 
     abstract class using_forwarder_device : using_threaded_device<ISendSocket, ISubscribeSocket>
