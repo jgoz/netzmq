@@ -90,9 +90,6 @@
 
             senderAction = pub =>
             {
-                // Make sure we don't start publishing until everyone is ready.
-                Thread.Sleep(50);
-
                 sendResult1 = pub.Send(Messages.PubSubFirst);
                 sendResult2 = pub.Send(Messages.PubSubSecond);
             };

@@ -30,7 +30,9 @@
         private static Thread deviceThread;
         private static Thread receiverThread;
         private static Thread senderThread;
-        private static AutoResetEvent signal;
+
+        private static ManualResetEvent deviceSignal;
+        private static ManualResetEvent receiverSignal;
 
         Establish context = () =>
         {
@@ -45,7 +47,8 @@
             senderAction = sck => { };
             receiverAction = sck => { };
 
-            signal = new AutoResetEvent(false);
+            deviceSignal = new ManualResetEvent(false);
+            receiverSignal = new ManualResetEvent(false);
 
             deviceThread = new Thread(() =>
             {
@@ -55,33 +58,31 @@
                 device.ConfigureBackend().BindTo("inproc://dev_backend");
                 device.InitializeSockets();
 
-                signal.Set();
+                deviceSignal.Set();
 
                 device.Start();
             });
 
             receiverThread = new Thread(() =>
             {
-                signal.WaitOne();
+                deviceSignal.WaitOne();
 
                 receiverInit(receiver);
                 receiver.ReceiveHighWatermark = 1;
                 receiver.Connect("inproc://dev_backend");
 
-                signal.Set();
+                receiverSignal.Set();
 
                 receiverAction(receiver);
             });
 
             senderThread = new Thread(() =>
             {
-                signal.WaitOne();
+                receiverSignal.WaitOne();
 
                 senderInit(sender);
                 sender.SendHighWatermark = 1;
                 sender.Connect("inproc://dev_frontend");
-
-                signal.Set();
 
                 senderAction(sender);
             });
