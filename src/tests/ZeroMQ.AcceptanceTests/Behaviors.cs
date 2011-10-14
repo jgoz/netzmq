@@ -1,4 +1,6 @@
-﻿namespace ZeroMQ.AcceptanceTests
+﻿#pragma warning disable 649
+
+namespace ZeroMQ.AcceptanceTests
 {
     using Machine.Specifications;
 
@@ -14,6 +16,7 @@
         public static readonly byte[] PubSubFirst = "PREFIX Test message".ToZmqBuffer();
         public static readonly byte[] PubSubSecond = "NOPREFIX Test message".ToZmqBuffer();
     }
+
 
     [Behaviors]
     class SingleMessageSuccess
@@ -148,3 +151,5 @@
             message2.HasMoreParts.ShouldBeFalse();
     }
 }
+
+#pragma warning restore 649
