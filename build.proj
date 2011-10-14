@@ -5,15 +5,42 @@
   </ItemGroup>
 
   <Target Name="Clean">
-    <MSBuild Projects="@(SolutionToBuild)" Targets="Clean" />
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Clean" Properties="Platform=x86" />
+    <MSBuild Projects="@(SolutionToBuild)" Targets="Clean" Properties="Platform=x64" />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="Clean">
+  <Target Name="Compile" DependsOnTargets="Clean">
     <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x86" />
     <MSBuild Projects="@(SolutionToBuild)" Targets="Build" Properties="Platform=x64" />
   </Target>
 
-  <Target Name="Package" DependsOnTargets="Build">
+  <Target Name="RunSpecs" DependsOnTargets="Compile">
+    <ItemGroup>
+      <SpecAssemblies Include="src\tests\ZeroMQ.UnitTests\bin\Debug\*Tests.dll">
+        <Platform>AnyCPU</Platform>
+      </SpecAssemblies>
+      <SpecAssemblies Include="src\tests\ZeroMQ.AcceptanceTests\**\*Tests.x86.dll">
+        <Platform>x86</Platform>
+      </SpecAssemblies>
+      <SpecAssemblies Include="src\tests\ZeroMQ.AcceptanceTests\**\*Tests.x64.dll">
+        <Platform>x64</Platform>
+      </SpecAssemblies>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <MSpecCommand>bin\mspec\mspec.cmd $(AdditionalSettings)</MSpecCommand>
+      <MSpecx86Command>bin\mspec\mspec-x86.cmd $(AdditionalSettings)</MSpecx86Command>
+    </PropertyGroup>
+
+    <Message Importance="high" Text="Running Specs with this command: $(MSpecCommand)"/>
+    <Exec Command="$(MSpecCommand) @(SpecAssemblies, ' ')" Condition=" '%(SpecAssemblies.Platform)' != 'x86' " ContinueOnError="false" CustomErrorRegularExpression="\(FAIL\)" />
+    <Exec Command="$(MSpecx86Command) @(SpecAssemblies, ' ')" Condition=" '%(SpecAssemblies.Platform)' == 'x86' " ContinueOnError="false" CustomErrorRegularExpression="\(FAIL\)" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="RunSpecs">
+  </Target>
+
+  <Target Name="Package" DependsOnTargets="Compile">
     <PropertyGroup>
       <OutDir>package</OutDir>
       
