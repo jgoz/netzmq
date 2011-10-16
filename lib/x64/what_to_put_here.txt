@@ -1,0 +1,4 @@
+64-bit libzmq library files:
+ - libzmq.dll
+ - libzmq.exp
+ - libzmq.lib
