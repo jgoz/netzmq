@@ -1,6 +1,6 @@
 @echo off
-set NUGET_EXE=bin\nuget-bin\nuget.exe
-set NUGET_BOOTSTRAPPER_EXE=bin\nuget-bin\nuget-bootstrap.exe
+set NUGET_EXE=bin\nuget\nuget.exe
+set NUGET_BOOTSTRAPPER_EXE=bin\nuget\nuget-bootstrap.exe
 set PACKAGE_DIR=lib\packages
 
 if not exist %NUGET_EXE% (goto bootstrap) else (goto install)
