@@ -31,6 +31,22 @@ using (var replySocket = ctx.CreateReplySocket())
 }
 ```
 
+## Build Instructions
+This project currently depends on [libzmq 3.0][libzmq-src]. In order to build netzmq, the build output from libzmq must be placed in the solution hierarchy. A rough guide follows:
+
+1. Clone [libzmq][libzmq-src]
+2. Open builds\msvc\msvc.sln in Visual Studio
+3. Set the solution build configuration to Release/x86
+4. Build the `libzmq` project
+5. Copy `builds\msvc\Release\libzmq.{dll,exp,lib}` to `lib\x86` in your netzmq repository 
+6. Repeat steps 3-5 using the Release/x64 configuration, copying to `lib\x64`
+7. Copy `include\zmq.h` to `include` in your netzmq repository
+8. Run `build.cmd`
+
+To include OpenPGM support, extract the included libpgm tarball to a path inside libzmq and perform the above steps using `WithOpenPGM` as the build configuration instead of `Release`. Project and library reference paths will need to be updated to reflect the OpenPGM extract path.
+
+NOTE: The netzmq build scripts currently assume a 64-bit build environment.
+
 ## *Another* .NET binding for ZMQ&#x203d;
 This project is first and foremost a means to learn ZeroMQ more deeply. While there are other projects that provide .NET bindings for ZeroMQ, the secondary goals of this project are sufficiently different to justify creating a new library, at least for experimentation. If any of the ideas in this project appeal to the maintainers of other bindings, I'd be happy to collaborate on patches.
 
@@ -42,6 +58,7 @@ This project is first and foremost a means to learn ZeroMQ more deeply. While th
 ## License
 netzmq is released under the [Apache 2.0 license][apl]. See LICENSE and NOTICE for details.
 
+[libzmq-src]: https://github.com/zeromq/zeromq3-0
 [zeromq]: http://www.zeromq.org/
 [clrzmq]: https://github.com/zeromq/clrzmq2
 [clrzmq-nuget]: http://nuget.org/List/Packages/clrzmq2
