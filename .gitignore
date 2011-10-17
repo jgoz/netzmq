@@ -12,7 +12,6 @@ publish
 publish-*
 package
 nuget.exe
-VersionAssemblyInfo.*
 *.swp
 *.user
 *.suo
