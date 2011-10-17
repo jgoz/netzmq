@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Devices>
+  <Members name="IsRunning">
+    <summary>
+    Gets a value indicating whether the device loop is running.
+    </summary>
+  </Members>
+
+  <Members name="ConfigureFrontend">
+    <summary>
+    Configure the frontend socket using a fluent interface.
+    </summary>
+    <returns>A <see cref="DeviceSocketSetup{TSocket}"/> object used to define socket configuration options.</returns>
+  </Members>
+  
+  <Members name="ConfigureBackend">
+    <summary>
+    Configure the backend socket using a fluent interface.
+    </summary>
+    <returns>A <see cref="DeviceSocketSetup{TSocket}"/> object used to define socket configuration options.</returns>
+  </Members>
+
+  <Members name="Join1">
+    <summary>
+    Blocks the calling thread until the device terminates.
+    </summary>
+  </Members>
+  
+  <Members name="Join2">
+    <summary>
+    Blocks the calling thread until the device terminates or the specified time elapses.
+    </summary>
+    <param name="timeout">
+    A <see cref="TimeSpan"/> set to the amount of time to wait for the device to terminate.
+    </param>
+    <returns>
+    true if the device terminated; false if the device has not terminated after
+    the amount of time specified by <paramref name="timeout"/> has elapsed.
+    </returns>
+  </Members>
+
+  <Members name="Stop">
+    <summary>
+    Terminate the device safely.
+    </summary>
+  </Members>
+</Devices>

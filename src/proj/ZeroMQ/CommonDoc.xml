@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ZeroMQ>
+  <Members name="DuplexSocket">
+    <summary>
+    A socket that is capable of both sending and receiving messages to and from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="ReceiveSocket">
+    <summary>
+    A socket that is capable of receiving messages from remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SendSocket">
+    <summary>
+    A socket that is capable of sending messages to remote endpoints.
+    </summary>
+  </Members>
+
+  <Members name="SubscribeExtSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    Extends <see cref="ISubscribeSocket"/> by sending subscription messages directly to the publisher.
+    </summary>
+  </Members>
+
+  <Members name="SubscribeSocket">
+    <summary>
+    A socket that can subscribe to and receive data distributed by a remote publisher.
+    </summary>
+  </Members>
+
+  <Members name="ZmqPollSet">
+    <summary>
+    Multiplexes input/output events in a level-triggered fashion over a set of sockets.
+    </summary>
+  </Members>
+  
+  <Members name="CreateDealerSocket">
+    <summary>
+    Create a ZMQ_DEALER socket. Extends the request/reply pattern by load-balancing outgoing messages
+    to all connected peers and by fair-queuing incoming messages from all connected peers.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_DEALER socket.</returns>
+    <remarks>
+    When connected to a ZMQ_REP socket, each message sent must consist of an empty message part,
+    the delimiter, followed by one or more data parts.
+    </remarks>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreatePairSocket">
+    <summary>
+    Create a ZMQ_PAIR socket. Unrestricted and unfiltered communication with a single remote endpoint.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_PAIR socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreatePublishExtSocket">
+    <summary>
+    Create a ZMQ_XPUB socket. Extends Publish socket by allowing incoming subscription messages.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XPUB socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreatePublishSocket">
+    <summary>
+    Create a ZMQ_PUB socket. Publish messages to connected peers in a fan-out model.
+    </summary>
+    <returns>An <see cref="ISendSocket"/> instance for a ZMQ_PUB socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreatePullSocket">
+    <summary>
+    Create a ZMQ_PULL socket. Used by a pipeline node to receive messages from upstream pipeline nodes
+    </summary>
+    <returns>An <see cref="IReceiveSocket"/> instance for a ZMQ_PULL socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreatePushSocket">
+    <summary>
+    Create a ZMQ_PUSH socket. Used by a pipeline node to send messages to downstream pipeline nodes.
+    </summary>
+    <returns>An <see cref="ISendSocket"/> instance for a ZMQ_PUSH socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreateReplyExtSocket">
+    <summary>
+    Create a ZMQ_XREP socket. Extends the Reply socket by identity-stamping incoming messages so that
+    outgoing messages can be correctly routed.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XREP socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreateReplySocket">
+    <summary>
+    Create a ZMQ_REP socket. Receive requests from and sends replies to a client.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_REP socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreateRequestExtSocket">
+    <summary>
+    Create a ZMQ_XREQ socket. Extends the Request socket by load-balancing outgoing messages and
+    fair-queuing incoming messages.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_XREQ socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+
+  <Members name="CreateRequestSocket">
+    <summary>
+    Create a ZMQ_REQ socket. Used by a client to send requests to and receive replies from a service.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_REQ socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreateRouterSocket">
+    <summary>
+    Create a ZMQ_ROUTER socket. Extends the request/reply pattern by fair-queuing incoming messages
+    from all connected peers.
+    </summary>
+    <returns>An <see cref="IDuplexSocket"/> instance for a ZMQ_DEALER socket.</returns>
+    <remarks>
+      <para>
+      Incoming messages are prepended with a message part containing an identifier that represents the
+      sending socket. When sending replies, the application must send a message part containing
+      recipient's identity, followed by any remaining message parts.
+      </para>
+      <para>
+      When connected to a ZMQ_REQ socket, received messages also contain an empty delimiter between the
+      sender's identity and the message contents. The application must also include an empty delimiter
+      between the recipient's identity and the message parts when sending replies.
+      </para>
+    </remarks>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreateSubscribeExtSocket">
+    <summary>
+    Create a ZMQ_XSUB socket. Extends Subscribe socket by allowing outgoing subscription messages to be sent.
+    Set a subscription filter via <see cref="ISubscribeSocket.Subscribe(byte[])"/> or <see cref="ISubscribeSocket.SubscribeAll"/>
+    before connecting to a publisher.
+    </summary>
+    <returns>An <see cref="ISubscribeSocket"/> instance for a ZMQ_XSUB socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreateSubscribeSocket">
+    <summary>
+    Create a ZMQ_SUB socket. Subscribe to data distributed by a publisher. Set a subscription filter
+    via <see cref="ISubscribeSocket.Subscribe(byte[])"/> or <see cref="ISubscribeSocket.SubscribeAll"/>
+    before connecting to a publisher.
+    </summary>
+    <returns>An <see cref="ISubscribeSocket"/> instance for a ZMQ_SUB socket.</returns>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="CreatePollSet">
+    <summary>
+    Create a concrete <see cref="IPollSet"/> instance over a set of sockets.
+    </summary>
+    <param name="sockets">
+    The set of <see cref="ISocket"/>s to multiplex. Set <see cref="IReceiveSocket.ReceiveReady"/>
+    and/or <see cref="ISendSocket.SendReady"/> as appropriate on each socket prior to calling Poll.
+    </param>
+    <returns>An <see cref="IPollSet"/> instance for a given socket set.</returns>
+  </Members>
+  
+  <Members name="Terminate">
+    <summary>
+    Terminate the ZeroMQ context.
+    </summary>
+    <remarks>
+    Context termination is performed in the following steps:
+
+    <ul>
+      <li>
+        Any blocking operations currently in progress on sockets open within context shall return immediately
+        with an error code of ETERM. With the exception of <see cref="ZmqSocket.Close"/>, any further operations
+        on sockets open within the context shall fail with a <see cref="ZmqSocketException"/>.
+      </li>
+      <li>
+        After interrupting all blocking calls, <see cref="Terminate"/> shall block until the following conditions
+        are met:
+        <ul>
+          <li>
+            All sockets open within the context have been closed with <see cref="ZmqSocket.Close"/>.
+          </li>
+          <li>
+            For each socket within the context, all messages sent by the application  have either been
+            physically transferred to a network peer, or the socket's linger period set with the
+            <see cref="ZmqSocket.Linger"/> socket option has expired.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    </remarks>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqContext"/> has already been disposed.
+    </exception>
+    <exception cref="ZmqLibException">
+      An error occurred creating the socket.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+  </Members>
+  
+  <Members name="Bind">
+    <summary>
+    Create an endpoint for accepting connections and bind it to the current socket.
+    </summary>
+    <param name="endpoint">
+    A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
+    </param>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="endpoint"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred binding the socket to an endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="Connect">
+    <summary>
+    Connect the current socket to the specified endpoint.
+    </summary>
+    <param name="endpoint">
+    A string consisting of a <em>transport</em> and an <em>address</em>, formatted as <c><em>transport</em>://<em>address</em></c>.
+    </param>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="endpoint"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred connecting the socket to a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="Close">
+    <summary>
+    Destroy the current socket.
+    </summary>
+    <remarks>
+    Any outstanding messages physically received from the network but not yet received by the application
+    with Receive shall be discarded. The behaviour for discarding messages sent by the application with Send
+    but not yet physically transferred to the network depends on the value of the <see cref="Linger"/> socket option.
+    </remarks>
+    <exception cref="ZmqSocketException">
+      The underlying socket object is not valid.
+    </exception>
+  </Members>
+  
+  <Members name="Receive1">
+    <summary>
+    Receive a message (or message-part) from a remote socket in blocking mode.
+    </summary>
+    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+    <exception cref="ZmqSocketException">
+      An error occurred receiving data from a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="Receive2">
+    <summary>
+    Receive a message (or message-part) from a remote socket in non-blocking mode.
+    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="ReceivedMessage.Result"/>,
+    indicating that the receive operation should be attempted again.
+    </summary>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+    <exception cref="ZmqSocketException">
+      An error occurred receiving data from a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="Send1">
+    <summary>
+    Queue a single-part message (or the final message-part) to be sent by the socket in blocking mode.
+    </summary>
+    <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+    <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="buffer"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred sending data to a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="Send2">
+    <summary>
+    Queue a single-part message (or the final message-part) to be sent by the socket in non-blocking mode.
+    If the specified timeout elapses, <see cref="SendResult.TryAgain"/> is returned, indicating that the
+    send operation should be attempted again.
+    </summary>
+    <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+    <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="buffer"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred sending data to a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="SendPart1">
+    <summary>
+    Queue part of a multi-part message to be sent by the socket in blocking mode. More message parts will follow.
+    </summary>
+    <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+    <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="buffer"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred sending data to a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="SendPart2">
+    <summary>
+    Queue part of a multi-part message to be sent by the socket in non-blocking mode. More message parts will follow.
+    If the specified timeout elapses, <see cref="SendResult.TryAgain"/> is returned, indicating that the
+    send operation should be attempted again.
+    </summary>
+    <param name="buffer">An array of type <see cref="byte"/> that contains the message to be sent.</param>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+    <returns>A <see cref="SendResult"/> value indicating the send operation outcome.</returns>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="buffer"/> is null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred sending data to a remote endpoint.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="Subscribe">
+    <summary>
+    Sets a new message filter for the current socket.
+    </summary>
+    <param name="prefix">Prefix for subscribed messages.</param>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="prefix"/> is null.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="SubscribeAll">
+    <summary>
+    Subscribe to all incoming messages.
+    </summary>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="Unsubscribe">
+    <summary>
+    Remove an existing filter on the current socket.
+    </summary>
+    <param name="prefix">An existing prefix previously established via Subscribe.</param>
+    <exception cref="System.ArgumentNullException">
+      <paramref name="prefix"/> is null.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+  
+  <Members name="UnsubscribeAll">
+    <summary>
+    Remove subscription filter for all incoming messages. Other filters may remain.
+    </summary>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReceiveReady">
+    <summary>
+    Occurs when at least one message may be received from the socket without blocking.
+    </summary>
+  </Members>
+
+  <Members name="SendReady">
+    <summary>
+    Occurs when at least one message may be sent via the socket without blocking.
+    </summary>
+  </Members>
+  
+  <Members name="Poll1">
+    <summary>
+    Multiplex input/output events over the contained set of sockets in blocking mode, firing
+    <see cref="IReceiveSocket.ReceiveReady" /> or <see cref="ISendSocket.SendReady" /> as appropriate.
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred polling for socket events.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqPollSet"/> has already been disposed.
+    </exception>
+  </Members>
+  
+  <Members name="Poll2">
+    <summary>
+    Multiplex input/output events over the contained set of sockets in non-blocking mode, firing
+    <see cref="IReceiveSocket.ReceiveReady" /> or <see cref="ISendSocket.SendReady" /> as appropriate.
+    Returns when one or more events are ready to fire or when the specified timeout elapses, whichever
+    comes first.
+    </summary>
+    <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
+    <exception cref="ZmqSocketException">
+      An error occurred polling for socket events.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqPollSet"/> has already been disposed.
+    </exception>
+  </Members>
+
+  <Members name="Affinity">
+    <summary>
+    Gets or sets the I/O thread affinity for newly created connections on this socket.
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="Backlog">
+    <summary>
+    Gets or sets the maximum length of the queue of outstanding peer connections. (Default = 100 connections).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="Identity">
+    <summary>
+    Gets or sets the identity of the current socket.
+    </summary>
+    <exception cref="System.ArgumentNullException">
+      The identity is set to null.
+    </exception>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="Linger">
+    <summary>
+    Gets or sets the linger period for socket shutdown. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="MaxMessageSize">
+    <summary>
+    Gets or sets the maximum size for inbound messages (bytes). (Default = -1, no limit).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="MulticastHops">
+    <summary>
+    Gets or sets the time-to-live field in every multicast packet sent from this socket (network hops). (Default = 1 hop).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="MulticastRate">
+    <summary>
+    Gets or sets the maximum send or receive data rate for multicast transports (kbps). (Default = 100 kbps).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="MulticastRecoveryInterval">
+    <summary>
+    Gets or sets the recovery interval for multicast transports. (Default = 10 seconds).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReceiveBufferSize">
+    <summary>
+    Gets or sets the underlying kernel receive buffer size for the current socket (bytes). (Default = 0, OS default).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReceiveHighWatermark">
+    <summary>
+    Gets or sets the high water mark for inbound messages (number of messages). (Default = 0, no limit).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReceiveMore">
+    <summary>
+    Gets a value indicating whether the multi-part message currently being read has more message parts to follow.
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReceiveTimeout">
+    <summary>
+    Gets or sets the timeout for receive operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReconnectInterval">
+    <summary>
+    Gets or sets the initial reconnection interval. (Default = 100 milliseconds).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="ReconnectIntervalMax">
+    <summary>
+    Gets or sets the maximum reconnection interval. (Default = 0, only use <see cref="ReconnectInterval"/>).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="SendBufferSize">
+    <summary>
+    Gets or sets the underlying kernel transmit buffer size for the current socket (bytes). (Default = 0, OS default).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="SendHighWatermark">
+    <summary>
+    Gets or sets the high water mark for outbound messages (number of messages). (Default = 0, no limit).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+
+  <Members name="SendTimeout">
+    <summary>
+    Gets or sets the timeout for send operations. (Default = <see cref="TimeSpan.MaxValue"/>, infinite).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
+</ZeroMQ>
