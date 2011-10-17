@@ -192,6 +192,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ErrorProvider.cpp" />
+    <ClCompile Include="VersionAssemblyInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />
