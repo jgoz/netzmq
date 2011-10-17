@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>netzmq</id>
+    <version>0.5.0</version>
+    <title>netzmq</title>
+    <authors>John Gozde</authors>
+    <owners>John Gozde</owners>
+    <projectUrl>https://github.com/jgoz/netzmq</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <copyright>netzmq is copyright by John Gozde. The ZeroMQ library that this project depends on is LGPL licensed, written by Martin Sustrik and Pieter Hintjens, and copyright by iMatix Corporation.</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>netzmq provides .NET 4.0 bindings for ZeroMQ, an open-source and high performance transport layer. The goals of netzmq are to provide an idiomatic .NET API; support the Microsoft CLR and (eventually) Mono; support unit testing and mocking in client code; and target the Any CPU platform in a "fat binary" that works seamlessly in heterogeneous deployment environments.</description>
+    <summary>netzmq provides .NET bindings for ZeroMQ with an idomatic and test-friendly API, wrapped in an Any CPU assembly for easy deployments.</summary>
+    <language>en-US</language>
+    <tags>zeromq zmq messaging transport distributed</tags>
+  </metadata>
+  <files>
+    <file src="package\*.dll" target="lib\net40"/>
+    <file src="package\*.pdb" target="lib\net40"/>
+    <file src="package\*.xml" target="lib\net40"/>
+    <file src="LICENSE"/>
+    <file src="NOTICE"/>
+  </files>
+</package>
