@@ -43,6 +43,7 @@
   <Target Name="Package" DependsOnTargets="Compile">
     <PropertyGroup>
       <OutDir>package</OutDir>
+      <ProjDir>src\proj</ProjDir>
       
       <DebugType Condition="'$(Configuration)' == 'Debug'">full</DebugType>
       <DebugType Condition="'$(Configuration)' != 'Debug'">pdbonly</DebugType>
@@ -52,7 +53,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <ZeroMQSources Include="src\proj\ZeroMQ\**\*.cs" />
+      <ZeroMQSources Include="$(ProjDir)\ZeroMQ\**\*.cs" />
       
       <Resources Include="out\x64\$(Configuration)\ZeroMQ.Proxy.dll;lib\x64\libzmq.dll">
         <Platform>x64</Platform>
@@ -77,6 +78,7 @@
          DebugType="$(DebugType)"
          PdbFile="$(OutDir)\netzmq.pdb"
          Optimize="$(Optimize)"
+         KeyFile="$(ProjDir)\netzmq.snk"
       />
   </Target>
 
