@@ -7,6 +7,7 @@ NOTE: These are not the official .NET bindings. Until this project is stable, yo
 
 ## Usage
 There are three ways to use netzmq, listed below in order of preference:
+
 1. Add a reference to the [NuGet package][netzmq-nuget]
 2. Download the lastest release from the [Downloads tab][netzmq-dl]
 3. Clone the source and build the project from scratch (see Build Instructions below)
