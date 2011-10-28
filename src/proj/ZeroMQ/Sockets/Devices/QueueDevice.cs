@@ -13,25 +13,39 @@
     public static class QueueDevice
     {
         /// <summary>
-        /// Creates a new <see cref="ZmqDevice{TFrontend,TBackend}"/> using the specified context that will
-        /// run in the current thread.
+        /// Creates a new <see cref="IQueueDevice"/> that will run in the current thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ZmqDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
-        public static IDevice<IDuplexSocket, IDuplexSocket> Create(IZmqContext context)
+        /// <returns>A thread-safe <see cref="IQueueDevice"/> object implementing the Queue pattern.</returns>
+        public static IQueueDevice Create(IZmqContext context)
         {
-            return ZmqDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
+            return ZmqDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket(), (f, b) => new Queue(f, b));
         }
 
         /// <summary>
-        /// Creates a new <see cref="ThreadDevice{TFrontend,TBackend}"/> using the specified context that will
-        /// run in its own thread.
+        /// Creates a new <see cref="IQueueDevice"/> that will run in a separate thread.
         /// </summary>
         /// <param name="context">An <see cref="IZmqContext"/> for creating the frontend and backend sockets.</param>
-        /// <returns>A thread-safe <see cref="ThreadDevice{TFrontend,TBackend}"/> object implementing the Queue pattern.</returns>
-        public static IDevice<IDuplexSocket, IDuplexSocket> CreateThreaded(IZmqContext context)
+        /// <returns>A thread-safe <see cref="IQueueDevice"/> object implementing the Queue pattern.</returns>
+        public static IQueueDevice CreateThreaded(IZmqContext context)
         {
-            return ThreadDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket());
+            return ThreadDevice<IDuplexSocket, IDuplexSocket>.Create(context.CreateReplyExtSocket(), context.CreateRequestExtSocket(), (f, b) => new ThreadQueue(f, b));
+        }
+
+        internal class Queue : ZmqDevice<IDuplexSocket, IDuplexSocket>, IQueueDevice
+        {
+            internal Queue(IDuplexSocket frontend, IDuplexSocket backend)
+                : base(frontend, backend)
+            {
+            }
+        }
+
+        internal class ThreadQueue : ThreadDevice<IDuplexSocket, IDuplexSocket>, IQueueDevice
+        {
+            internal ThreadQueue(IDuplexSocket frontend, IDuplexSocket backend)
+                : base(frontend, backend)
+            {
+            }
         }
     }
 }

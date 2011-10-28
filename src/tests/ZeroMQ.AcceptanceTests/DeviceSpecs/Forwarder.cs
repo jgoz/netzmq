@@ -1,7 +1,6 @@
 ﻿namespace ZeroMQ.AcceptanceTests.DeviceSpecs
 {
     using System;
-    using System.Threading;
 
     using Machine.Specifications;
 

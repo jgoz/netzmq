@@ -5,6 +5,7 @@
     using Moq;
 
     using ZeroMQ.Proxy;
+    using ZeroMQ.Sockets;
     using ZeroMQ.Sockets.Devices;
 
     abstract class using_mock_device_proxy
@@ -24,7 +25,17 @@
             frontend = new Mock<ISocket>();
             backend = new Mock<ISocket>();
 
-            device = new ZmqDevice<ISocket, ISocket>(frontend.Object, backend.Object, deviceProxy.Object, errorProviderProxy.Object);
+            device = new ConcreteDevice(frontend.Object, backend.Object, deviceProxy.Object, errorProviderProxy.Object);
         };
+
+        private class ConcreteDevice : ZmqDevice<ISocket, ISocket>
+        {
+            public ConcreteDevice(ISocket frontend, ISocket backend, IDeviceProxy deviceProxy, IErrorProviderProxy errorProviderProxy)
+                : base(frontend, backend)
+            {
+                this.Device = deviceProxy;
+                this.ErrorProvider = new ZmqErrorProvider(errorProviderProxy);
+            }
+        }
     }
 }
