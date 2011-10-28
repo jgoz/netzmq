@@ -10,8 +10,8 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <copyright>netzmq is copyright by John Gozde. The ZeroMQ library that this project depends on is LGPL licensed, written by Martin Sustrik and Pieter Hintjens, and copyright by iMatix Corporation.</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>High-performance .NET bindings for ZeroMQ with an idiomatic and test-friendly API, wrapped in an Any CPU assembly for easy deployment.</summary>
-    <description>The netzmq project contains .NET bindings for ZeroMQ, an open-source, high performance transport layer. The project provides an idiomatic, test-friendly API and targets the Any CPU platform, which allows it to work seamlessly in heterogeneous (32- and 64-bit) deployment environments. Everything needed to write ZeroMQ programs is bundled in the netzmq assembly for both 32- and 64-bit platforms, including the native ZeroMQ libraries themselves. The native libraries are protected by the LGPL licence and are included as unmodified compiled binaries. The full libzmq source is available from https://github.com/zeromq/. This version of netzmq targets libzmq 3.0.</description>
+    <summary>High-performance .NET bindings for ZeroMQ.</summary>
+    <description>The netzmq project contains .NET bindings for ZeroMQ, an open-source, high performance transport layer. The project provides an idiomatic, test-friendly API and targets the Any CPU platform. Everything needed to write ZeroMQ programs is bundled in the netzmq assembly for both 32- and 64-bit platforms, including the native ZeroMQ libraries themselves. The native libraries are protected by the LGPL licence and are included as unmodified compiled binaries. The full libzmq source is available from https://github.com/zeromq/. This version of netzmq targets libzmq 3.0.</description>
     <language>en-US</language>
     <tags>zeromq zmq messaging transport distributed</tags>
   </metadata>
