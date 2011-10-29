@@ -8,13 +8,13 @@ namespace ZeroMQ.AcceptanceTests
 
     static class Messages
     {
-        public static readonly byte[] SingleMessage = "Test message".ToZmqBuffer();
-        public static readonly byte[] MultiFirst = "First".ToZmqBuffer();
-        public static readonly byte[] MultiLast = "Last".ToZmqBuffer();
+        public static readonly byte[] SingleMessage = "Test message".ZmqEncode();
+        public static readonly byte[] MultiFirst = "First".ZmqEncode();
+        public static readonly byte[] MultiLast = "Last".ZmqEncode();
 
-        public static readonly byte[] PubSubPrefix = "PREFIX".ToZmqBuffer();
-        public static readonly byte[] PubSubFirst = "PREFIX Test message".ToZmqBuffer();
-        public static readonly byte[] PubSubSecond = "NOPREFIX Test message".ToZmqBuffer();
+        public static readonly byte[] PubSubPrefix = "PREFIX".ZmqEncode();
+        public static readonly byte[] PubSubFirst = "PREFIX Test message".ZmqEncode();
+        public static readonly byte[] PubSubSecond = "NOPREFIX Test message".ZmqEncode();
     }
 
     [Behaviors]

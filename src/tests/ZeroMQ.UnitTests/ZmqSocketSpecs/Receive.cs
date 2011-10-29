@@ -239,7 +239,7 @@
 
     abstract class using_receive_socket : using_mock_socket_proxy<IReceiveSocket>
     {
-        protected static byte[] message = "Test".ToZmqBuffer();
+        protected static byte[] message = "Test".ZmqEncode();
         protected static byte[] nullMessage;
         protected static byte[] result;
 

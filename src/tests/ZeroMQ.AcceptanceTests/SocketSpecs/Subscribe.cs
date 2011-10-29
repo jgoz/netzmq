@@ -23,7 +23,7 @@
         {
             var signal = new ManualResetEventSlim(false);
 
-            receiverInit = sub => sub.Subscribe("PREFIX".ToZmqBuffer());
+            receiverInit = sub => sub.Subscribe("PREFIX".ZmqEncode());
 
             receiverAction = sub =>
             {
