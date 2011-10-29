@@ -99,7 +99,7 @@
         /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
         /// to) <paramref name="frontend"/>.
         /// </param>
-        /// <param name="deviceBuilder">A method that constructs a <see cref="TDevice"/> object.</param>
+        /// <param name="deviceBuilder">A method that constructs a <typeparamref name="TDevice"/> object.</param>
         /// <returns>A new <see cref="ZmqDevice{TFrontend,TBackend}"/> object for the specified sockets.</returns>
         /// <remarks>
         /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>

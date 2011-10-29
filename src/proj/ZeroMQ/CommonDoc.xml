@@ -367,7 +367,7 @@
   <Members name="Receive2">
     <summary>
     Receive a message (or message-part) from a remote socket in non-blocking mode.
-    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="ReceivedMessage.Result"/>,
+    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="IReceiveSocket.ReceiveStatus"/>,
     indicating that the receive operation should be attempted again.
     </summary>
     <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
