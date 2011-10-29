@@ -17,48 +17,53 @@ namespace ZeroMQ.AcceptanceTests
         public static readonly byte[] PubSubSecond = "NOPREFIX Test message".ToZmqBuffer();
     }
 
-
     [Behaviors]
     class SingleMessageSuccess
     {
-        protected static ReceivedMessage message;
+        protected static IReceiveSocket receiver;
+        protected static byte[] message;
         protected static SendResult sendResult;
 
         It should_be_sent_successfully = () =>
             sendResult.ShouldEqual(SendResult.Sent);
 
-        It should_be_successfully_received = () =>
-            message.Result.ShouldEqual(ReceiveResult.Received);
-
         It should_contain_the_given_message = () =>
-            message.Data.ShouldEqual(Messages.SingleMessage);
+            message.ShouldEqual(Messages.SingleMessage);
+
+        It should_be_successfully_received = () =>
+            receiver.ReceiveStatus.ShouldEqual(ReceiveResult.Received);
 
         It should_not_have_more_parts = () =>
-            message.HasMoreParts.ShouldBeFalse();
+            receiver.ReceiveMore.ShouldBeFalse();
     }
 
     [Behaviors]
     class SingleMessageTryAgain
     {
-        protected static ReceivedMessage message;
-
-        It should_require_the_receiver_to_try_again = () =>
-            message.Result.ShouldEqual(ReceiveResult.TryAgain);
+        protected static IReceiveSocket receiver;
+        protected static byte[] message;
 
         It should_not_contain_the_given_message = () =>
-            message.Data.ShouldBeEmpty();
+            message.ShouldBeEmpty();
+
+        It should_require_the_receiver_to_try_again = () =>
+            receiver.ReceiveStatus.ShouldEqual(ReceiveResult.TryAgain);
 
         It should_not_have_more_parts = () =>
-            message.HasMoreParts.ShouldBeFalse();
+            receiver.ReceiveMore.ShouldBeFalse();
     }
 
     [Behaviors]
     class MultiPartMessageSuccess
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         It should_send_the_first_message_successfully = () =>
             sendResult1.ShouldEqual(SendResult.Sent);
@@ -67,31 +72,35 @@ namespace ZeroMQ.AcceptanceTests
             sendResult2.ShouldEqual(SendResult.Sent);
 
         It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
+            receiveResult1.ShouldEqual(ReceiveResult.Received);
 
         It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual(Messages.MultiFirst);
+            message1.ShouldEqual(Messages.MultiFirst);
 
         It should_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeTrue();
+            receiveMore1.ShouldBeTrue();
 
         It should_receive_the_second_message_successfully = () =>
-            message2.Result.ShouldEqual(ReceiveResult.Received);
+            receiveResult2.ShouldEqual(ReceiveResult.Received);
 
         It should_contain_the_correct_second_message_data = () =>
-            message2.Data.ShouldEqual(Messages.MultiLast);
+            message2.ShouldEqual(Messages.MultiLast);
 
         It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+            receiveMore2.ShouldBeFalse();
     }
 
     [Behaviors]
     class PubSubReceiveAll
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         It should_send_the_first_message_successfully = () =>
             sendResult1.ShouldEqual(SendResult.Sent);
@@ -100,31 +109,35 @@ namespace ZeroMQ.AcceptanceTests
             sendResult2.ShouldEqual(SendResult.Sent);
 
         It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
+            receiveResult1.ShouldEqual(ReceiveResult.Received);
 
         It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual(Messages.PubSubFirst);
+            message1.ShouldEqual(Messages.PubSubFirst);
 
         It should_not_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeFalse();
+            receiveMore1.ShouldBeFalse();
 
         It should_receive_the_second_message_successfully = () =>
-            message2.Result.ShouldEqual(ReceiveResult.Received);
+            receiveResult2.ShouldEqual(ReceiveResult.Received);
 
         It should_contain_the_correct_second_message_data = () =>
-            message2.Data.ShouldEqual(Messages.PubSubSecond);
+            message2.ShouldEqual(Messages.PubSubSecond);
 
         It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+            receiveMore2.ShouldBeFalse();
     }
 
     [Behaviors]
     class PubSubReceiveFirst
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         It should_send_the_first_message_successfully = () =>
             sendResult1.ShouldEqual(SendResult.Sent);
@@ -133,22 +146,22 @@ namespace ZeroMQ.AcceptanceTests
             sendResult2.ShouldEqual(SendResult.Sent);
 
         It should_receive_the_first_message_successfully = () =>
-            message1.Result.ShouldEqual(ReceiveResult.Received);
+            receiveResult1.ShouldEqual(ReceiveResult.Received);
 
         It should_contain_the_correct_first_message_data = () =>
-            message1.Data.ShouldEqual(Messages.PubSubFirst);
+            message1.ShouldEqual(Messages.PubSubFirst);
 
         It should_not_have_more_parts_after_the_first_message = () =>
-            message1.HasMoreParts.ShouldBeFalse();
+            receiveMore1.ShouldBeFalse();
 
         It should_tell_receiver_to_retry_the_second_message = () =>
-            message2.Result.ShouldEqual(ReceiveResult.TryAgain);
+            receiveResult2.ShouldEqual(ReceiveResult.TryAgain);
 
         It should_contain_empty_second_message_data = () =>
-            message2.Data.ShouldBeEmpty();
+            message2.ShouldBeEmpty();
 
         It should_not_have_more_parts_after_the_second_message = () =>
-            message2.HasMoreParts.ShouldBeFalse();
+            receiveMore2.ShouldBeFalse();
     }
 }
 

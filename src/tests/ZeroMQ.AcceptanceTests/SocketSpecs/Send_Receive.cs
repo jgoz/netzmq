@@ -7,7 +7,7 @@
     [Subject("Send and receive")]
     class when_sending_and_receiving_in_blocking_mode : using_threaded_req_rep
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
         protected static SendResult sendResult;
 
         Establish context = () =>
@@ -24,7 +24,7 @@
     [Subject("Send and receive")]
     class when_sending_and_receiving_with_an_ample_timeout : using_threaded_req_rep
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
         protected static SendResult sendResult;
 
         Establish context = () =>
@@ -41,7 +41,7 @@
     [Subject("Receive")]
     class when_receiving_with_insufficient_timeout : using_threaded_req_rep
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
 
         Establish context = () =>
         {

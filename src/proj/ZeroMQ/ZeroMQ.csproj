@@ -92,7 +92,6 @@
     <Compile Include="Sockets\SocketType.cs" />
     <Compile Include="Sockets\SendSocket.cs" />
     <Compile Include="Sockets\ZmqContext.cs" />
-    <Compile Include="ReceivedMessage.cs" />
     <Compile Include="ReceiveResult.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -114,10 +114,10 @@
             result = socket.Receive(TimeSpan.FromMilliseconds(5));
 
         It should_return_a_try_again_status = () =>
-            result.Result.ShouldEqual(ReceiveResult.TryAgain);
+            socket.ReceiveStatus.ShouldEqual(ReceiveResult.TryAgain);
 
         It should_have_empty_message_data = () =>
-            result.Data.ShouldBeEmpty();
+            result.ShouldBeEmpty();
 
         It should_use_non_blocking_mode = () =>
             socketProxy.Verify(mock => mock.Receive(IncludesSocketFlag(SocketFlags.DontWait), out message));
@@ -166,24 +166,21 @@
     [Behaviors]
     class SuccessfulReceiveResult
     {
+        protected static IReceiveSocket socket;
         protected static byte[] message;
-        protected static ReceivedMessage result;
+        protected static byte[] result;
 
         It should_return_a_successful_status = () =>
-            result.Result.ShouldEqual(ReceiveResult.Received);
+            socket.ReceiveStatus.ShouldEqual(ReceiveResult.Received);
 
         It should_receive_the_underlying_message_contents = () =>
-            result.Data.ShouldEqual(message);
+            result.ShouldEqual(message);
     }
 
     [Behaviors]
     class ReceiveMore
     {
-        protected static ReceivedMessage result;
         protected static ISocket socket;
-
-        It should_indicate_more_message_parts_will_follow_in_result = () =>
-            result.HasMoreParts.ShouldBeTrue();
 
         It should_indicate_more_message_parts_will_follow_on_socket = () =>
             socket.ReceiveMore.ShouldBeTrue();
@@ -192,11 +189,7 @@
     [Behaviors]
     class NoReceiveMore
     {
-        protected static ReceivedMessage result;
         protected static ISocket socket;
-
-        It should_indicate_no_more_message_parts_will_follow_in_result = () =>
-            result.HasMoreParts.ShouldBeFalse();
 
         It should_indicate_no_more_message_parts_will_follow_on_socket = () =>
             socket.ReceiveMore.ShouldBeFalse();
@@ -205,17 +198,18 @@
     [Behaviors]
     class InterruptedReceiveResult
     {
-        protected static ReceivedMessage result;
+        protected static IReceiveSocket socket;
+        protected static byte[] result;
         protected static Exception exception;
 
         It should_return_an_interrupted_status = () =>
-            result.Result.ShouldEqual(ReceiveResult.Interrupted);
+            socket.ReceiveStatus.ShouldEqual(ReceiveResult.Interrupted);
 
         It should_have_empty_message_data = () =>
-            result.Data.ShouldBeEmpty();
+            result.ShouldBeEmpty();
 
         It should_not_have_more_parts = () =>
-            result.HasMoreParts.ShouldBeFalse();
+            socket.ReceiveMore.ShouldBeFalse();
 
         It should_not_fail = () =>
             exception.ShouldBeNull();
@@ -247,7 +241,7 @@
     {
         protected static byte[] message = "Test".ToZmqBuffer();
         protected static byte[] nullMessage;
-        protected static ReceivedMessage result;
+        protected static byte[] result;
 
         Establish context = () =>
             socket = new ReceiveSocket(socketProxy.Object, errorProviderProxy.Object);
