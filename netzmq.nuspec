@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>netzmq</id>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <title>netzmq</title>
     <authors>John Gozde</authors>
     <owners>John Gozde</owners>
