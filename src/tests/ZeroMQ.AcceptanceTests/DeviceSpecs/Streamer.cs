@@ -9,7 +9,7 @@
     [Subject("Streamer")]
     class when_using_streamer_device_to_send_a_single_message_in_blocking_mode : using_streamer_device
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
         protected static SendResult sendResult;
 
         Establish context = () =>
@@ -26,7 +26,7 @@
     [Subject("Streamer")]
     class when_using_streamer_device_to_send_a_single_message_with_an_ample_timeout : using_streamer_device
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
         protected static SendResult sendResult;
 
         Establish context = () =>
@@ -43,7 +43,7 @@
     [Subject("Streamer")]
     class when_using_streamer_device_to_receive_a_single_message_with_insufficient_timeout : using_streamer_device
     {
-        protected static ReceivedMessage message;
+        protected static byte[] message;
 
         Establish context = () =>
         {
@@ -58,10 +58,14 @@
     [Subject("Streamer")]
     class when_using_streamer_device_to_send_a_multipart_message_in_blocking_mode : using_streamer_device
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         Establish context = () =>
         {
@@ -74,7 +78,12 @@
             receiverAction = rep =>
             {
                 message1 = rep.Receive();
+                receiveResult1 = rep.ReceiveStatus;
+                receiveMore1 = rep.ReceiveMore;
+
                 message2 = rep.Receive();
+                receiveResult2 = rep.ReceiveStatus;
+                receiveMore2 = rep.ReceiveMore;
             };
         };
 
@@ -86,10 +95,14 @@
     [Subject("Streamer")]
     class when_using_streamer_device_to_send_a_multipart_message_with_an_ample_timeout : using_streamer_device
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         Establish context = () =>
         {
@@ -102,7 +115,12 @@
             receiverAction = rep =>
             {
                 message1 = rep.Receive(TimeSpan.FromMilliseconds(2000));
+                receiveResult1 = rep.ReceiveStatus;
+                receiveMore1 = rep.ReceiveMore;
+
                 message2 = rep.Receive(TimeSpan.FromMilliseconds(2000));
+                receiveResult2 = rep.ReceiveStatus;
+                receiveMore2 = rep.ReceiveMore;
             };
         };
 

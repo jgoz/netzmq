@@ -36,13 +36,13 @@
     class when_setting_the_identity_socket_option : using_req_socket
     {
         Because of = () =>
-            exception = Catch.Exception(() => socket.Identity = "id".ToZmqBuffer());
+            exception = Catch.Exception(() => socket.Identity = "id".ZmqEncode());
 
         It should_not_fail = () =>
             exception.ShouldBeNull();
 
         It should_return_the_given_value = () =>
-            socket.Identity.ShouldEqual("id".ToZmqBuffer());
+            socket.Identity.ShouldEqual("id".ZmqEncode());
     }
 
     [Subject("Socket options")]

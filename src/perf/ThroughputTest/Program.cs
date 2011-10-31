@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.Threading;
 
-    using ZeroMQ;
     using ZeroMQ.Sockets;
 
     internal class Program
@@ -36,9 +35,9 @@
 
                 foreach (int messageSize in MessageSizes)
                 {
-                    ReceivedMessage message = socket.Receive();
-                    Debug.Assert(message.Data.Length == messageSize, "Message length was different from expected size.");
-                    Debug.Assert(message.Data[messageSize / 2] == 0x42, "Message did not contain verification data.");
+                    byte[] message = socket.Receive();
+                    Debug.Assert(message.Length == messageSize, "Message length was different from expected size.");
+                    Debug.Assert(message[messageSize / 2] == 0x42, "Message did not contain verification data.");
 
                     var watch = new Stopwatch();
                     watch.Start();
@@ -46,8 +45,8 @@
                     for (int i = 1; i < MessageCount; i++)
                     {
                         message = socket.Receive();
-                        Debug.Assert(message.Data.Length == messageSize, "Message length was different from expected size.");
-                        Debug.Assert(message.Data[messageSize / 2] == 0x42, "Message did not contain verification data.");
+                        Debug.Assert(message.Length == messageSize, "Message length was different from expected size.");
+                        Debug.Assert(message[messageSize / 2] == 0x42, "Message did not contain verification data.");
                     }
 
                     watch.Stop();

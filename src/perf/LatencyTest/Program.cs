@@ -41,7 +41,7 @@
                 foreach (int messageSize in MessageSizes)
                 {
                     var msg = new byte[messageSize];
-                    ReceivedMessage reply;
+                    byte[] reply;
 
                     var watch = new Stopwatch();
                     watch.Start();
@@ -54,9 +54,9 @@
 
                         reply = socket.Receive();
 
-                        Debug.Assert(reply.Data.Length == messageSize, "Pong message did not have the expected size.");
+                        Debug.Assert(reply.Length == messageSize, "Pong message did not have the expected size.");
 
-                        msg = reply.Data;
+                        msg = reply;
                     }
 
                     watch.Stop();
@@ -82,12 +82,12 @@
                 {
                     for (int i = 0; i < RoundtripCount; i++)
                     {
-                        ReceivedMessage message = socket.Receive();
+                        byte[] message = socket.Receive();
 
-                        Debug.Assert(message.Result == ReceiveResult.Received, "Message result was non-successful.");
-                        Debug.Assert(message.Data.Length == messageSize, "Message length did not match expected value.");
+                        Debug.Assert(socket.ReceiveStatus == ReceiveResult.Received, "Message result was non-successful.");
+                        Debug.Assert(message.Length == messageSize, "Message length did not match expected value.");
 
-                        socket.Send(message.Data);
+                        socket.Send(message);
                     }
                 }
             }

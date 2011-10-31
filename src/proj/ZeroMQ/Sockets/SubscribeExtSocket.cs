@@ -37,13 +37,13 @@
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive1"]/*'/>
-        public ReceivedMessage Receive()
+        public byte[] Receive()
         {
             return this.Receive(SocketFlags.None);
         }
 
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="Receive2"]/*'/>
-        public new ReceivedMessage Receive(TimeSpan timeout)
+        public new byte[] Receive(TimeSpan timeout)
         {
             return base.Receive(timeout);
         }

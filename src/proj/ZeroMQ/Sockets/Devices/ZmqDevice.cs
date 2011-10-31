@@ -22,7 +22,7 @@
     /// <see cref="ZmqDevice{TFrontend,TBackend}"/> for a given <see cref="IZmqContext"/>.
     /// </para>
     /// </remarks>
-    public class ZmqDevice<TFrontend, TBackend> : IDevice<TFrontend, TBackend>
+    public abstract class ZmqDevice<TFrontend, TBackend> : IDevice<TFrontend, TBackend>
         where TFrontend : class, ISocket
         where TBackend : class, ISocket
     {
@@ -32,15 +32,24 @@
         private readonly TBackend backend;
         private readonly DeviceSocketSetup<TFrontend> frontendSetup;
         private readonly DeviceSocketSetup<TBackend> backendSetup;
-
-        private readonly IDeviceProxy device;
-        private readonly ZmqErrorProvider errorProvider;
-
         private readonly ManualResetEvent runningEvent;
 
         private bool disposed;
 
-        internal ZmqDevice(TFrontend frontend, TBackend backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZmqDevice{TFrontend,TBackend}"/> class.
+        /// </summary>
+        /// <remarks>
+        /// Derived classes must use <see cref="Create{TDevice}"/> to instantiate a usable device.
+        /// </remarks>
+        /// <param name="frontend">
+        /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
+        /// </param>
+        /// <param name="backend">
+        /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
+        /// to) <paramref name="frontend"/>.
+        /// </param>
+        protected ZmqDevice(TFrontend frontend, TBackend backend)
         {
             if (frontend == null)
             {
@@ -52,25 +61,13 @@
                 throw new ArgumentNullException("backend");
             }
 
-            if (device == null)
-            {
-                throw new ArgumentNullException("device");
-            }
-
-            if (errorProvider == null)
-            {
-                throw new ArgumentNullException("errorProvider");
-            }
-
-            this.device = device;
-            this.errorProvider = new ZmqErrorProvider(errorProvider);
-            this.runningEvent = new ManualResetEvent(true);
-
             this.frontend = frontend;
             this.frontendSetup = new DeviceSocketSetup<TFrontend>(this.frontend);
 
             this.backend = backend;
             this.backendSetup = new DeviceSocketSetup<TBackend>(this.backend);
+
+            this.runningEvent = new ManualResetEvent(true);
         }
 
         /// <summary>
@@ -84,13 +81,17 @@
         /// <include file='DeviceDoc.xml' path='Devices/Members[@name="IsRunning"]/*'/>
         public bool IsRunning
         {
-            get { return this.device.IsRunning; }
-            private set { this.device.IsRunning = value; }
+            get { return this.Device.IsRunning; }
+            private set { this.Device.IsRunning = value; }
         }
+
+        internal IDeviceProxy Device { get; set; }
+        internal ZmqErrorProvider ErrorProvider { get; set; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="ZmqDevice{TFrontend,TBackend}"/> class.
         /// </summary>
+        /// <typeparam name="TDevice">The concrete device type.</typeparam>
         /// <param name="frontend">
         /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
         /// </param>
@@ -98,18 +99,27 @@
         /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
         /// to) <paramref name="frontend"/>.
         /// </param>
+        /// <param name="deviceBuilder">A method that constructs a <typeparamref name="TDevice"/> object.</param>
         /// <returns>A new <see cref="ZmqDevice{TFrontend,TBackend}"/> object for the specified sockets.</returns>
         /// <remarks>
         /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
         /// must be created with the same <see cref="ZmqContext"/>.
         /// </remarks>
-        public static IDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
+        public static TDevice Create<TDevice>(TFrontend frontend, TBackend backend, Func<TFrontend, TBackend, TDevice> deviceBuilder) where TDevice : ZmqDevice<TFrontend, TBackend>
         {
+            if (deviceBuilder == null)
+            {
+                throw new ArgumentNullException("deviceBuilder");
+            }
+
             ValidateSockets(frontend, backend);
 
-            var deviceProxy = CreateDeviceProxy(frontend, backend);
+            TDevice device = deviceBuilder(frontend, backend);
 
-            return new ZmqDevice<TFrontend, TBackend>(frontend, backend, deviceProxy, ZmqContext.ProxyFactory.ErrorProvider);
+            device.Device = CreateDeviceProxy(frontend, backend);
+            device.ErrorProvider = new ZmqErrorProvider(ZmqContext.ProxyFactory.ErrorProvider);
+
+            return device;
         }
 
         /// <include file='DeviceDoc.xml' path='Devices/Members[@name="ConfigureFrontend"]/*'/>
@@ -217,14 +227,14 @@
             this.runningEvent.Reset();
             this.IsRunning = true;
 
-            int errorCode = this.device.Run();
+            int errorCode = this.Device.Run();
 
             this.IsRunning = false;
             this.runningEvent.Set();
 
-            if (errorCode == -1 && !this.errorProvider.ContextWasTerminated)
+            if (errorCode == -1 && !this.ErrorProvider.ContextWasTerminated)
             {
-                throw this.errorProvider.GetLastError();
+                throw this.ErrorProvider.GetLastError();
             }
         }
 

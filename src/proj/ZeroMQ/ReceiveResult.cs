@@ -6,6 +6,11 @@
     public enum ReceiveResult
     {
         /// <summary>
+        /// No receive operation has been performed.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// The receive operation returned a message that contains data.
         /// </summary>
         Received,

@@ -3,8 +3,6 @@
     using System;
     using System.Threading;
 
-    using ZeroMQ.Proxy;
-
     /// <summary>
     /// A <see cref="ZmqDevice{TFrontend,TBackend}"/> that runs in a self-managed <see cref="Thread"/>.
     /// </summary>
@@ -21,21 +19,18 @@
     /// <see cref="ThreadDevice{TFrontend,TBackend}"/> for a given <see cref="IZmqContext"/>.
     /// </para>
     /// </remarks>
-    public class ThreadDevice<TFrontend, TBackend> : ZmqDevice<TFrontend, TBackend>
+    public abstract class ThreadDevice<TFrontend, TBackend> : ZmqDevice<TFrontend, TBackend>
         where TFrontend : class, ISocket
         where TBackend : class, ISocket
     {
         private readonly Thread runThread;
 
-        internal ThreadDevice(TFrontend frontend, TBackend backend, IDeviceProxy device, IErrorProviderProxy errorProvider)
-            : base(frontend, backend, device, errorProvider)
-        {
-            this.runThread = new Thread(this.Run);
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadDevice{TFrontend,TBackend}"/> class.
         /// </summary>
+        /// <remarks>
+        /// Derived classes must use <see cref="ZmqDevice{TFrontend,TBackend}.Create{TDevice}"/> to instantiate a usable device.
+        /// </remarks>
         /// <param name="frontend">
         /// A <see cref="ZmqSocket"/> that will pass incoming messages to <paramref name="backend"/>.
         /// </param>
@@ -43,18 +38,10 @@
         /// A <see cref="ZmqSocket"/> that will receive messages from (and optionally send replies
         /// to) <paramref name="frontend"/>.
         /// </param>
-        /// <returns>A new <see cref="ThreadDevice{TFrontend,TBackend}"/> object for the specified sockets.</returns>
-        /// <remarks>
-        /// To avoid potential thread safety issues, <paramref name="frontend"/> and <paramref name="backend"/>
-        /// must be created with the same <see cref="ZmqContext"/>.
-        /// </remarks>
-        public static new IDevice<TFrontend, TBackend> Create(TFrontend frontend, TBackend backend)
+        protected ThreadDevice(TFrontend frontend, TBackend backend)
+            : base(frontend, backend)
         {
-            ValidateSockets(frontend, backend);
-
-            var deviceProxy = CreateDeviceProxy(frontend, backend);
-
-            return new ThreadDevice<TFrontend, TBackend>(frontend, backend, deviceProxy, ZmqContext.ProxyFactory.ErrorProvider);
+            this.runThread = new Thread(this.Run);
         }
 
         /// <summary>

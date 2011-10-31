@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="message">The string to convert.</param>
         /// <returns>A <see cref="byte"/> array containing the encoded string.</returns>
-        public static byte[] ToZmqBuffer(this string message)
+        public static byte[] ZmqEncode(this string message)
         {
             return ZmqContext.DefaultEncoding.GetBytes(message);
         }
@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="buffer">A <see cref="byte"/> array value containing the message to convert.</param>
         /// <returns>A <see cref="string"/> containing the decoded string.</returns>
-        public static string ToZmqMessage(this byte[] buffer)
+        public static string ZmqDecode(this byte[] buffer)
         {
             return ZmqContext.DefaultEncoding.GetString(buffer);
         }

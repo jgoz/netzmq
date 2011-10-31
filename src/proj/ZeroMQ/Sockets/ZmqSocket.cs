@@ -13,6 +13,11 @@
     /// </remarks>
     public class ZmqSocket : ISocket
     {
+        /// <summary>
+        /// An byte array containing no data.
+        /// </summary>
+        public static readonly byte[] EmptyMessage = new byte[0];
+
         private readonly ISocketProxy proxy;
         private readonly ZmqErrorProvider errorProvider;
 
@@ -167,6 +172,9 @@
             set { this.SetSocketOption(SocketOption.SndTimeo, (int)value.TotalMilliseconds); }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveStatus"]/*'/>
+        public ReceiveResult ReceiveStatus { get; private set; }
+
         internal IntPtr Handle
         {
             get { return this.proxy.Handle; }
@@ -317,7 +325,7 @@
             return value;
         }
 
-        internal ReceivedMessage Receive(SocketFlags socketFlags)
+        internal byte[] Receive(SocketFlags socketFlags)
         {
             this.EnsureNotDisposed();
 
@@ -326,37 +334,40 @@
 
             if (bytesReceived >= 0)
             {
-                return new ReceivedMessage(buffer, ReceiveResult.Received, this.ReceiveMore);
+                this.ReceiveStatus = ReceiveResult.Received;
+                return buffer;
             }
 
             if (this.ShouldTryAgain)
             {
-                return ReceivedMessage.TryAgain;
+                this.ReceiveStatus = ReceiveResult.TryAgain;
+                return EmptyMessage;
             }
 
             if (this.ContextWasTerminated)
             {
-                return ReceivedMessage.Interrupted;
+                this.ReceiveStatus = ReceiveResult.Interrupted;
+                return EmptyMessage;
             }
 
             throw this.errorProvider.GetLastSocketError();
         }
 
-        internal ReceivedMessage Receive(TimeSpan timeout)
+        internal byte[] Receive(TimeSpan timeout)
         {
             if (timeout == TimeSpan.MaxValue)
             {
                 return this.Receive(SocketFlags.None);
             }
 
-            ReceivedMessage message;
+            byte[] message;
             var timer = Stopwatch.StartNew();
 
             do
             {
                 message = this.Receive(SocketFlags.DontWait);
             }
-            while (timer.Elapsed < timeout && message.Result == ReceiveResult.TryAgain);
+            while (timer.Elapsed < timeout && this.ReceiveStatus == ReceiveResult.TryAgain);
 
             return message;
         }

@@ -53,6 +53,9 @@
     <Compile Include="Proxy\IProxyFactory.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetupExtensions.cs" />
     <Compile Include="Sockets\Devices\IDevice.cs" />
+    <Compile Include="Sockets\Devices\IForwarderDevice.cs" />
+    <Compile Include="Sockets\Devices\IQueueDevice.cs" />
+    <Compile Include="Sockets\Devices\IStreamerDevice.cs" />
     <Compile Include="Sockets\Devices\StreamerDevice.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetup.cs" />
     <Compile Include="Sockets\Devices\ForwarderDevice.cs" />
@@ -89,7 +92,6 @@
     <Compile Include="Sockets\SocketType.cs" />
     <Compile Include="Sockets\SendSocket.cs" />
     <Compile Include="Sockets\ZmqContext.cs" />
-    <Compile Include="ReceivedMessage.cs" />
     <Compile Include="ReceiveResult.cs" />
     <Compile Include="SendResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

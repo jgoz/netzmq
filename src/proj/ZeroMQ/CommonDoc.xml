@@ -348,7 +348,13 @@
     <summary>
     Receive a message (or message-part) from a remote socket in blocking mode.
     </summary>
-    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+    <returns>A <see cref="byte"/> array containing the data recieved. Returns a zero-length array on recoverable errors (see remarks).</returns>
+    <remarks>
+      When the Receive operation is interrupted by context termination or has timed out before data is available,
+      the returned byte array will be empty. Use the <see cref="IReceiveSocket.ReceiveStatus"/> property to distinguish
+      between those recoverable errors and actual empty messages from the sender. The empty array is used here instead of
+      null to avoid potential <see cref="NullReferenceException"/>s in client code.
+    </remarks>
     <exception cref="ZmqSocketException">
       An error occurred receiving data from a remote endpoint.
       See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
@@ -361,11 +367,17 @@
   <Members name="Receive2">
     <summary>
     Receive a message (or message-part) from a remote socket in non-blocking mode.
-    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="ReceivedMessage.Result"/>,
+    If the specified timeout elapses, <see cref="ReceiveResult.TryAgain"/> is set in <see cref="IReceiveSocket.ReceiveStatus"/>,
     indicating that the receive operation should be attempted again.
     </summary>
     <param name="timeout">A <see cref="TimeSpan"/> indicating the timeout value.</param>
-    <returns>A <see cref="ReceivedMessage"/> object containing the data recieved and the operation outcome.</returns>
+    <returns>A <see cref="byte"/> array containing the data recieved. Returns a zero-length array on recoverable errors (see remarks).</returns>
+    <remarks>
+      When the Receive operation is interrupted by context termination or has timed out before data is available,
+      the returned byte array will be empty. Use the <see cref="IReceiveSocket.ReceiveStatus"/> property to distinguish
+      between those recoverable errors and actual empty messages from the sender. The empty array is used here instead of
+      null to avoid potential <see cref="NullReferenceException"/>s in client code.
+    </remarks>
     <exception cref="ZmqSocketException">
       An error occurred receiving data from a remote endpoint.
       See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
@@ -762,5 +774,11 @@
     <exception cref="System.ObjectDisposedException">
       The <see cref="ZmqSocket"/> has been closed.
     </exception>
+  </Members>
+
+  <Members name="ReceiveStatus">
+    <summary>
+    Gets the <see cref="ReceiveResult"/> of the last Receive operation.
+    </summary>
   </Members>
 </ZeroMQ>

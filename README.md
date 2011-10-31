@@ -1,15 +1,18 @@
 # netzmq &mdash; ZeroMQ bindings for .NET and Mono
+The netzmq project contains .NET bindings for [ZeroMQ][zeromq], an open-source, high performance transport layer.
+
+The project provides an idiomatic, test-friendly API and targets the Any CPU platform, which allows it to work seamlessly in heterogeneous deployment environments. Everything needed to write ZeroMQ programs is bundled in the netzmq assembly for both 32- and 64-bit platforms, including the native ZeroMQ libraries themselves (currently targeting version 3.0).
 
 NOTE: These are not the official .NET bindings. Until this project is stable, you should use the [official bindings][clrzmq], which are also available [via NuGet][clrzmq-nuget].
 
-## Goals
-* Provide an idiomatic .NET 4.0 API for ZeroMQ (for some definition of *idiomatic*)
-* Support the Microsoft CLR and the Mono CLR
-* Fully support unit-testing and mocking in client projects
-* Provide a smooth transition to ZMQ 3.0 when it is released
-* Exclusively target the AnyCPU platform for deployments that "just work", even on ASP.NET/IIS
+## Usage
+There are three ways to use netzmq, listed below in order of preference:
 
-## Example API Usage
+1. Add a reference to the [NuGet package][netzmq-nuget]
+2. Download the lastest release from the [Downloads tab][netzmq-dl]
+3. Clone the source and build the project from scratch (see Build Instructions below)
+
+## Tiny Example
 
 ```c#
 // Client socket
@@ -30,6 +33,10 @@ using (var replySocket = ctx.CreateReplySocket())
     Console.WriteLine("Message received: {0}", msg);
 }
 ```
+
+## Next Steps
+* Full API documentation and examples
+* Add Mono support
 
 ## Build Instructions
 This project currently depends on [libzmq 3.0][libzmq-src]. In order to build netzmq, the build output from libzmq must be placed in the solution hierarchy. A rough guide follows:
@@ -58,6 +65,8 @@ This project is first and foremost a means to learn ZeroMQ more deeply. While th
 ## License
 netzmq is released under the [Apache 2.0 license][apl]. See LICENSE and NOTICE for details.
 
+[netzmq-nuget]: http://nuget.org/List/Packages/netzmq
+[netzmq-dl]: https://github.com/jgoz/netzmq/downloads
 [libzmq-src]: https://github.com/zeromq/zeromq3-0
 [zeromq]: http://www.zeromq.org/
 [clrzmq]: https://github.com/zeromq/clrzmq2

@@ -1,7 +1,6 @@
 ﻿namespace ZeroMQ.AcceptanceTests.DeviceSpecs
 {
     using System;
-    using System.Threading;
 
     using Machine.Specifications;
 
@@ -10,10 +9,14 @@
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_full_subscription : using_forwarder_device
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         Establish context = () =>
         {
@@ -23,7 +26,12 @@
             receiverAction = sub =>
             {
                 message1 = sub.Receive();
+                receiveResult1 = sub.ReceiveStatus;
+                receiveMore1 = sub.ReceiveMore;
+
                 message2 = sub.Receive(TimeSpan.FromMilliseconds(500));
+                receiveResult2 = sub.ReceiveStatus;
+                receiveMore2 = sub.ReceiveMore;
             };
 
             senderAction = pub =>
@@ -41,10 +49,14 @@
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_a_receiver_subscription : using_forwarder_device
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         Establish context = () =>
         {
@@ -54,7 +66,12 @@
             receiverAction = sub =>
             {
                 message1 = sub.Receive();
+                receiveResult1 = sub.ReceiveStatus;
+                receiveMore1 = sub.ReceiveMore;
+
                 message2 = sub.Receive(TimeSpan.FromMilliseconds(500));
+                receiveResult2 = sub.ReceiveStatus;
+                receiveMore2 = sub.ReceiveMore;
             };
 
             senderAction = pub =>
@@ -72,10 +89,14 @@
     [Subject("Forwarder")]
     class when_using_forwarder_device_with_a_device_subscription : using_forwarder_device
     {
-        protected static ReceivedMessage message1;
-        protected static ReceivedMessage message2;
+        protected static byte[] message1;
+        protected static byte[] message2;
         protected static SendResult sendResult1;
         protected static SendResult sendResult2;
+        protected static ReceiveResult receiveResult1;
+        protected static ReceiveResult receiveResult2;
+        protected static bool receiveMore1;
+        protected static bool receiveMore2;
 
         Establish context = () =>
         {
@@ -85,7 +106,12 @@
             receiverAction = sub =>
             {
                 message1 = sub.Receive();
+                receiveResult1 = sub.ReceiveStatus;
+                receiveMore1 = sub.ReceiveMore;
+
                 message2 = sub.Receive(TimeSpan.FromMilliseconds(500));
+                receiveResult2 = sub.ReceiveStatus;
+                receiveMore2 = sub.ReceiveMore;
             };
 
             senderAction = pub =>

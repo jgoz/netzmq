@@ -270,7 +270,7 @@
 
     abstract class using_send_socket : using_mock_socket_proxy<ISendSocket>
     {
-        protected static byte[] message = "Test".ToZmqBuffer();
+        protected static byte[] message = "Test".ZmqEncode();
         protected static SendResult result;
 
         Establish context = () =>

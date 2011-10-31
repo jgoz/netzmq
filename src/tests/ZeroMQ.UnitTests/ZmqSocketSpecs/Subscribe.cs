@@ -140,7 +140,7 @@
 
     abstract class using_subscribe_socket : using_mock_socket_proxy<ISubscribeSocket>
     {
-        protected static byte[] prefix = "Filter".ToZmqBuffer();
+        protected static byte[] prefix = "Filter".ZmqEncode();
 
         Establish context = () =>
             socket = new SubscribeSocket(socketProxy.Object, errorProviderProxy.Object);
@@ -148,7 +148,7 @@
 
     abstract class using_subscribe_ext_socket : using_mock_socket_proxy<ISubscribeSocket>
     {
-        protected static byte[] prefix = "Filter".ToZmqBuffer();
+        protected static byte[] prefix = "Filter".ZmqEncode();
 
         Establish context = () =>
             socket = new SubscribeExtSocket(socketProxy.Object, errorProviderProxy.Object);
