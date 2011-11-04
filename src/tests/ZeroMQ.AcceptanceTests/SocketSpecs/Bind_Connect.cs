@@ -1,5 +1,8 @@
 ﻿namespace ZeroMQ.AcceptanceTests.SocketSpecs
 {
+    using System;
+    using System.Threading;
+
     using Machine.Specifications;
 
     using ZeroMQ.Sockets;
@@ -46,15 +49,19 @@
             exception.ShouldBeNull();
     }
 
-    [Ignore("TODO: Internal PGM threads are currently aborting -- needs investigation.")]
     [Subject("Bind and connect")]
     class when_binding_and_connecting_to_a_pgm_socket_with_pub_and_sub : using_pub_and_sub_sockets
     {
         Because of = () =>
             exception = Catch.Exception(() =>
             {
-                pub.Bind("pgm://239.192.0.1:5555");
-                sub.Connect("pgm://239.192.0.1:5555");
+                pub.Linger = TimeSpan.Zero;
+                pub.Bind("epgm://127.0.0.1;239.192.1.1:5000");
+
+                sub.Connect("epgm://127.0.0.1;239.192.1.1:5000");
+
+                // TODO: Is there any other way to ensure the PGM thread has started?
+                Thread.Sleep(100);
             });
 
         It should_not_fail = () =>
@@ -65,7 +72,7 @@
     class when_binding_to_a_pgm_socket_with_rep : using_req_and_rep_sockets
     {
         Because of = () =>
-            exception = Catch.Exception(() => rep.Bind("pgm://239.192.1.1:5555"));
+            exception = Catch.Exception(() => rep.Bind("epgm://127.0.0.1;239.192.1.1:5000"));
 
         It should_fail_because_pgm_is_not_supported_by_rep = () =>
             exception.ShouldBeOfType<ZmqSocketException>();
