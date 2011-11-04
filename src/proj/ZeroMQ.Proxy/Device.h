@@ -4,6 +4,17 @@
 #include "netzmq.h"
 #include "ErrorProvider.h"
 
+#ifndef TEMP_FAILURE_RETRY_DEV
+#define TEMP_FAILURE_RETRY_DEV(_result_, expression) \
+    do { _result_ = (int) (expression); } while (m_running && _result_ == -1 && zmq_errno() == EINTR);
+#endif
+
+// If an error occurred, return -1 if the device is still supposed to be running. If it has been stopped, return 0.
+#ifndef CHECK_RC
+#define CHECK_RC(_result_) \
+    if (_result_ == -1) { return ((int)m_running)*-1; }
+#endif
+
 using namespace System;
 
 namespace ZeroMQ {
@@ -52,10 +63,8 @@ namespace Proxy {
 
             while (m_running) {
                 // Wait while there are either requests or replies to process.
-                TEMP_FAILURE_RETRY(rc, zmq_poll(&items[0], 2, PollingIntervalMsec));
-                if (rc == -1) {
-                    return -1;
-                }
+                TEMP_FAILURE_RETRY_DEV(rc, zmq_poll(&items[0], 2, PollingIntervalMsec));
+                CHECK_RC(rc);
 
                 // The algorithm below asumes ratio of request and replies processed
                 // under full load to be 1:1. Although processing requests replies
@@ -64,20 +73,14 @@ namespace Proxy {
 
                 // Process a request.
                 if (items[0].revents & ZMQ_POLLIN) {
-                    rc = Relay(m_inSocket, m_outSocket, msg);
-
-                    if (rc == -1) {
-                        return -1;
-                    }
+                    rc = Relay(msg);
+                    CHECK_RC(rc);
                 }
 
                 // Process a reply.
                 if (items [1].revents & ZMQ_POLLIN) {
-                    rc = Relay(m_outSocket, m_inSocket, msg);
-
-                    if (rc == -1) {
-                        return -1;
-                    }
+                    rc = Relay(msg);
+                    CHECK_RC(rc);
                 }
             }
 
@@ -86,7 +89,7 @@ namespace Proxy {
 
     private:
         // Lifted from pyzmq, used under LGPL
-        inline static int Relay(void *insocket, void *outsocket, zmq_msg_t &msg)
+        inline int Relay(zmq_msg_t &msg)
         {
             long long more = 0;
             long long label = 0;
@@ -96,20 +99,14 @@ namespace Proxy {
 
             while (true) {
 
-                TEMP_FAILURE_RETRY(rc, zmq_recvmsg(insocket, &msg, 0));
-                if (rc == -1) {
-                    return -1;
-                }
+                TEMP_FAILURE_RETRY_DEV(rc, zmq_recvmsg(m_inSocket, &msg, 0));
+                CHECK_RC(rc);
 
-                TEMP_FAILURE_RETRY(rc, zmq_getsockopt(insocket, ZMQ_RCVMORE, &more, &flagsz));
-                if (rc == -1) {
-                    return -1;
-                }
+                TEMP_FAILURE_RETRY_DEV(rc, zmq_getsockopt(m_inSocket, ZMQ_RCVMORE, &more, &flagsz));
+                CHECK_RC(rc);
 
-                TEMP_FAILURE_RETRY(rc, zmq_getsockopt(insocket, ZMQ_RCVLABEL, &label, &flagsz));
-                if (rc == -1) {
-                    return -1;
-                }
+                TEMP_FAILURE_RETRY_DEV(rc, zmq_getsockopt(m_inSocket, ZMQ_RCVLABEL, &label, &flagsz));
+                CHECK_RC(rc);
 
                 flags = 0;
                 if (more) {
@@ -119,10 +116,8 @@ namespace Proxy {
                     flags |= ZMQ_SNDLABEL;
                 }
 
-                TEMP_FAILURE_RETRY(rc, zmq_sendmsg(outsocket, &msg, flags));
-                if (rc == -1) {
-                    return -1;
-                }
+                TEMP_FAILURE_RETRY_DEV(rc, zmq_sendmsg(m_outSocket, &msg, flags));
+                CHECK_RC(rc);
 
                 if (!more)
                     break;
