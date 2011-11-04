@@ -74,5 +74,21 @@
         {
             return this.runThread.Join(timeout);
         }
+
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Close"]/*'/>
+        public override void Close()
+        {
+            if (this.IsRunning)
+            {
+                this.Stop();
+
+                if (!this.Join(TimeSpan.FromMilliseconds(PollingIntervalMsec * 2)))
+                {
+                    this.runThread.Abort();
+                }
+            }
+
+            base.Close();
+        }
     }
 }

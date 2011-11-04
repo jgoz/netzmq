@@ -42,7 +42,13 @@
 
   <Members name="Stop">
     <summary>
-    Terminate the device safely.
+    Stop the device in such a way that it can be restarted.
+    </summary>
+  </Members>
+  
+  <Members name="Close">
+    <summary>
+    Stop the device and terminate the underlying sockets safely.
     </summary>
   </Members>
 </Devices>
