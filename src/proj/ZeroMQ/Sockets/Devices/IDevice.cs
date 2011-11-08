@@ -33,5 +33,8 @@ namespace ZeroMQ.Sockets.Devices
 
         /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Stop"]/*'/>
         void Stop();
+
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Close"]/*'/>
+        void Close();
     }
 }

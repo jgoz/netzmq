@@ -49,6 +49,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMQ.UnitTests", "tests\ZeroMQ.UnitTests\ZeroMQ.UnitTests.csproj", "{3926C770-1098-484E-857D-6E5FE9247161}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMQ.AcceptanceTests", "tests\ZeroMQ.AcceptanceTests\ZeroMQ.AcceptanceTests.csproj", "{90B84B2B-F46F-4D26-A1AB-0E49F6F8DC87}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C} = {1929E7B9-85FB-4C8D-A609-7DE9A95D5D3C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

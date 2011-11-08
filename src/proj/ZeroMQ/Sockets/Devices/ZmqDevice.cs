@@ -26,7 +26,10 @@
         where TFrontend : class, ISocket
         where TBackend : class, ISocket
     {
-        private const int PollingIntervalMsec = 500;
+        /// <summary>
+        /// The polling interval in milliseconds.
+        /// </summary>
+        protected const int PollingIntervalMsec = 500;
 
         private readonly TFrontend frontend;
         private readonly TBackend backend;
@@ -175,6 +178,19 @@
         public virtual void Stop()
         {
             this.IsRunning = false;
+        }
+
+        /// <include file='DeviceDoc.xml' path='Devices/Members[@name="Close"]/*'/>
+        public virtual void Close()
+        {
+            if (this.IsRunning)
+            {
+                this.Stop();
+                this.Join(TimeSpan.FromMilliseconds(PollingIntervalMsec * 2));
+            }
+
+            this.frontend.Close();
+            this.backend.Close();
         }
 
         /// <summary>
