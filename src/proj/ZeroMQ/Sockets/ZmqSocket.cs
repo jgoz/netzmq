@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Threading;
 
     using ZeroMQ.Proxy;
 
@@ -17,6 +18,8 @@
         /// An byte array containing no data.
         /// </summary>
         public static readonly byte[] EmptyMessage = new byte[0];
+
+        private static readonly int ProcessorCount = Environment.ProcessorCount;
 
         private readonly ISocketProxy proxy;
         private readonly ZmqErrorProvider errorProvider;
@@ -367,14 +370,38 @@
                 return this.Receive(SocketFlags.None);
             }
 
+            int iterations = 0;
             byte[] message;
+
+            var timeoutMilliseconds = (int)timeout.TotalMilliseconds;
             var timer = Stopwatch.StartNew();
 
             do
             {
                 message = this.Receive(SocketFlags.DontWait);
+
+                if (this.ReceiveStatus != ReceiveResult.TryAgain || timeoutMilliseconds <= 1)
+                {
+                    break;
+                }
+
+                if (iterations < 20 && ProcessorCount > 1)
+                {
+                    // If we have a short wait (< 20 iterations) we
+                    // SpinWait to allow other threads on HT CPUs
+                    // to use the CPU. The more CPUs we have
+                    // the longer it's acceptable to SpinWait since
+                    // we stall the overall system less.
+                    Thread.SpinWait(100 * ProcessorCount);
+                }
+                else
+                {
+                    Thread.Yield();
+                }
+
+                ++iterations;
             }
-            while (timer.Elapsed < timeout && this.ReceiveStatus == ReceiveResult.TryAgain);
+            while (timer.Elapsed < timeout);
 
             return message;
         }
@@ -417,14 +444,33 @@
 
             socketFlags |= SocketFlags.DontWait;
 
+            int iterations = 0;
             SendResult result;
+
+            var timeoutMilliseconds = (int)timeout.TotalMilliseconds;
             var timer = Stopwatch.StartNew();
 
             do
             {
                 result = this.Send(buffer, socketFlags);
+
+                if (result != SendResult.TryAgain || timeoutMilliseconds <= 1)
+                {
+                    break;
+                }
+
+                if (iterations < 20 && ProcessorCount > 1)
+                {
+                    Thread.SpinWait(100 * ProcessorCount);
+                }
+                else
+                {
+                    Thread.Yield();
+                }
+
+                ++iterations;
             }
-            while (timer.Elapsed < timeout && result == SendResult.TryAgain);
+            while (timer.Elapsed < timeout);
 
             return result;
         }
