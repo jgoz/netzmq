@@ -172,6 +172,13 @@
             set { this.SetSocketOption(SocketOption.SndTimeo, (int)value.TotalMilliseconds); }
         }
 
+        /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="SendTimeout"]/*'/>
+        public ProtocolType SupportedProtocol
+        {
+            get { return (ProtocolType)this.GetSocketOptionInt32(SocketOption.Ipv4Only); }
+            set { this.SetSocketOption(SocketOption.Ipv4Only, (int)value); }
+        }
+
         /// <include file='..\CommonDoc.xml' path='ZeroMQ/Members[@name="ReceiveStatus"]/*'/>
         public ReceiveResult ReceiveStatus { get; private set; }
 

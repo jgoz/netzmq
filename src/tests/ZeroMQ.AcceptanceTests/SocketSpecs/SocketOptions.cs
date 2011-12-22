@@ -213,4 +213,17 @@
         It should_return_the_given_value = () =>
             socket.SendTimeout.ShouldEqual(TimeSpan.FromMilliseconds(333));
     }
+
+    [Subject("Socket options")]
+    class when_setting_the_supported_protocol_socket_option : using_req_socket
+    {
+        Because of = () =>
+            exception = Catch.Exception(() => socket.SupportedProtocol = ProtocolType.Both);
+
+        It should_not_fail = () =>
+            exception.ShouldBeNull();
+
+        It should_return_the_given_value = () =>
+            socket.SupportedProtocol.ShouldEqual(ProtocolType.Both);
+    }
 }

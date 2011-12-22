@@ -58,6 +58,9 @@
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SendTimeout"]/node()[name()!="exception"]'/>
         TimeSpan SendTimeout { get; set; }
 
+        /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="SupportedProtocol"]/node()[name()!="exception"]'/>
+        ProtocolType SupportedProtocol { get; set; }
+
         /// <include file='CommonDoc.xml' path='ZeroMQ/Members[@name="Bind"]/node()[name()!="exception"]'/>
         void Bind(string endpoint);
 
