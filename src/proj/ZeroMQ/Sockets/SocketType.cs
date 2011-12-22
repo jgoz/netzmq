@@ -13,7 +13,7 @@
         Push = 8,
         Xpub = 9,
         Xsub = 10,
-        Router = 11,
-        Dealer = 12,
+        Router = Xrep,
+        Dealer = Xreq,
     }
 }
