@@ -49,14 +49,14 @@
             exception.ShouldBeNull();
     }
 
-    [Subject("Bind and connect")]
+    [Subject("Bind and connect"), Ignore("PGM not currently working")]
     class when_binding_and_connecting_to_a_pgm_socket_with_pub_and_sub : using_pub_and_sub_sockets
     {
         Because of = () =>
             exception = Catch.Exception(() =>
             {
                 pub.Linger = TimeSpan.Zero;
-                pub.Bind("epgm://127.0.0.1;239.192.1.1:5000");
+                pub.Connect("epgm://127.0.0.1;239.192.1.1:5000");
 
                 sub.Connect("epgm://127.0.0.1;239.192.1.1:5000");
 

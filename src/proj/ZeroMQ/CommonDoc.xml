@@ -775,6 +775,19 @@
       The <see cref="ZmqSocket"/> has been closed.
     </exception>
   </Members>
+  
+  <Members name="SupportedProtocol">
+    <summary>
+    Gets or sets the supported socket protocol(s) when using TCP transports. (Default = <see cref="ProtocolType.Ipv4Only"/>).
+    </summary>
+    <exception cref="ZmqSocketException">
+      An error occurred when getting or setting the socket option.
+      See <see cref="ZmqLibException.ErrorCode"/> and <see cref="Exception.Message"/> for details.
+    </exception>
+    <exception cref="System.ObjectDisposedException">
+      The <see cref="ZmqSocket"/> has been closed.
+    </exception>
+  </Members>
 
   <Members name="ReceiveStatus">
     <summary>

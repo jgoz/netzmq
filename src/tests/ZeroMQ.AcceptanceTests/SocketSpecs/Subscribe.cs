@@ -5,8 +5,6 @@
 
     using Machine.Specifications;
 
-    using ZeroMQ.Sockets;
-
     [Subject("Subscribe")]
     class when_subscribing_to_a_specific_prefix : using_threaded_pub_sub
     {
@@ -23,7 +21,7 @@
         {
             var signal = new ManualResetEventSlim(false);
 
-            receiverInit = sub => sub.Subscribe("PREFIX".ZmqEncode());
+            receiverInit = sub => sub.Subscribe(Messages.PubSubPrefix);
 
             receiverAction = sub =>
             {

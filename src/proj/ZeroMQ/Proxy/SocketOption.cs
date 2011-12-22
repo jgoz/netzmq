@@ -24,6 +24,6 @@
         MulticastHops = 25,
         RcvTimeo = 27,
         SndTimeo = 28,
-        RcvLabel = 29,
+        Ipv4Only = 31,
     }
 }

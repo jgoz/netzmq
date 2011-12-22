@@ -51,6 +51,7 @@
     <Compile Include="IZmqContext.cs" />
     <Compile Include="Proxy\IDeviceProxy.cs" />
     <Compile Include="Proxy\IProxyFactory.cs" />
+    <Compile Include="ProtocolType.cs" />
     <Compile Include="Sockets\Devices\DeviceSocketSetupExtensions.cs" />
     <Compile Include="Sockets\Devices\IDevice.cs" />
     <Compile Include="Sockets\Devices\IForwarderDevice.cs" />

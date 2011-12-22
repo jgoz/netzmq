@@ -92,7 +92,6 @@ namespace Proxy {
         inline int Relay(zmq_msg_t &msg)
         {
             long long more = 0;
-            long long label = 0;
             size_t flagsz = sizeof(more);
             int flags = 0;
             int rc;
@@ -105,15 +104,9 @@ namespace Proxy {
                 TEMP_FAILURE_RETRY_DEV(rc, zmq_getsockopt(m_inSocket, ZMQ_RCVMORE, &more, &flagsz));
                 CHECK_RC(rc);
 
-                TEMP_FAILURE_RETRY_DEV(rc, zmq_getsockopt(m_inSocket, ZMQ_RCVLABEL, &label, &flagsz));
-                CHECK_RC(rc);
-
                 flags = 0;
                 if (more) {
                     flags |= ZMQ_SNDMORE;
-                }
-                if (label) {
-                    flags |= ZMQ_SNDLABEL;
                 }
 
                 TEMP_FAILURE_RETRY_DEV(rc, zmq_sendmsg(m_outSocket, &msg, flags));

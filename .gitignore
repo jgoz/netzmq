@@ -6,6 +6,7 @@ lib/packages
 lib/**/*.dll
 lib/**/*.exp
 lib/**/*.lib
+lib/**/*.pdb
 output
 out
 publish
